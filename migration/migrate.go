@@ -1,5 +1,10 @@
 package migration
 
+import (
+	"ofspace_be/config"
+	user "ofspace_be/features/users/data"
+)
+
 func AutoMigrate() {
 	db := config.DB
 	if err := db.Exec("SET FOREIGN_KEY_CHECKS = 0").Error; err != nil {
@@ -32,10 +37,9 @@ func AutoMigrate() {
 	}
 
 	err := db.AutoMigrate(
-	//&user.User{},
+		&user.User{},
 	)
 	if err != nil {
 		panic(err)
 	}
-
 }
