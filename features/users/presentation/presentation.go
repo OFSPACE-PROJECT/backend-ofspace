@@ -55,6 +55,25 @@ func (up *UsersPresentation) RegisterUser(c echo.Context) error {
 	})
 }
 
+func (up *UsersPresentation) UpdateUser(c echo.Context) error {
+
+	userUpdate := request.UserUpdate{}
+	c.Bind(&userUpdate)
+
+	ctx := c.Request().Context()
+	_, err := up.usersBusiness.UpdateUser(ctx, userUpdate.ToCoreUpdate())
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		// "data":    response.ToUserRegisterResponse(data),
+	})
+}
+
 func (up *UsersPresentation) GetUserByID(c echo.Context) error {
 	// fmt.Println("UserDetail")
 

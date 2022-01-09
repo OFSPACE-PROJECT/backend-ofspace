@@ -14,5 +14,6 @@ func New() *echo.Echo {
 	e.POST("/register", presenter.UserPresentation.RegisterUser)
 	e.POST("/login", presenter.UserPresentation.LoginUser)
 	e.GET("/user/:id", presenter.UserPresentation.GetUserByID)
+	e.PUT("/user", presenter.UserPresentation.UpdateUser)
 	return e
 }

@@ -66,3 +66,26 @@ func (ub *usersBusiness) GetUserByID(c context.Context, id uint) (users.Core, er
 	return user, nil
 
 }
+
+func (ub *usersBusiness) UpdateUser(c context.Context, data users.Core) (users.Core, error) {
+
+	// if Id == 0 {
+	// 	return User{}, resp.ErrFillData
+	// }
+
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+	_, err := ub.userData.GetUserByID(ctx, data.ID)
+	if err != nil {
+		return users.Core{}, err
+	}
+	data.UpdatedAt = time.Now()
+
+	up, err := ub.userData.UpdateUser(ctx, data)
+	if err != nil {
+		return users.Core{}, err
+	}
+
+	return up, nil
+
+}

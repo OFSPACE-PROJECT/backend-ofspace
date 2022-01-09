@@ -55,3 +55,14 @@ func (rep *UserData) GetUserByID(ctx context.Context, id uint) (users.Core, erro
 	}
 	return toUserCore(user), nil
 }
+
+func (rep *UserData) UpdateUser(ctx context.Context, domain users.Core) (users.Core, error) {
+	user := FromCore(domain)
+	result := rep.Connect.Where("id = ?", user.ID).Updates(&User{Email: user.Email, Password: user.Password, Role: user.Role})
+
+	if result.Error != nil {
+		return users.Core{}, result.Error
+	}
+
+	return toUserCore(user), nil
+}
