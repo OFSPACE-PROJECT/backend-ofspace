@@ -21,7 +21,7 @@ type Core struct {
 type Business interface {
 	LoginUser(ctx context.Context, data Core) (Core, error)
 	RegisterUser(ctx context.Context, data Core) (Core, error)
-	// GetAllUsers(ctx context.Context) ([]Core, error)
+	DeleteUser(ctx context.Context, id uint) (Core, error)
 	UpdateUser(ctx context.Context, data Core) (Core, error)
 	GetUserByID(ctx context.Context, id uint) (Core, error)
 	// GetUserByName(ctx context.Context, name string) (Core, error)
@@ -32,7 +32,7 @@ type Business interface {
 type Data interface {
 	LoginUser(ctx context.Context, data Core) (Core, error)
 	RegisterUser(ctx context.Context, data Core) (Core, error)
-	// GetAllUsers(ctx context.Context) ([]Core, error)
+	DeleteUser(ctx context.Context, id uint) (Core, error)
 	UpdateUser(ctx context.Context, data Core) (Core, error)
 	GetUserByID(ctx context.Context, id uint) (Core, error)
 	// GetUserByName(ctx context.Context, name string) (Core, error)

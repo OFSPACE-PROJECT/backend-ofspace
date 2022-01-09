@@ -55,6 +55,26 @@ func (up *UsersPresentation) RegisterUser(c echo.Context) error {
 	})
 }
 
+func (up *UsersPresentation) DeleteUser(c echo.Context) error {
+
+	Id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+	ctx := c.Request().Context()
+	_, err = up.usersBusiness.DeleteUser(ctx, uint(Id))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+	})
+}
+
 func (up *UsersPresentation) UpdateUser(c echo.Context) error {
 
 	userUpdate := request.UserUpdate{}

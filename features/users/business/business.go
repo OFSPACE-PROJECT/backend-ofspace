@@ -4,8 +4,9 @@ import (
 	"ofspace_be/features/users"
 	"time"
 
-	// "ofspace_be/middleware"
 	"context"
+	"ofspace_be/helpers/encrypt"
+	"ofspace_be/middleware"
 )
 
 type usersBusiness struct {
@@ -23,10 +24,14 @@ func (ub *usersBusiness) LoginUser(c context.Context, data users.Core) (users.Co
 		return users.Core{}, err
 	}
 
-	// userData.Token, err = middleware.CreateTokens(userData.ID, userData.Name)
-	// if err != nil {
-	// 	return userData, err
-	// }
+	err = encrypt.CheckPassword(data.Password, userData.Password)
+	if err != nil {
+		return users.Core{}, err
+	}
+	userData.Token, err = middleware.CreateTokens(userData.ID, userData.Name)
+	if err != nil {
+		return userData, err
+	}
 	return userData, nil
 }
 
@@ -40,7 +45,7 @@ func (ub *usersBusiness) RegisterUser(c context.Context, data users.Core) (users
 	defer error()
 
 	data.UpdatedAt = time.Now()
-	// data.Password, _ = encrypt.Hash(data.Password)
+	data.Password, _ = encrypt.Hash(data.Password)
 	user, err := ub.userData.RegisterUser(ctx, data)
 	if err != nil {
 		return users.Core{}, err
@@ -88,4 +93,26 @@ func (ub *usersBusiness) UpdateUser(c context.Context, data users.Core) (users.C
 
 	return up, nil
 
+}
+
+func (ub *usersBusiness) DeleteUser(c context.Context, id uint) (users.Core, error) {
+
+	// if id == 0 {
+	// 	return User{}, resp.ErrFillData
+	// }
+
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+
+	_, err := ub.userData.GetUserByID(ctx, id)
+	if err != nil {
+		return users.Core{}, err
+	}
+
+	del, err := ub.userData.DeleteUser(ctx, id)
+	if err != nil {
+		return users.Core{}, err
+	}
+
+	return del, nil
 }

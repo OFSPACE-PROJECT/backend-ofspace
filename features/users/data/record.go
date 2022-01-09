@@ -3,6 +3,8 @@ package data
 import (
 	"ofspace_be/features/users"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -15,6 +17,7 @@ type User struct {
 	AdminStatus string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
 
 func toUserCore(u User) users.Core {
