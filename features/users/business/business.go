@@ -49,3 +49,20 @@ func (ub *usersBusiness) RegisterUser(c context.Context, data users.Core) (users
 	return user, nil
 
 }
+
+func (ub *usersBusiness) GetUserByID(c context.Context, id uint) (users.Core, error) {
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+
+	// if id == 0 {
+	// 	return users.Core{}, error
+	// }
+
+	user, err := ub.userData.GetUserByID(ctx, id)
+	if err != nil {
+		return users.Core{}, err
+	}
+
+	return user, nil
+
+}

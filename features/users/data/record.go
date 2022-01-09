@@ -36,6 +36,7 @@ func FromCore(core users.Core) User {
 		ID:          core.ID,
 		Name:        core.Name,
 		Email:       core.Email,
+		Role:        core.Role,
 		Password:    core.Password,
 		Phone:       core.Phone,
 		AdminStatus: core.AdminStatus,

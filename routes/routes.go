@@ -13,5 +13,6 @@ func New() *echo.Echo {
 	// users
 	e.POST("/register", presenter.UserPresentation.RegisterUser)
 	e.POST("/login", presenter.UserPresentation.LoginUser)
+	e.GET("/user/:id", presenter.UserPresentation.GetUserByID)
 	return e
 }

@@ -46,3 +46,12 @@ func (rep *UserData) RegisterUser(ctx context.Context, domain users.Core) (users
 
 	return toUserCore(user), nil
 }
+
+func (rep *UserData) GetUserByID(ctx context.Context, id uint) (users.Core, error) {
+	var user User
+	result := rep.Connect.First(&user, "id= ?", id)
+	if result.Error != nil {
+		return users.Core{}, result.Error
+	}
+	return toUserCore(user), nil
+}

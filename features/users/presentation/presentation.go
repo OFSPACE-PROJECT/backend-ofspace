@@ -5,6 +5,7 @@ import (
 	"ofspace_be/features/users"
 	"ofspace_be/features/users/presentation/request"
 	"ofspace_be/features/users/presentation/response"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -51,5 +52,29 @@ func (up *UsersPresentation) RegisterUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
 		"data":    response.ToUserRegisterResponse(data),
+	})
+}
+
+func (up *UsersPresentation) GetUserByID(c echo.Context) error {
+	// fmt.Println("UserDetail")
+
+	Id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	ctx := c.Request().Context()
+	user, err := up.usersBusiness.GetUserByID(ctx, uint(Id))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToGetUserResponse(user),
 	})
 }

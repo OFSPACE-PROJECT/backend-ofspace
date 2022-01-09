@@ -39,3 +39,15 @@ func ToUserRegisterResponse(user users.Core) User {
 		Password: user.Password,
 	}
 }
+
+type GetUserResponse struct {
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
+}
+
+func ToGetUserResponse(user users.Core) GetUserResponse {
+	return GetUserResponse{
+		ID:   user.ID,
+		Name: user.Name,
+	}
+}
