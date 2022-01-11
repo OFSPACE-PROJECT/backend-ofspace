@@ -26,11 +26,11 @@ func New() *Presenter {
 	}
 	timeoutContext := time.Duration(ctx) * time.Second
 	//	Accessibility
-	compData := accessibilityData.NewAccessibilityData(config.DB)
-	compBusiness := accessibilityBusiness.NewAccessibilityBusiness(compData, timeoutContext)
-	compPresentation := accessibilityPresentation.NewAccessibilityPresentation(compBusiness)
+	accData := accessibilityData.NewAccessibilityData(config.DB)
+	accBusiness := accessibilityBusiness.NewAccessibilityBusiness(accData, timeoutContext)
+	accPresentation := accessibilityPresentation.NewAccessibilityPresentation(accBusiness)
 
 	return &Presenter{
-		compPresentation,
+		accPresentation,
 	}
 }
