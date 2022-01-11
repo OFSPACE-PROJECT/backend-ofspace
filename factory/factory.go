@@ -15,7 +15,7 @@ import (
 )
 
 type Presenter struct {
-	UserPresentation *facilityPresentation.FacilityPresentation
+	FacilityPresentation *facilityPresentation.FacilityPresentation
 }
 
 func New() *Presenter {
