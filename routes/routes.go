@@ -1,21 +1,20 @@
 package routes
 
 import (
-	"ofspace-be/factory"
+	"ofspace_be/factory"
 
 	"github.com/labstack/echo/v4"
 )
 
 func New() *echo.Echo {
-	factory.New()
 	presenter := factory.New()
 	e := echo.New()
 
 	// users
-	e.POST("/facility", presenter.FacilityPresentation.CreateFacility)
-	e.GET("/facility/:id", presenter.FacilityPresentation.GetFacility)
-	e.PUT("/facility/:id", presenter.FacilityPresentation.UpdateFacility)
-	e.DELETE("/facility/:id", presenter.FacilityPresentation.DeleteFacility)
-	e.GET("/facility/search", presenter.FacilityPresentation.SearchFacility)
+	e.POST("/register", presenter.UserPresentation.RegisterUser)
+	e.POST("/login", presenter.UserPresentation.LoginUser)
+	e.GET("/user/:id", presenter.UserPresentation.GetUserByID)
+	e.PUT("/user", presenter.UserPresentation.UpdateUser)
+	e.DELETE("/user/:id", presenter.UserPresentation.DeleteUser)
 	return e
 }

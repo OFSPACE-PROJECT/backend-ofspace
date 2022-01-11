@@ -1,15 +1,14 @@
 package main
 
 import (
-	"ofspace-be/config"
-	"ofspace-be/routes"
+	"ofspace_be/config"
+	"ofspace_be/migration"
+	"ofspace_be/routes"
 )
 
 func main() {
 	config.InitDB()
+	migration.AutoMigrate()
 	e := routes.New()
-	err := e.Start(":8080")
-	if err != nil {
-		return
-	}
+	e.Start(":8080")
 }

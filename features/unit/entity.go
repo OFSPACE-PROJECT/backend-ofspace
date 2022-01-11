@@ -40,7 +40,7 @@ type Business interface {
 	DeleteInteriorPhoto(ctx context.Context, UnitId int, photoId uint) error
 
 	//	for manage facility
-	AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
+	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
 	SearchFacility(ctx context.Context, name string) (_facility.Core, error)
 	GetFacility(ctx context.Context, facilityId uint) (_facility.Core, error)
 	DeleteFacility(ctx context.Context, unitId uint, facilityId uint) error
@@ -61,7 +61,7 @@ type Data interface {
 	DeleteInteriorPhoto(ctx context.Context, UnitId int, photoId uint) error
 
 	//	for manage facility
-	AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
+	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
 	SearchFacility(ctx context.Context, name string) (_facility.Core, error)
 	GetFacility(ctx context.Context, facilityId uint) (_facility.Core, error)
 	DeleteFacility(ctx context.Context, unitId uint, facilityId uint) error

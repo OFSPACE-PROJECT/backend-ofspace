@@ -1,21 +1,20 @@
 package factory
 
 import (
-	config2 "ofspace-be/config"
-	facilityBusiness "ofspace-be/features/facility/business"
-	facilityData "ofspace-be/features/facility/data"
-	facilityPresentation "ofspace-be/features/facility/presentation"
-
+	"ofspace_be/config"
 	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
 
+	userBusiness "ofspace_be/features/users/business"
+	userData "ofspace_be/features/users/data"
+	userPresentation "ofspace_be/features/users/presentation"
 	"time"
 )
 
 type Presenter struct {
-	FacilityPresentation *facilityPresentation.FacilityPresentation
+	UserPresentation *userPresentation.UsersPresentation
 }
 
 func New() *Presenter {
@@ -28,13 +27,12 @@ func New() *Presenter {
 		panic(err.Error())
 	}
 	timeoutContext := time.Duration(ctx) * time.Second
-	//facility
-
-	facData := facilityData.NewFacilityData(config2.DB)
-	facBusiness := facilityBusiness.NewFacilityBusiness(facData, timeoutContext)
-	facPresentation := facilityPresentation.NewFacilityPresentation(facBusiness)
+	//users
+	userData := userData.NewUserData(config.DB)
+	userBusiness := userBusiness.NewUserBusiness(userData, timeoutContext)
+	userPresentation := userPresentation.NewUserPresentation(userBusiness)
 
 	return &Presenter{
-		facPresentation,
+		userPresentation,
 	}
 }
