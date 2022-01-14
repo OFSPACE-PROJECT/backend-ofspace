@@ -41,14 +41,14 @@ func (cp *AccessibilityPresentation) CreateAccessibility(c echo.Context) error {
 
 func (cp *AccessibilityPresentation) UpdateAccessibility(c echo.Context) error {
 
-	cUpdate := request.CreateAccessibility{}
+	cUpdate := request.UpdateAccessibility{}
 	err := c.Bind(&cUpdate)
 	if err != nil {
 		return err
 	}
 
 	ctx := c.Request().Context()
-	data, err2 := cp.accessibilityBusiness.UpdateAccessibility(ctx, cUpdate.ToCore())
+	data, err2 := cp.accessibilityBusiness.UpdateAccessibility(ctx, cUpdate.ToUpdateCore())
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),

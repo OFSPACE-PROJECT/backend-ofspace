@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 	"fmt"
-	"ofspace_be/features/users"
+	"ofspace-be/features/users"
 
 	"gorm.io/gorm"
 )

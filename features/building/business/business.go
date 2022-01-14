@@ -35,10 +35,6 @@ func NewBuildingBusiness(
 func (bb *buildingBusiness) CreateBuilding(c context.Context, data building.Core) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
-	_, err := bb.userBusiness.GetUserByID(ctx, data.UserId)
-	if err != nil {
-		return building.Core{}, err
-	}
 	data.UpdatedAt = time.Now()
 	build, err2 := bb.buildingData.CreateBuilding(ctx, data)
 	if err2 != nil {
@@ -75,21 +71,32 @@ func (bb *buildingBusiness) SearchBuildingByName(c context.Context, name string,
 	}
 	return build, nil
 }
-func (bb *buildingBusiness) GetBuildingById(c context.Context, id uint, status string) (building.Core, error) {
+func (bb *buildingBusiness) GetBuildingById(c context.Context, id uint) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
-	status = "verified"
-	build, err := bb.buildingData.GetBuildingById(ctx, id, status)
+	build, err := bb.buildingData.GetBuildingById(ctx, id)
 	if err != nil {
 		return building.Core{}, err
 	}
 	return build, nil
 
 }
+
+//func (bb *buildingBusiness) GetUnverifiedBuildingById(c context.Context, id uint, status string) (building.Core, error) {
+//	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
+//	defer error1()
+//	build, err := bb.buildingData.GetBuildingById(ctx, id, status)
+//	if err != nil {
+//		return building.Core{}, err
+//	}
+//	return build, nil
+//
+//}Preload("Complex")
+
 func (bb *buildingBusiness) UpdateBuilding(c context.Context, data building.Core) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
-	_, err := bb.buildingData.GetBuildingById(ctx, data.Id, data.BuildingStatus)
+	_, err := bb.buildingData.GetBuildingById(ctx, data.Id)
 	if err != nil {
 		return building.Core{}, err
 	}
@@ -108,16 +115,16 @@ func (bb *buildingBusiness) UpdateBuilding(c context.Context, data building.Core
 //}
 
 //exterior photos
-func (bb *buildingBusiness) CreateExteriorPhoto(c context.Context, buildingId uint, data building.ExteriorCore) (building.ExteriorCore, error) {
+func (bb *buildingBusiness) CreateExteriorPhoto(c context.Context, data building.ExteriorCore) (building.ExteriorCore, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
 	data.UpdatedAt = time.Now()
-	photo, err := bb.buildingData.CreateExteriorPhoto(ctx, buildingId, data)
+	//photo, err := bb.buildingData.CreateExteriorPhoto(ctx, buildingId, data)
+	photo, err := bb.buildingData.CreateExteriorPhoto(ctx, data)
 	if err != nil {
 		return building.ExteriorCore{}, err
 	}
 	return photo, nil
-
 }
 func (bb *buildingBusiness) UpdateExteriorPhoto(c context.Context, data building.ExteriorCore) (building.ExteriorCore, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
@@ -170,11 +177,11 @@ func (bb *buildingBusiness) DeleteExteriorPhoto(c context.Context, BuildingId ui
 }
 
 //floor photo
-func (bb *buildingBusiness) CreateFloorPhoto(c context.Context, buildingId uint, data building.FloorCore) (building.FloorCore, error) {
+func (bb *buildingBusiness) CreateFloorPhoto(c context.Context, data building.FloorCore) (building.FloorCore, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
 	data.UpdatedAt = time.Now()
-	photo, err := bb.buildingData.CreateFloorPhoto(ctx, buildingId, data)
+	photo, err := bb.buildingData.CreateFloorPhoto(ctx, data)
 	if err != nil {
 		return building.FloorCore{}, err
 	}
@@ -232,19 +239,24 @@ func (bb *buildingBusiness) DeleteFloorPhoto(c context.Context, BuildingId uint,
 }
 
 //manage facility
-func (bb *buildingBusiness) AddFacilityToBuilding(c context.Context, buildingId uint, facilityId uint) (building.Core, error) {
+func (bb *buildingBusiness) AddFacilityToBuilding(c context.Context, facilityId uint, buildingId uint) (building.Facility, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
-	thisFacility, err := bb.facilityBusiness.GetFacility(ctx, facilityId)
-	if err != nil {
-		return building.Core{}, err
-	}
-	//data.UpdatedAt = time.Now()
-	build, err2 := bb.buildingData.AddFacilityToBuilding(ctx, buildingId, thisFacility.Id)
+	//buildingFacility := building.Facility{
+	//	FacilityId: thisFacility.Id,
+	//	BuildingId: thisBuilding.Id,
+	//}
+	//data, err4 := bb.buildingData.AddFacilityToBuilding(ctx, buildingFacility)
+	//if err4 != nil {
+	//	return building.Facility{}, err4
+	//}
+	//return data, nil
+
+	data, err2 := bb.buildingData.AddFacilityToBuilding(ctx, facilityId, buildingId)
 	if err2 != nil {
-		return building.Core{}, err2
+		return building.Facility{}, err2
 	}
-	return build, nil
+	return data, nil
 
 }
 func (bb *buildingBusiness) GetAllBuildingFacility(c context.Context, buildingId uint) ([]building.Facility, error) {

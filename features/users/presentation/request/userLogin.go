@@ -1,6 +1,8 @@
 package request
 
-import "ofspace_be/features/users"
+import (
+	"ofspace-be/features/users"
+)
 
 type UserLogin struct {
 	Email    string `json:"email"`

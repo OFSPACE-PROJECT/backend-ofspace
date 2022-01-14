@@ -1,7 +1,7 @@
 package data
 
 import (
-	"ofspace_be/features/users"
+	"ofspace-be/features/users"
 	"time"
 
 	"gorm.io/gorm"

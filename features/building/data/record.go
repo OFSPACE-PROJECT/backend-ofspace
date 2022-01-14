@@ -8,7 +8,7 @@ import (
 type Building struct {
 	Id                 uint `gorm:"primaryKey"`
 	UserId             uint `gorm:"not null"`
-	ComplexId          uint `gorm:"not null"`
+	ComplexId          uint `gorm:"not null" json:"complex_id"`
 	Name               string
 	Description        string
 	OfficeHours        string
@@ -18,18 +18,22 @@ type Building struct {
 	Lifts              string
 	Parking            string
 	Toilets            string
-	BuildingStatus     string          `gorm:"default:unverified"`
-	BuildingFacilities []Facility      `gorm:"foreignKey:BuildingID;references:ID"`
-	ExteriorPhotos     []ExteriorPhoto `gorm:"foreignKey:BuildingID;references:ID"`
-	FloorPhotos        []FloorPhoto    `gorm:"foreignKey:BuildingID;references:ID"`
+	BuildingStatus     string          `gorm:"default:unverified" json:"building_status"`
+	BuildingFacilities []*Facility     `gorm:"many2many:building_facilities;"`
+	ExteriorPhotos     []ExteriorPhoto `gorm:"foreignKey:BuildingID;references:Id"`
+	FloorPhotos        []FloorPhoto    `gorm:"foreignKey:BuildingID;references:Id"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 }
 
+type BuildingFacility struct {
+	BuildingID uint `gorm:"primaryKey"`
+	FacilityID uint `gorm:"primaryKey"`
+}
+
 type Facility struct {
-	Id         uint
-	BuildingID uint
-	Name       string
+	ID   uint
+	Name string `gorm:"unique;"`
 }
 
 type ExteriorPhoto struct {
@@ -118,6 +122,13 @@ func FromExteriorPhotoCore(e building.ExteriorCore) ExteriorPhoto {
 	}
 }
 
+func FromBuildingFacilityCore(e building.Facility) BuildingFacility {
+	return BuildingFacility{
+		BuildingID: e.Id,
+		FacilityID: e.Id,
+	}
+}
+
 func toFloorPhotoCore(b *FloorPhoto) building.FloorCore {
 	return building.FloorCore{
 		Id:          b.Id,
@@ -179,14 +190,14 @@ func ListBuildingToCore(buildings []Building) (result []building.Core) {
 	return
 }
 
-func toFacilityCore(b *Facility) building.Facility {
+func toFacilityCore(b *BuildingFacility) building.Facility {
 	return building.Facility{
-		Id:   b.Id,
-		Name: b.Name,
+		Id: b.FacilityID,
+		//FacilityId: b.FacilityID,
 	}
 }
 
-func ToSliceFacilityPhotoCore(e []Facility) []building.Facility {
+func ToSliceFacilityPhotoCore(e []BuildingFacility) []building.Facility {
 	fac := make([]building.Facility, len(e))
 
 	for i, v := range e {

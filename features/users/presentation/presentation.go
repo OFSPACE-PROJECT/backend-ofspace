@@ -2,9 +2,10 @@ package presentation
 
 import (
 	"net/http"
-	"ofspace_be/features/users"
-	"ofspace_be/features/users/presentation/request"
-	"ofspace_be/features/users/presentation/response"
+	"ofspace-be/features/users"
+	"ofspace-be/features/users/presentation/request"
+	"ofspace-be/features/users/presentation/response"
+
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -22,12 +23,15 @@ func NewUserPresentation(up users.Business) *UsersPresentation {
 
 func (up *UsersPresentation) LoginUser(c echo.Context) error {
 	user := request.UserLogin{}
-	c.Bind(&user)
+	err := c.Bind(&user)
+	if err != nil {
+		return err
+	}
 	ctx := c.Request().Context()
-	data, err := up.usersBusiness.LoginUser(ctx, user.ToCore())
+	data, err2 := up.usersBusiness.LoginUser(ctx, user.ToCore())
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
+			"message": err2.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{

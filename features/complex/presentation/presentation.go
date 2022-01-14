@@ -43,14 +43,14 @@ func (cp *ComplexPresentation) CreateComplex(c echo.Context) error {
 
 func (cp *ComplexPresentation) UpdateComplex(c echo.Context) error {
 
-	cUpdate := request.CreateComplex{}
+	cUpdate := request.UpdateComplex{}
 	err := c.Bind(&cUpdate)
 	if err != nil {
 		return err
 	}
 
 	ctx := c.Request().Context()
-	data, err2 := cp.complexBusiness.UpdateComplex(ctx, cUpdate.ToCore())
+	data, err2 := cp.complexBusiness.UpdateComplex(ctx, cUpdate.ToUpdateCore())
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),

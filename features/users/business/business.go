@@ -1,12 +1,12 @@
 package business
 
 import (
-	"ofspace_be/features/users"
+	"ofspace-be/features/users"
+	"ofspace-be/helpers/encrypt"
+	"ofspace-be/middleware"
 	"time"
 
 	"context"
-	"ofspace_be/helpers/encrypt"
-	"ofspace_be/middleware"
 )
 
 type usersBusiness struct {
@@ -36,7 +36,6 @@ func (ub *usersBusiness) LoginUser(c context.Context, data users.Core) (users.Co
 }
 
 func (ub *usersBusiness) RegisterUser(c context.Context, data users.Core) (users.Core, error) {
-
 	// if data.Name == "" || data.Email == "" || data.Password == "" {
 	// 	return users.Core{}, error
 	// }
@@ -73,7 +72,6 @@ func (ub *usersBusiness) GetUserByID(c context.Context, id uint) (users.Core, er
 }
 
 func (ub *usersBusiness) UpdateUser(c context.Context, data users.Core) (users.Core, error) {
-
 	// if Id == 0 {
 	// 	return User{}, resp.ErrFillData
 	// }

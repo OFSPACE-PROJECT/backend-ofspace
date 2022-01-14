@@ -41,14 +41,14 @@ func (fp *FacilityPresentation) CreateFacility(c echo.Context) error {
 
 func (fp *FacilityPresentation) UpdateFacility(c echo.Context) error {
 
-	cUpdate := request.CreateFacility{}
+	cUpdate := request.UpdateFacility{}
 	err := c.Bind(&cUpdate)
 	if err != nil {
 		return err
 	}
 
 	ctx := c.Request().Context()
-	data, err2 := fp.facilityBusiness.UpdateFacility(ctx, cUpdate.ToCore())
+	data, err2 := fp.facilityBusiness.UpdateFacility(ctx, cUpdate.ToUpdateCore())
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),

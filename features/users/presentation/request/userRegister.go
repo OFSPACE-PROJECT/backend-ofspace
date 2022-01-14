@@ -1,6 +1,8 @@
 package request
 
-import "ofspace_be/features/users"
+import (
+	"ofspace-be/features/users"
+)
 
 type UserRegister struct {
 	Name     string `json:"name"`

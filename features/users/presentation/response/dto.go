@@ -1,6 +1,6 @@
 package response
 
-import "ofspace_be/features/users"
+import "ofspace-be/features/users"
 
 type User struct {
 	ID       uint   `json:"id" form:"id"`

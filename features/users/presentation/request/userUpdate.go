@@ -1,6 +1,6 @@
 package request
 
-import "ofspace_be/features/users"
+import "ofspace-be/features/users"
 
 type UserUpdate struct {
 	Id       uint   `json:"id"`

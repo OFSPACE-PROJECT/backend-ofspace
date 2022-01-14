@@ -34,10 +34,14 @@ func (cd *accessibilityData) GetAccessibility(ctx context.Context, id uint) (acc
 
 func (cd *accessibilityData) SearchAccessibility(ctx context.Context, name string) ([]accessibility.Core, error) {
 	var accessibility1 []Accessibility
-	result := cd.Connect.Where("name LIKE ?", name+"%").Find(&accessibility1)
+	result := cd.Connect.Where("name LIKE ?", "%"+name+"%").Find(&accessibility1)
 	if result.Error != nil {
 		return []accessibility.Core{}, result.Error
 	}
+	//result2 := cd.Connect.Where("name LIKE ?", "%"+name).Find(&accessibility1)
+	//if result2.Error != nil {
+	//	return []accessibility.Core{}, result2.Error
+	//}
 	return ListToCore(accessibility1), nil
 }
 
