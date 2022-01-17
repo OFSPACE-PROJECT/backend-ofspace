@@ -198,7 +198,10 @@ func (bd *BuildingData) AddFacilityToBuilding(c context.Context, facilityId uint
 		FacilityID: facilityId,
 		BuildingID: buildingId,
 	}
-
+	//newFacility := Facility{
+	//	ID:         facilityId,
+	//	//BuildingID: buildingId,
+	//}
 	err := bd.Connect.Preload("Building").Where("facility_id= ? && building_id= ?", facilityId, buildingId).Create(&newFacility).Error
 	if err != nil {
 		return building.Facility{}, err
@@ -208,6 +211,7 @@ func (bd *BuildingData) AddFacilityToBuilding(c context.Context, facilityId uint
 
 func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uint) ([]building.Facility, error) {
 	var facilities []BuildingFacility
+	//var facilities []Facility
 	result := bd.Connect.Find(&facilities, "id= ?", buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -217,6 +221,7 @@ func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uin
 }
 func (bd *BuildingData) GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
 	var facility BuildingFacility
+	//var facility Facility
 	result := bd.Connect.Where("id= ?", buildingId).First(&facility, "id= ?", facilityId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -226,6 +231,7 @@ func (bd *BuildingData) GetBuildingFacility(c context.Context, buildingId uint, 
 }
 func (bd *BuildingData) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
 	var facility BuildingFacility
+	//var facility Facility
 	result := bd.Connect.Where("building_id= ?", buildingId).Delete(&facility, "id= ?", facilityId)
 	if result.Error != nil {
 		return building.Facility{}, result.Error

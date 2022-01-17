@@ -13,7 +13,7 @@ type Unit struct {
 	Price          float32
 	TotalUnit      int
 	RemainingUnit  int
-	UnitFacilities []*Facility     `gorm:"many2many:building_facilities;"`
+	UnitFacilities []*Facility     `gorm:"many2many:unit_facilities;"`
 	InteriorPhotos []InteriorPhoto `gorm:"foreignKey:UnitID;references:Id"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time

@@ -28,7 +28,7 @@ func (ub *usersBusiness) LoginUser(c context.Context, data users.Core) (users.Co
 	if err != nil {
 		return users.Core{}, err
 	}
-	userData.Token, err = middleware.CreateTokens(userData.ID, userData.Name)
+	userData.Token, err = middleware.CreateTokens(userData.ID, userData.Name, userData.Role)
 	if err != nil {
 		return userData, err
 	}

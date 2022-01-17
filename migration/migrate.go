@@ -49,8 +49,8 @@ func AutoMigrate() {
 		&accessibility.Accessibility{},
 		&facility.Facility{},
 		&building.Building{},
-		&building.ExteriorPhoto{},
 		&unit.Unit{},
+		&building.ExteriorPhoto{},
 	)
 	if err != nil {
 		panic(err)

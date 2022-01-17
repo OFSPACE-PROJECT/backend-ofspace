@@ -27,12 +27,13 @@ type Building struct {
 }
 
 type BuildingFacility struct {
-	BuildingID uint `gorm:"primaryKey"`
 	FacilityID uint `gorm:"primaryKey"`
+	BuildingID uint `gorm:"primaryKey"`
 }
 
 type Facility struct {
-	ID   uint
+	ID uint
+	//BuildingID uint
 	Name string `gorm:"unique;"`
 }
 
@@ -124,11 +125,14 @@ func FromExteriorPhotoCore(e building.ExteriorCore) ExteriorPhoto {
 
 func FromBuildingFacilityCore(e building.Facility) BuildingFacility {
 	return BuildingFacility{
-		BuildingID: e.Id,
+		BuildingID: e.BuildingId,
 		FacilityID: e.Id,
 	}
 }
 
+//func FromBuildingFacilityCore(e building.Facility) Facility {
+//	return Facility{Name: e.Name, ID: e.Id}
+//}
 func toFloorPhotoCore(b *FloorPhoto) building.FloorCore {
 	return building.FloorCore{
 		Id:          b.Id,
@@ -197,6 +201,14 @@ func toFacilityCore(b *BuildingFacility) building.Facility {
 	}
 }
 
+//func toFacilityCore(b *Facility) building.Facility {
+//	return building.Facility{
+//		Id: b.ID,
+//		//BuildingId: b.BuildingID,
+//		//FacilityId: b.FacilityID,
+//	}
+//}
+
 func ToSliceFacilityPhotoCore(e []BuildingFacility) []building.Facility {
 	fac := make([]building.Facility, len(e))
 
@@ -206,3 +218,13 @@ func ToSliceFacilityPhotoCore(e []BuildingFacility) []building.Facility {
 
 	return fac
 }
+
+//func ToSliceFacilityPhotoCore(e []Facility) []building.Facility {
+//	fac := make([]building.Facility, len(e))
+//
+//	for i, v := range e {
+//		fac[i] = toFacilityCore(&v)
+//	}
+//
+//	return fac
+//}
