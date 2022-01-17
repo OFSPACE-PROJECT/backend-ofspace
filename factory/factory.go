@@ -32,6 +32,11 @@ import (
 	buildingData "ofspace-be/features/building/data"
 	buildingPresentation "ofspace-be/features/building/presentation"
 
+	//unit
+	unitBusiness "ofspace-be/features/unit/business"
+	unitData "ofspace-be/features/unit/data"
+	unitPresentation "ofspace-be/features/unit/presentation"
+
 	"time"
 )
 
@@ -41,6 +46,7 @@ type Presenter struct {
 	AccessibilityPresentation *accessibilityPresentation.AccessibilityPresentation
 	FacilityPresentation      *facilityPresentation.FacilityPresentation
 	BuildingPresentation      *buildingPresentation.BuildingPresentation
+	UnitPresentation          *unitPresentation.UnitPresentation
 }
 
 func New() *Presenter {
@@ -73,15 +79,21 @@ func New() *Presenter {
 	facBusiness := facilityBusiness.NewFacilityBusiness(facData, timeoutContext)
 	facPresentation := facilityPresentation.NewFacilityPresentation(facBusiness)
 
-	//buildingfacilityData
+	//building
 	bData := buildingData.NewBuildingData(config.DB)
 	bBusiness := buildingBusiness.NewBuildingBusiness(bData, timeoutContext, userBusiness, facBusiness)
 	bPresentation := buildingPresentation.NewBuildingPresentation(bBusiness)
+
+	//unit
+	uData := unitData.NewUnitData(config.DB)
+	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, userBusiness, facBusiness, timeoutContext)
+	uPresentation := unitPresentation.NewUnitPresentation(uBusiness)
 	return &Presenter{
 		userPresentation,
 		compPresentation,
 		accPresentation,
 		facPresentation,
 		bPresentation,
+		uPresentation,
 	}
 }

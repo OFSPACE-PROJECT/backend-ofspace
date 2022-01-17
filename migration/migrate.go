@@ -6,6 +6,7 @@ import (
 	building "ofspace-be/features/building/data"
 	complex "ofspace-be/features/complex/data"
 	facility "ofspace-be/features/facility/data"
+	unit "ofspace-be/features/unit/data"
 	user "ofspace-be/features/users/data"
 )
 
@@ -49,6 +50,7 @@ func AutoMigrate() {
 		&facility.Facility{},
 		&building.Building{},
 		&building.ExteriorPhoto{},
+		&unit.Unit{},
 	)
 	if err != nil {
 		panic(err)

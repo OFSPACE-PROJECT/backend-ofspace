@@ -66,5 +66,23 @@ func New() *echo.Echo {
 	e.GET("/building/:building_id/facility", presenter.BuildingPresentation.GetAllBuildingFacility)
 	iJWT.DELETE("/building/:building_id/facility/:photo_id", presenter.BuildingPresentation.DeleteFacility)
 
+	//unit
+	e.POST("/unit", presenter.UnitPresentation.CreateUnit)
+	e.GET("/unit/:id", presenter.UnitPresentation.GetUnitById)
+	iJWT.GET("/unit", presenter.UnitPresentation.GetAllUnit)
+	e.GET("/unit/type", presenter.UnitPresentation.GetUnitByType)
+	iJWT.PUT("/unit", presenter.UnitPresentation.UpdateUnit)
+	//unit interior photo
+	iJWT.POST("/unit/interior", presenter.UnitPresentation.CreateInteriorPhoto)
+	e.GET("/unit/:id/interior/:photo_id", presenter.UnitPresentation.GetInteriorPhoto)
+	e.GET("/unit/:id/interior", presenter.UnitPresentation.GetAllInteriorPhoto)
+	iJWT.PUT("/unit/:id/interior/:photo_id", presenter.UnitPresentation.UpdateInteriorPhoto)
+	iJWT.DELETE("/unit/:id/interior/:photo_id", presenter.UnitPresentation.DeleteInteriorPhoto)
+	//unit facilities
+	iJWT.POST("/unit/facility", presenter.UnitPresentation.AddFacilityToUnit)
+	e.GET("/unit/:unit_id/facility/:facility_id", presenter.UnitPresentation.GetUnitFacility)
+	e.GET("/unit/:unit_id/facility", presenter.UnitPresentation.GetAllUnitFacility)
+	iJWT.DELETE("/unit/:unit_id/facility/:photo_id", presenter.UnitPresentation.DeleteUnitFacility)
+
 	return e
 }

@@ -2,67 +2,80 @@ package unit
 
 import (
 	"context"
-	_facility "ofspace_be/features/facility"
 	"time"
 )
 
 type Core struct {
 	Id             uint
-	ComplexId      uint
-	MainPhoto      string
+	UserId         uint
+	BuildingId     uint
+	Description    string
 	Type           string
-	InitPrice      float32
+	Price          float32
 	TotalUnit      int
 	RemainingUnit  int
-	UnitFacilities []_facility.Core
-	InteriorPhotos []InteriorPhotos
+	UnitFacilities []Facility
+	InteriorPhoto  []InteriorCore
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
 
-type InteriorPhotos struct {
+type Facility struct {
+	Id     uint
+	UnitID uint
+	Name   string
+}
+
+type InteriorCore struct {
 	Id          uint
 	UnitId      uint
 	PhotoURL    string
 	Description string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 }
 
 type Business interface {
 	CreateUnit(ctx context.Context, unit Core) (Core, error)
 	GetAllUnit(ctx context.Context, buildingId uint) ([]Core, error)
 	GetUnitByType(ctx context.Context, unitType string) (Core, error)
-	UpdateUnit(ctx context.Context, id uint, unit Core) (Core, error)
-	DeleteUnit(ctx context.Context, id uint) error
+	GetUnitById(ctx context.Context, id uint) (Core, error)
+	UpdateUnit(ctx context.Context, unit Core) (Core, error)
+	//DeleteUnit(ctx context.Context, id uint) (Core, error)
+
 	//	exterior and floor photo
-	CreateInteriorPhoto(ctx context.Context, unitId uint, photo InteriorPhotos) (InteriorPhotos, error)
-	UpdateInteriorPhoto(ctx context.Context, photo InteriorPhotos) (InteriorPhotos, error)
-	GetInteriorPhoto(ctx context.Context, UnitId int) ([]InteriorPhotos, error)
-	DeleteInteriorPhoto(ctx context.Context, UnitId int, photoId uint) error
+	CreateInteriorPhoto(ctx context.Context, photo InteriorCore) (InteriorCore, error)
+	UpdateInteriorPhoto(ctx context.Context, photo InteriorCore) (InteriorCore, error)
+	GetAllInteriorPhoto(ctx context.Context, UnitId uint) ([]InteriorCore, error)
+	GetInteriorPhoto(ctx context.Context, UnitId uint, photoId uint) (InteriorCore, error)
+	DeleteInteriorPhoto(ctx context.Context, UnitId uint, photoId uint) (InteriorCore, error)
 
 	//	for manage facility
 	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
-	SearchFacility(ctx context.Context, name string) (_facility.Core, error)
-	GetFacility(ctx context.Context, facilityId uint) (_facility.Core, error)
-	DeleteFacility(ctx context.Context, unitId uint, facilityId uint) error
+	AddFacilityToUnit(c context.Context, unitId uint, facilityId uint) (Facility, error)
+	GetAllUnitFacility(c context.Context, unitId uint) ([]Facility, error)
+	GetUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
+	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
 }
 
 type Data interface {
 	CreateUnit(ctx context.Context, unit Core) (Core, error)
 	GetAllUnit(ctx context.Context, complexId uint) ([]Core, error)
-	GetAllVerifiedUnit(ctx context.Context, complexId uint, unitStatus string) ([]Core, error)
-	SearchUnitByName(ctx context.Context, name string) ([]Core, error)
 	GetUnitById(ctx context.Context, id uint) (Core, error)
-	UpdateUnit(ctx context.Context, id uint) (Core, error)
-	RequestUnit(ctx context.Context, id uint, name string) (Core, error)
+	GetUnitByType(ctx context.Context, unitType string) (Core, error)
+	UpdateUnit(ctx context.Context, unit Core) (Core, error)
+	//DeleteUnit(ctx context.Context, id uint) (Core, error)
 	//	exterior and floor photo
-	CreateInteriorPhoto(ctx context.Context, unitId uint, photo InteriorPhotos) (InteriorPhotos, error)
-	UpdateInteriorPhoto(ctx context.Context, photo InteriorPhotos) (InteriorPhotos, error)
-	GetInteriorPhoto(ctx context.Context, UnitId int) ([]InteriorPhotos, error)
-	DeleteInteriorPhoto(ctx context.Context, UnitId int, photoId uint) error
+	CreateInteriorPhoto(ctx context.Context, photo InteriorCore) (InteriorCore, error)
+	UpdateInteriorPhoto(ctx context.Context, photo InteriorCore) (InteriorCore, error)
+	GetInteriorPhoto(ctx context.Context, UnitId uint, photoId uint) (InteriorCore, error)
+	GetAllInteriorPhoto(ctx context.Context, UnitId uint) ([]InteriorCore, error)
+	DeleteInteriorPhoto(ctx context.Context, UnitId uint, photoId uint) (InteriorCore, error)
 
 	//	for manage facility
 	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
-	SearchFacility(ctx context.Context, name string) (_facility.Core, error)
-	GetFacility(ctx context.Context, facilityId uint) (_facility.Core, error)
-	DeleteFacility(ctx context.Context, unitId uint, facilityId uint) error
+	AddFacilityToUnit(c context.Context, unitId uint, facilityId uint) (Facility, error)
+	GetAllUnitFacility(c context.Context, unitId uint) ([]Facility, error)
+	GetUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
+	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
 }
