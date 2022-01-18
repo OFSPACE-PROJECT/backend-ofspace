@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"ofspace-be/features/building"
+	facility "ofspace-be/features/facility/data"
 )
 
 type BuildingData struct {
@@ -58,7 +59,7 @@ func (bd *BuildingData) SearchBuildingByName(ctx context.Context, name string, s
 
 func (bd *BuildingData) GetBuildingById(ctx context.Context, id uint) (building.Core, error) {
 	var build Building
-	result := bd.Connect.First(&build, "id= ?", id)
+	result := bd.Connect.Preload("BuildingFacilities").Preload("ExteriorPhotos").Preload("FloorPhotos").First(&build, "id= ?", id)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Core{}, result.Error
@@ -198,12 +199,8 @@ func (bd *BuildingData) AddFacilityToBuilding(c context.Context, facilityId uint
 		FacilityID: facilityId,
 		BuildingID: buildingId,
 	}
-	thisFacility := Facility{ID: facilityId}
+	thisFacility := facility.Facility{Id: facilityId}
 	fmt.Println(facilityId, buildingId, "test")
-	//newFacility := Facility{
-	//	ID:         facilityId,
-	//	//BuildingID: buildingId,
-	//}
 	err := bd.Connect.Preload("Building").Create(&newFacility).Error
 	if err != nil {
 		return building.Facility{}, err
@@ -213,11 +210,7 @@ func (bd *BuildingData) AddFacilityToBuilding(c context.Context, facilityId uint
 
 func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uint) (building.Core, error) {
 	var buildings Building
-	//var facilities []Facility
-	//facilities := []facility.Facility{}
-	//result := bd.Connect.Preload("BuildingFacilities").Joins("JOIN building_facilities on (buildings.id=building_facilities.building_id) JOIN facilities on (facilities.id=building_facilities.facility_id) AND building_id= ?", buildingId).Find(&buildings)
-	//facilities := fromSliceFloorCore(buildings[0].BuildingFacilities)
-	result := bd.Connect.Preload("BuildingFacilities").Find(&buildings, "id", buildingId)
+	result := bd.Connect.Debug().Preload("BuildingFacilities").Find(&buildings, "id", buildingId)
 
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -230,30 +223,20 @@ func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uin
 //FROM buildings
 
 func (bd *BuildingData) GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
-	//facility := FromBuildingFacilityCore(building.Facility{Id: facilityId})
-	//var fac2 BuildingFacility
-	var fac3 Facility
-	//var build Building
-	//fac := Facility{
-	//	ID:   facilityId,
-	//	Name: facility.Name,
-	//}
-	//var facility Facility
-
-	result := bd.Connect.Preload("Building.BuildingFacilities").First(&fac3, "id= ?", facilityId)
+	buildings := FromBuildingCore(building.Core{})
+	result := bd.Connect.Raw("SELECT buildings.id, facilities.id AS facility_id, facilities.name AS name FROM buildings JOIN building_facilities on (buildings.id=building_facilities.building_id) JOIN facilities on (facilities.id=building_facilities.facility_id) AND building_facilities.building_id= ? AND building_facilities.facility_id= ?", buildingId, facilityId).First(&buildings.BuildingFacilities)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Facility{}, result.Error
 	}
-	return toFacilityCore(&fac3), nil
+	return toFacilityCore(&buildings.BuildingFacilities[0]), nil
 }
-func (bd *BuildingData) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
-	var facility Facility
-	//var facility Facility
-	result := bd.Connect.Where("building_id= ?", buildingId).Delete(&facility, "id= ?", facilityId)
+func (bd *BuildingData) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Core, error) {
+	builds := FromBuildingCore(building.Core{})
+	var facility BuildingFacility
+	result := bd.Connect.Debug().Delete(&facility, "building_id= ? && facility_id= ?", buildingId, facilityId)
 	if result.Error != nil {
-		return building.Facility{}, result.Error
+		return building.Core{}, result.Error
 	}
-
-	return toFacilityCore(&facility), nil
+	return builds.ToBuildingCore(), nil
 }

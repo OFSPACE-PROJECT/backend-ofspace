@@ -9,6 +9,7 @@ type CreateUnit struct {
 	UserId      uint    `json:"user_id"`
 	BuildingId  uint    `json:"building_id"`
 	Description string  `json:"description"`
+	UnitType    string  `json:"unit_type"`
 	Price       float32 `json:"price"`
 	TotalUnit   int     `json:"total_unit"`
 }
@@ -18,6 +19,7 @@ type UpdateUnit struct {
 	UserId        uint    `json:"user_id"`
 	BuildingId    uint    `json:"building_id"`
 	Description   string  `json:"description"`
+	UniType       string  `json:"uni_type"`
 	Price         float32 `json:"price"`
 	TotalUnit     int     `json:"total_unit"`
 	RemainingUnit int     `json:"remaining_unit"`
@@ -52,6 +54,7 @@ func (b *UpdateUnit) ToUpdateCore() unit.Core {
 		UserId:        b.UserId,
 		BuildingId:    b.BuildingId,
 		Description:   b.Description,
+		UnitType:      b.UniType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
@@ -80,6 +83,7 @@ func (b *CreateUnit) ToCore() unit.Core {
 		UserId:      b.UserId,
 		BuildingId:  b.BuildingId,
 		Description: b.Description,
+		UnitType:    b.UnitType,
 		Price:       b.Price,
 		TotalUnit:   b.TotalUnit,
 		CreatedAt:   time.Time{},

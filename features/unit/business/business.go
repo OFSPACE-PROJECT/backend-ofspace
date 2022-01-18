@@ -42,19 +42,19 @@ func (ub *unitBusiness) GetAllUnit(c context.Context, buildingId uint) ([]unit.C
 	return data, nil
 }
 
-func (ub *unitBusiness) GetUnitById(c context.Context, id uint) (unit.Core, error) {
+func (ub *unitBusiness) GetUnitById(c context.Context, buildingId uint, facilityId uint) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
-	unit1, err := ub.unitData.GetUnitById(ctx, id)
+	unit1, err := ub.unitData.GetUnitById(ctx, buildingId, facilityId)
 	if err != nil {
 		return unit.Core{}, err
 	}
 	return unit1, nil
 }
-func (ub *unitBusiness) GetUnitByType(c context.Context, typeUnit string) (unit.Core, error) {
+func (ub *unitBusiness) GetUnitByType(c context.Context, buildingId uint, typeUnit string) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
-	unit1, err := ub.unitData.GetUnitByType(ctx, typeUnit)
+	unit1, err := ub.unitData.GetUnitByType(ctx, buildingId, typeUnit)
 	if err != nil {
 		return unit.Core{}, err
 	}
@@ -63,7 +63,7 @@ func (ub *unitBusiness) GetUnitByType(c context.Context, typeUnit string) (unit.
 func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
-	_, err := ub.unitData.GetUnitById(ctx, data.Id)
+	_, err := ub.unitData.GetUnitById(ctx, data.Id, data.BuildingId)
 	if err != nil {
 		return unit.Core{}, err
 	}
@@ -75,19 +75,19 @@ func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core
 	return up, nil
 }
 
-//func (ub *unitBusiness) DeleteUnit(c context.Context, id uint) (unit.Core, error) {
+//func (ub *unitBusiness) DeleteUnit(c context.Context, id uint) (unit.Facility, error) {
 //
 //	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 //	defer error1()
 //
 //	_, err := ub.unitData.GetUnitById(ctx, id)
 //	if err != nil {
-//		return unit.Core{}, err
+//		return unit.Facility{}, err
 //	}
 //
 //	del, err2 := ub.unitData.DeleteUnit(ctx, id)
 //	if err2 != nil {
-//		return unit.Core{}, err
+//		return unit.Facility{}, err
 //	}
 //
 //	return del, nil
@@ -170,12 +170,12 @@ func (ub *unitBusiness) AddFacilityToUnit(c context.Context, unitId uint, facili
 	return build, nil
 
 }
-func (ub *unitBusiness) GetAllUnitFacility(c context.Context, unitId uint) ([]unit.Facility, error) {
+func (ub *unitBusiness) GetAllUnitFacility(c context.Context, unitId uint) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
 	unitF, err := ub.unitData.GetAllUnitFacility(ctx, unitId)
 	if err != nil {
-		return []unit.Facility{}, err
+		return unit.Core{}, err
 	}
 	return unitF, nil
 }
@@ -188,17 +188,17 @@ func (ub *unitBusiness) GetUnitFacility(c context.Context, unitId uint, facility
 	}
 	return buildFacc, nil
 }
-func (ub *unitBusiness) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Facility, error) {
+func (ub *unitBusiness) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
 	thisUnit, err := ub.unitData.GetUnitFacility(ctx, unitId, facilityId)
 	if err != nil {
-		return unit.Facility{}, err
+		return unit.Core{}, err
 	}
 
 	del, err2 := ub.unitData.DeleteUnitFacility(ctx, unitId, thisUnit.Id)
 	if err2 != nil {
-		return unit.Facility{}, err2
+		return unit.Core{}, err2
 	}
 
 	return del, nil

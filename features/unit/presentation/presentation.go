@@ -84,15 +84,21 @@ func (bp *UnitPresentation) GetAllUnit(c echo.Context) error {
 
 func (bp *UnitPresentation) GetUnitById(c echo.Context) error {
 	Id, err := strconv.Atoi(c.Param("id"))
+	buildId, err2 := strconv.Atoi(c.QueryParam("building_id"))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),
 		})
 	}
+	if err2 != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err2.Error(),
+		})
+	}
 
 	//status := "verified"
 	ctx := c.Request().Context()
-	build, err2 := bp.unitBusiness.GetUnitById(ctx, uint(Id))
+	build, err2 := bp.unitBusiness.GetUnitById(ctx, uint(Id), uint(buildId))
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),
@@ -105,11 +111,16 @@ func (bp *UnitPresentation) GetUnitById(c echo.Context) error {
 	})
 }
 func (bp *UnitPresentation) GetUnitByType(c echo.Context) error {
-	Id := c.Param("id")
-
+	Id := c.QueryParam("unit_type")
+	buildId, err1 := strconv.Atoi(c.Param("id"))
+	if err1 != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err1.Error(),
+		})
+	}
 	//status := "verified"
 	ctx := c.Request().Context()
-	build, err2 := bp.unitBusiness.GetUnitByType(ctx, Id)
+	build, err2 := bp.unitBusiness.GetUnitByType(ctx, uint(buildId), Id)
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),
@@ -267,44 +278,20 @@ func (bp *UnitPresentation) DeleteInteriorPhoto(c echo.Context) error {
 }
 
 func (bp *UnitPresentation) AddFacilityToUnit(c echo.Context) error {
-
-	//unitId, err := strconv.Atoi(c.QueryParam("id"))
-	//if err != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err.Error(),
-	//	})
-	//}
-	//facilityId, err2 := strconv.Atoi(c.QueryParam("facility_id"))
-	//if err2 != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err2.Error(),
-	//	})
-	//}
-	//
 	ctx := c.Request().Context()
-	//data, err3 := bp.unitBusiness.AddFacilityToUnit(ctx, uint(unitId), uint(facilityId))
-	//if err3 != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err3.Error(),
-	//	})
-	//}
-	//
-	//return c.JSON(http.StatusOK, map[string]interface{}{
-	//	"message": "Success",
-	//	"data":    response.FromUnitFacilityCore(data),
-	//})
-	buildF := request.AddFacility{}
-	facId := buildF.FacilityId
-	buildId := buildF.UnitId
-	err2 := c.Bind(&buildF)
+	fId, err2 := strconv.Atoi(c.QueryParam("facility_id"))
+	bId, err5 := strconv.Atoi(c.QueryParam("unit_id"))
 	if err2 != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": err2.Error(),
 		})
 	}
-	// fmt.Println("detail presentation ========== ", detail)
-	//data, err := bp.unitBusiness.AddFacilityToUnit(request.T(detail))
-	data, err := bp.unitBusiness.AddFacilityToUnit(ctx, facId, buildId)
+	if err5 != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": err5.Error(),
+		})
+	}
+	data, err := bp.unitBusiness.AddFacilityToUnit(ctx, uint(fId), uint(bId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": err.Error(),
@@ -334,27 +321,27 @@ func (bp *UnitPresentation) GetAllUnitFacility(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToListFacilityCore(fac),
+		"data":    response.FromUnitCore(fac),
 	})
 }
 
 func (bp *UnitPresentation) GetUnitFacility(c echo.Context) error {
 	id := c.Param("id")
-	photoId := c.Param("facility_id")
+	pId := c.Param("facility_id")
 	ids, err0 := strconv.Atoi(id)
 	if err0 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err0.Error(),
 		})
 	}
-	photoIds, err3 := strconv.Atoi(photoId)
+	fIds, err3 := strconv.Atoi(pId)
 	if err3 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err3.Error(),
 		})
 	}
 	ctx := c.Request().Context()
-	fac, err := bp.unitBusiness.GetUnitFacility(ctx, uint(ids), uint(photoIds))
+	fac, err := bp.unitBusiness.GetUnitFacility(ctx, uint(ids), uint(fIds))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),
@@ -363,27 +350,27 @@ func (bp *UnitPresentation) GetUnitFacility(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToFacilityResponse(fac),
+		"data":    response.ToUnitFacilityResponse(fac),
 	})
 }
 
 func (bp *UnitPresentation) DeleteUnitFacility(c echo.Context) error {
 	id := c.Param("id")
-	photoId := c.Param("facility_id")
+	pId := c.Param("facility_id")
 	ids, err0 := strconv.Atoi(id)
 	if err0 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err0.Error(),
 		})
 	}
-	photoIds, err3 := strconv.Atoi(photoId)
+	pIds, err3 := strconv.Atoi(pId)
 	if err3 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err3.Error(),
 		})
 	}
 	ctx := c.Request().Context()
-	_, err := bp.unitBusiness.DeleteUnitFacility(ctx, uint(ids), uint(photoIds))
+	_, err := bp.unitBusiness.DeleteUnitFacility(ctx, uint(ids), uint(pIds))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),

@@ -2,6 +2,7 @@ package response
 
 import (
 	"ofspace-be/features/building"
+	"ofspace-be/features/facility"
 	"time"
 )
 
@@ -79,24 +80,24 @@ func ToBuildingResponse(b building.Core) Building {
 
 func FromBuildingCore(b building.Core) Building {
 	return Building{
-		Id:               b.Id,
-		UserId:           b.UserId,
-		ComplexId:        b.ComplexId,
-		Name:             b.Name,
-		Description:      b.Description,
-		OfficeHours:      b.OfficeHours,
-		BuildingSize:     b.BuildingSize,
-		AverageFloorSize: b.AverageFloorSize,
-		YearConstructed:  b.YearConstructed,
-		Lifts:            b.Lifts,
-		Parking:          b.Parking,
-		Toilets:          b.Toilets,
-		BuildingStatus:   b.BuildingStatus,
-		//BuildingFacilities: b.BuildingFacilities,
-		ExteriorPhotos: fromSliceExteriorCore(b.ExteriorPhotos),
-		FloorPhotos:    fromSliceFloorCore(b.FloorPhotos),
-		CreatedAt:      time.Time{},
-		UpdatedAt:      time.Time{},
+		Id:                 b.Id,
+		UserId:             b.UserId,
+		ComplexId:          b.ComplexId,
+		Name:               b.Name,
+		Description:        b.Description,
+		OfficeHours:        b.OfficeHours,
+		BuildingSize:       b.BuildingSize,
+		AverageFloorSize:   b.AverageFloorSize,
+		YearConstructed:    b.YearConstructed,
+		Lifts:              b.Lifts,
+		Parking:            b.Parking,
+		Toilets:            b.Toilets,
+		BuildingStatus:     b.BuildingStatus,
+		BuildingFacilities: fromSliceFacilityCore(b.BuildingFacilities),
+		ExteriorPhotos:     fromSliceExteriorCore(b.ExteriorPhotos),
+		FloorPhotos:        fromSliceFloorCore(b.FloorPhotos),
+		CreatedAt:          time.Time{},
+		UpdatedAt:          time.Time{},
 	}
 }
 func ToExteriorResponse(b building.ExteriorCore) ExteriorPhoto {
@@ -218,8 +219,13 @@ func fromSliceFloorCore(photos []building.FloorCore) (result []FloorPhoto) {
 	}
 	return
 }
-
-func toFacilityCore(b *Facility) building.Facility {
+func fromSliceFacilityCore(photos []building.Facility) (result []Facility) {
+	for _, photo := range photos {
+		result = append(result, FromBuildingFacilityCore(photo))
+	}
+	return
+}
+func toFacilityCore(b *facility.Facility) building.Facility {
 	return building.Facility{
 		//BuildingId: b.BuildingID,
 		Id:   b.Id,
@@ -227,7 +233,7 @@ func toFacilityCore(b *Facility) building.Facility {
 	}
 }
 
-func ToSliceFacilityPhotoCore(e []Facility) []building.Facility {
+func ToSliceFacilityCore(e []facility.Facility) []building.Facility {
 	fac := make([]building.Facility, len(e))
 
 	for i, v := range e {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"gorm.io/gorm"
+	facility "ofspace-be/features/facility/data"
 	"ofspace-be/features/unit"
 	"time"
 )
@@ -36,16 +37,6 @@ func (bd *UnitData) GetAllUnit(ctx context.Context, buildingId uint) ([]unit.Cor
 	return ListUnitToCore(units), nil
 }
 
-func (bd *UnitData) GetAllVerifiedUnit(ctx context.Context, buildingId uint, unitStatus string) ([]unit.Core, error) {
-	var units []Unit
-	result := bd.Connect.Where("unit_status= 'verified'").Find(&units, "building_id= ?", buildingId)
-	if result.Error != nil {
-		fmt.Println(result.Error)
-		return []unit.Core{}, result.Error
-	}
-	return ListUnitToCore(units), nil
-}
-
 func (bd *UnitData) SearchUnitByName(ctx context.Context, name string, status string) ([]unit.Core, error) {
 	var units []Unit
 	status = "verified"
@@ -57,18 +48,18 @@ func (bd *UnitData) SearchUnitByName(ctx context.Context, name string, status st
 	return ListUnitToCore(units), nil
 }
 
-func (bd *UnitData) GetUnitById(ctx context.Context, id uint) (unit.Core, error) {
+func (bd *UnitData) GetUnitById(ctx context.Context, facilityId uint, buildingId uint) (unit.Core, error) {
 	var build Unit
-	result := bd.Connect.First(&build, "id= ?", id)
+	result := bd.Connect.First(&build, "id= ? && building_id= ?", facilityId, buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.Core{}, result.Error
 	}
 	return toUnitCore(&build), nil
 }
-func (bd *UnitData) GetUnitByType(ctx context.Context, unitType string) (unit.Core, error) {
+func (bd *UnitData) GetUnitByType(ctx context.Context, buildingId uint, unitType string) (unit.Core, error) {
 	var build Unit
-	result := bd.Connect.First(&build, "unit_type= ?", unitType)
+	result := bd.Connect.First(&build, "unit_type= ? && building_id= ?", unitType, buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.Core{}, result.Error
@@ -113,7 +104,7 @@ func (bd *UnitData) CreateInteriorPhoto(ctx context.Context, core unit.InteriorC
 
 func (bd *UnitData) UpdateInteriorPhoto(ctx context.Context, core unit.InteriorCore) (unit.InteriorCore, error) {
 	photo := FromInteriorPhotoCore(core)
-	result := bd.Connect.Where("id= ?", photo.Id).Updates(&InteriorPhoto{
+	result := bd.Connect.Debug().Where("id= ?", photo.Id).Updates(&InteriorPhoto{
 		Id:          photo.Id,
 		UnitID:      photo.UnitID,
 		PhotoURL:    photo.PhotoURL,
@@ -138,7 +129,7 @@ func (bd *UnitData) GetAllInteriorPhoto(ctx context.Context, UnitId uint) ([]uni
 
 func (bd *UnitData) GetInteriorPhoto(ctx context.Context, unitId uint, photoId uint) (unit.InteriorCore, error) {
 	var photo InteriorPhoto
-	result := bd.Connect.First(&photo, "unit_id= ? && id= ?", unitId, photoId)
+	result := bd.Connect.Debug().First(&photo, "unit_id= ? && id= ?", unitId, photoId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.InteriorCore{}, result.Error
@@ -160,45 +151,41 @@ func (bd *UnitData) DeleteInteriorPhoto(ctx context.Context, unitId uint, photoI
 func (bd *UnitData) AddFacilityToUnit(c context.Context, facilityId uint, unitId uint) (unit.Facility, error) {
 	newFacility := UnitFacility{
 		FacilityID: facilityId,
-		BuildingID: unitId,
+		UnitID:     unitId,
 	}
-	thisFacility := Facility{ID: facilityId}
-	fmt.Println(facilityId, unitId, "test")
-	//newFacility := Facility{
-	//	ID:         facilityId,
-	//	//BuildingID: buildingId,
-	//}
-	err := bd.Connect.Preload("Unit").Create(&newFacility).Error
+	thisFacility := facility.Facility{Id: facilityId}
+	err := bd.Connect.Preload("Building").Create(&newFacility).Error
 	if err != nil {
 		return unit.Facility{}, err
 	}
 	return toFacilityCore(&thisFacility), nil
 }
 
-func (bd *UnitData) GetAllUnitFacility(c context.Context, unitId uint) ([]unit.Facility, error) {
-	var facilities []Facility
-	result := bd.Connect.Find(&facilities, "id= ?", unitId)
+func (bd *UnitData) GetAllUnitFacility(c context.Context, unitId uint) (unit.Core, error) {
+	var units Unit
+	result := bd.Connect.Debug().Preload("UnitFacilities").Find(&units, "id", unitId)
+
 	if result.Error != nil {
 		fmt.Println(result.Error)
-		return []unit.Facility{}, result.Error
+		return unit.Core{}, result.Error
 	}
-	return ToSliceFacilityPhotoCore(facilities), nil
+	return toUnitCore(&units), nil
 }
 func (bd *UnitData) GetUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Facility, error) {
-	var facility Facility
-	result := bd.Connect.Where("id= ?", unitId).First(&facility, "id= ?", facilityId)
+	units := FromUnitCore(unit.Core{})
+	result := bd.Connect.Debug().Raw("SELECT units.id, facilities.id AS facility_id, facilities.name AS name FROM units JOIN unit_facilities on (units.id=unit_facilities.unit_id) JOIN facilities on (facilities.id=unit_facilities.facility_id) AND unit_facilities.unit_id= ? AND unit_facilities.facility_id= ?", unitId, facilityId).First(&units.UnitFacilities)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.Facility{}, result.Error
 	}
-	return toFacilityCore(&facility), nil
+	return toFacilityCore(&units.UnitFacilities[0]), nil
 }
-func (bd *UnitData) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Facility, error) {
-	var facility Facility
-	result := bd.Connect.Where("unit_id= ?", unitId).Delete(&facility, "id= ?", facilityId)
+func (bd *UnitData) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Core, error) {
+	facs := FromUnitCore(unit.Core{})
+	var facility UnitFacility
+	result := bd.Connect.Debug().Delete(&facility, "unit_id= ? && facility_id= ?", unitId, facilityId)
 	if result.Error != nil {
-		return unit.Facility{}, result.Error
+		return unit.Core{}, result.Error
 	}
-
-	return toFacilityCore(&facility), nil
+	return toUnitCore(&facs), nil
 }

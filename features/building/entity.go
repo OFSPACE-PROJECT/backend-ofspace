@@ -75,7 +75,7 @@ type Business interface {
 	AddFacilityToBuilding(c context.Context, facilityId uint, buildingId uint) (Facility, error)
 	GetAllBuildingFacility(c context.Context, buildingId uint) (Core, error)
 	GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
-	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
+	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Core, error)
 }
 
 type Data interface {
@@ -104,5 +104,5 @@ type Data interface {
 	AddFacilityToBuilding(c context.Context, facilityId uint, buildingId uint) (Facility, error)
 	GetAllBuildingFacility(c context.Context, buildingId uint) (Core, error)
 	GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
-	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
+	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Core, error)
 }

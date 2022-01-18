@@ -1,6 +1,7 @@
 package response
 
 import (
+	//"ofspace-be/features/facility"
 	"ofspace-be/features/unit"
 	"time"
 )
@@ -10,6 +11,7 @@ type Unit struct {
 	UserId         uint `gorm:"not null"`
 	BuildingId     uint `gorm:"not null"`
 	Description    string
+	UnitType       string
 	Price          float32
 	TotalUnit      int
 	RemainingUnit  int
@@ -20,10 +22,10 @@ type Unit struct {
 }
 
 type Facility struct {
-	//Id         uint
-	UnitID     uint
-	FacilityID uint
-	//Name       string
+	Id uint
+	//UnitID     uint
+	//FacilityID uint
+	Name string
 }
 
 type InteriorPhoto struct {
@@ -35,20 +37,22 @@ type InteriorPhoto struct {
 	UpdatedAt   time.Time
 }
 
-func ToFacilityResponse(c unit.Facility) Facility {
+func ToUnitFacilityResponse(c unit.Facility) Facility {
 	return Facility{
-		FacilityID: c.Id,
+		Id: c.Id,
 		//UnitID: c.UnitId,
 		//Id:   c.Id,
-		//Name: c.Name,
+		Name: c.Name,
 	}
 }
+
 func ToUnitResponse(b unit.Core) Unit {
 	return Unit{
 		Id:            b.Id,
 		UserId:        b.UserId,
 		BuildingId:    b.BuildingId,
 		Description:   b.Description,
+		UnitType:      b.UnitType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
@@ -58,14 +62,30 @@ func ToUnitResponse(b unit.Core) Unit {
 
 func FromUnitCore(b unit.Core) Unit {
 	return Unit{
-		Id:            b.Id,
-		UserId:        b.UserId,
-		BuildingId:    b.BuildingId,
-		Description:   b.Description,
-		Price:         b.Price,
-		TotalUnit:     b.TotalUnit,
-		RemainingUnit: b.RemainingUnit,
-		UpdatedAt:     time.Time{},
+		Id:             b.Id,
+		UserId:         b.UserId,
+		BuildingId:     b.BuildingId,
+		Description:    b.Description,
+		UnitType:       b.UnitType,
+		Price:          b.Price,
+		TotalUnit:      b.TotalUnit,
+		RemainingUnit:  b.RemainingUnit,
+		UnitFacilities: fromSliceUnitFacilityCore(b.UnitFacilities),
+		InteriorPhotos: fromSliceInteriorCore(b.InteriorPhoto),
+		UpdatedAt:      time.Time{},
+	}
+}
+func fromSliceUnitFacilityCore(facilities []unit.Facility) (result []Facility) {
+	for _, facility := range facilities {
+		result = append(result, FromBuildingFacilityCore(facility))
+	}
+	return
+}
+
+func FromBuildingFacilityCore(c unit.Facility) Facility {
+	return Facility{
+		Id:   c.Id,
+		Name: c.Name,
 	}
 }
 func ToInteriorResponse(b unit.InteriorCore) InteriorPhoto {
@@ -129,7 +149,8 @@ func fromSliceInteriorCore(photos []unit.InteriorCore) (result []InteriorPhoto) 
 func toFacilityCore(b *Facility) unit.Facility {
 	return unit.Facility{
 		//UnitId: b.UnitID,
-		Id: b.FacilityID,
+		Id:   b.Id,
+		Name: b.Name,
 	}
 }
 
@@ -147,7 +168,7 @@ func FromUnitFacilityCore(c unit.Facility) Facility {
 	return Facility{
 		//Id:         c.Id,
 		//UnitID: c.UnitId,
-		FacilityID: c.Id,
-		//Name:       c.Name,
+		Id:   c.Id,
+		Name: c.Name,
 	}
 }

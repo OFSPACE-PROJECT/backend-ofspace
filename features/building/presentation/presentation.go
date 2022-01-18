@@ -139,7 +139,7 @@ func (bp *BuildingPresentation) GetBuildingById(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToBuildingResponse(build),
+		"data":    response.FromBuildingCore(build),
 	})
 }
 func (bp *BuildingPresentation) UpdateBuilding(c echo.Context) error {
@@ -413,35 +413,7 @@ func (bp *BuildingPresentation) DeleteFloorPhoto(c echo.Context) error {
 }
 
 func (bp *BuildingPresentation) AddFacilityToBuilding(c echo.Context) error {
-
-	//buildingId, err := strconv.Atoi(c.QueryParam("id"))
-	//if err != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err.Error(),
-	//	})
-	//}
-	//facilityId, err2 := strconv.Atoi(c.QueryParam("facility_id"))
-	//if err2 != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err2.Error(),
-	//	})
-	//}
-	//
 	ctx := c.Request().Context()
-	//data, err3 := bp.buildingBusiness.AddFacilityToBuilding(ctx, uint(buildingId), uint(facilityId))
-	//if err3 != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err3.Error(),
-	//	})
-	//}
-	//
-	//return c.JSON(http.StatusOK, map[string]interface{}{
-	//	"message": "Success",
-	//	"data":    response.FromBuildingFacilityCore(data),
-	//})
-	//buildF := request.AddFacility{}
-	//facId := buildF.FacilityId
-	//buildId := buildF.BuildingId
 	fId, err2 := strconv.Atoi(c.QueryParam("facility_id"))
 	bId, err5 := strconv.Atoi(c.QueryParam("building_id"))
 	if err2 != nil {
@@ -454,8 +426,6 @@ func (bp *BuildingPresentation) AddFacilityToBuilding(c echo.Context) error {
 			"message": err5.Error(),
 		})
 	}
-	// fmt.Println("detail presentation ========== ", detail)
-	//data, err := bp.buildingBusiness.AddFacilityToBuilding(request.T(detail))
 	data, err := bp.buildingBusiness.AddFacilityToBuilding(ctx, uint(fId), uint(bId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -486,7 +456,7 @@ func (bp *BuildingPresentation) GetAllBuildingFacility(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToBuildingResponse(fac),
+		"data":    response.FromBuildingCore(fac),
 	})
 }
 
@@ -521,21 +491,21 @@ func (bp *BuildingPresentation) GetBuildingFacility(c echo.Context) error {
 
 func (bp *BuildingPresentation) DeleteFacility(c echo.Context) error {
 	id := c.Param("id")
-	photoId := c.Param("facility_id")
+	pId := c.Param("facility_id")
 	ids, err0 := strconv.Atoi(id)
 	if err0 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err0.Error(),
 		})
 	}
-	photoIds, err3 := strconv.Atoi(photoId)
+	pIds, err3 := strconv.Atoi(pId)
 	if err3 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err3.Error(),
 		})
 	}
 	ctx := c.Request().Context()
-	_, err := bp.buildingBusiness.DeleteFacility(ctx, uint(ids), uint(photoIds))
+	_, err := bp.buildingBusiness.DeleteFacility(ctx, uint(ids), uint(pIds))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),

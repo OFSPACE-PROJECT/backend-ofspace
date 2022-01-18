@@ -10,7 +10,7 @@ type Core struct {
 	UserId         uint
 	BuildingId     uint
 	Description    string
-	Type           string
+	UnitType       string
 	Price          float32
 	TotalUnit      int
 	RemainingUnit  int
@@ -37,8 +37,8 @@ type InteriorCore struct {
 type Business interface {
 	CreateUnit(ctx context.Context, unit Core) (Core, error)
 	GetAllUnit(ctx context.Context, buildingId uint) ([]Core, error)
-	GetUnitByType(ctx context.Context, unitType string) (Core, error)
-	GetUnitById(ctx context.Context, id uint) (Core, error)
+	GetUnitByType(ctx context.Context, buildingId uint, unitType string) (Core, error)
+	GetUnitById(ctx context.Context, buildingId uint, facilityId uint) (Core, error)
 	UpdateUnit(ctx context.Context, unit Core) (Core, error)
 	//DeleteUnit(ctx context.Context, id uint) (Core, error)
 
@@ -52,16 +52,16 @@ type Business interface {
 	//	for manage facility
 	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
 	AddFacilityToUnit(c context.Context, unitId uint, facilityId uint) (Facility, error)
-	GetAllUnitFacility(c context.Context, unitId uint) ([]Facility, error)
+	GetAllUnitFacility(c context.Context, unitId uint) (Core, error)
 	GetUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
-	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
+	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Core, error)
 }
 
 type Data interface {
 	CreateUnit(ctx context.Context, unit Core) (Core, error)
 	GetAllUnit(ctx context.Context, complexId uint) ([]Core, error)
-	GetUnitById(ctx context.Context, id uint) (Core, error)
-	GetUnitByType(ctx context.Context, unitType string) (Core, error)
+	GetUnitById(ctx context.Context, buildingId uint, facilityId uint) (Core, error)
+	GetUnitByType(ctx context.Context, buildingId uint, unitType string) (Core, error)
 	UpdateUnit(ctx context.Context, unit Core) (Core, error)
 	//DeleteUnit(ctx context.Context, id uint) (Core, error)
 	//	exterior and floor photo
@@ -74,7 +74,7 @@ type Data interface {
 	//	for manage facility
 	// AddFacilityToUnit(ctx context.Context, unitId uint, facilityId uint) ([]UnitFacilities, error)
 	AddFacilityToUnit(c context.Context, unitId uint, facilityId uint) (Facility, error)
-	GetAllUnitFacility(c context.Context, unitId uint) ([]Facility, error)
+	GetAllUnitFacility(c context.Context, unitId uint) (Core, error)
 	GetUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
-	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Facility, error)
+	DeleteUnitFacility(ctx context.Context, unitId uint, facilityId uint) (Core, error)
 }

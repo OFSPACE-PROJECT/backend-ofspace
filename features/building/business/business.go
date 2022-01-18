@@ -82,12 +82,12 @@ func (bb *buildingBusiness) GetBuildingById(c context.Context, id uint) (buildin
 
 }
 
-//func (bb *buildingBusiness) GetUnverifiedBuildingById(c context.Context, id uint, status string) (building.Core, error) {
+//func (bb *buildingBusiness) GetUnverifiedBuildingById(c context.Context, id uint, status string) (building.Facility, error) {
 //	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 //	defer error1()
 //	build, err := bb.buildingData.GetBuildingById(ctx, id, status)
 //	if err != nil {
-//		return building.Core{}, err
+//		return building.Facility{}, err
 //	}
 //	return build, nil
 //
@@ -108,7 +108,7 @@ func (bb *buildingBusiness) UpdateBuilding(c context.Context, data building.Core
 	return up, nil
 }
 
-//func (bb *buildingBusiness) RequestBuilding(c context.Context, id uint, name string) (building.Core, error) {
+//func (bb *buildingBusiness) RequestBuilding(c context.Context, id uint, name string) (building.Facility, error) {
 //	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 //	defer error1()
 //
@@ -278,18 +278,18 @@ func (bb *buildingBusiness) GetBuildingFacility(c context.Context, buildingId ui
 	}
 	return buildFacc, nil
 }
-func (bb *buildingBusiness) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
+func (bb *buildingBusiness) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
 	//core := building.Facility{}
 	thisFacility, err := bb.buildingData.GetBuildingFacility(ctx, buildingId, facilityId)
 	if err != nil {
-		return building.Facility{}, err
+		return building.Core{}, err
 	}
 
 	del, err2 := bb.buildingData.DeleteFacility(ctx, buildingId, thisFacility.Id)
 	if err2 != nil {
-		return building.Facility{}, err2
+		return building.Core{}, err2
 	}
 
 	return del, nil
