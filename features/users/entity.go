@@ -24,9 +24,9 @@ type Business interface {
 	DeleteUser(ctx context.Context, id uint) (Core, error)
 	UpdateUser(ctx context.Context, data Core) (Core, error)
 	GetUserByID(ctx context.Context, id uint) (Core, error)
-	// GetUserByName(ctx context.Context, name string) (Core, error)
+	SearchUserByName(ctx context.Context, name string) ([]Core, error)
 	// GetUserByPhone(ctx context.Context, id uint, phone string) (Core, error)
-	// GetUserByAdminStatus(ctx context.Context, status string) (Core, error)
+	GetUserByAdminStatus(ctx context.Context, status string) ([]Core, error)
 }
 
 type Data interface {
@@ -35,7 +35,7 @@ type Data interface {
 	DeleteUser(ctx context.Context, id uint) (Core, error)
 	UpdateUser(ctx context.Context, data Core) (Core, error)
 	GetUserByID(ctx context.Context, id uint) (Core, error)
-	// GetUserByName(ctx context.Context, name string) (Core, error)
+	SearchUserByName(ctx context.Context, name string) ([]Core, error)
 	// GetUserByPhone(ctx context.Context, id uint, phone string) (Core, error)
-	// GetUserByAdminStatus(ctx context.Context, status string) ([]Core, error)
+	GetUserByAdminStatus(ctx context.Context, status string) ([]Core, error)
 }

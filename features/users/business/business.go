@@ -71,6 +71,19 @@ func (ub *usersBusiness) GetUserByID(c context.Context, id uint) (users.Core, er
 
 }
 
+func (ub *usersBusiness) SearchUserByName(c context.Context, name string) ([]users.Core, error) {
+	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
+	defer error1()
+
+	user, err := ub.userData.SearchUserByName(ctx, name)
+	if err != nil {
+		return []users.Core{}, err
+	}
+
+	return user, nil
+
+}
+
 func (ub *usersBusiness) UpdateUser(c context.Context, data users.Core) (users.Core, error) {
 	// if Id == 0 {
 	// 	return User{}, resp.ErrFillData
@@ -113,4 +126,16 @@ func (ub *usersBusiness) DeleteUser(c context.Context, id uint) (users.Core, err
 	}
 
 	return del, nil
+}
+
+func (ub *usersBusiness) GetUserByAdminStatus(c context.Context, status string) ([]users.Core, error) {
+	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
+	defer error1()
+
+	user, err := ub.userData.SearchUserByName(ctx, status)
+	if err != nil {
+		return []users.Core{}, err
+	}
+
+	return user, nil
 }

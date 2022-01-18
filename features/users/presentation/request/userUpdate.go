@@ -7,6 +7,7 @@ type UserUpdate struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
+	Phone    string `json:"phone"`
 }
 
 func (user *UserUpdate) ToCoreUpdate() users.Core {
@@ -15,5 +16,6 @@ func (user *UserUpdate) ToCoreUpdate() users.Core {
 		Email:    user.Email,
 		Password: user.Password,
 		Role:     user.Role,
+		Phone:    user.Phone,
 	}
 }

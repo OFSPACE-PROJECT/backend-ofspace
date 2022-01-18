@@ -19,6 +19,8 @@ func New() *echo.Echo {
 	e.GET("/user/:id", presenter.UserPresentation.GetUserByID)
 	e.PUT("/user", presenter.UserPresentation.UpdateUser)
 	e.DELETE("/user/:id", presenter.UserPresentation.DeleteUser)
+	e.GET("/user/search", presenter.UserPresentation.SearchUserByName)
+	e.GET("/user/status", presenter.UserPresentation.SearchUserByAdminStatus)
 
 	// complex
 	iJWT.POST("/complex", presenter.ComplexPresentation.CreateComplex)
