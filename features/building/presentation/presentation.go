@@ -97,29 +97,6 @@ func (bp *BuildingPresentation) SearchBuildingByName(c echo.Context) error {
 	})
 }
 
-//func (bp *BuildingPresentation) GetUnverifiedBuildingById(c echo.Context) error {
-//	Id, err := strconv.Atoi(c.Param("id"))
-//	if err != nil {
-//		return c.JSON(http.StatusForbidden, map[string]interface{}{
-//			"message": err.Error(),
-//		})
-//	}
-//
-//	status := "unverified"
-//	ctx := c.Request().Context()
-//	build, err2 := bp.buildingBusiness.GetUnverifiedBuildingById(ctx, uint(Id), status)
-//	if err2 != nil {
-//		return c.JSON(http.StatusForbidden, map[string]interface{}{
-//			"message": err2.Error(),
-//		})
-//	}
-//
-//	return c.JSON(http.StatusOK, map[string]interface{}{
-//		"message": "Success",
-//		"data":    response.ToBuildingResponse(build),
-//	})
-//}
-
 func (bp *BuildingPresentation) GetBuildingById(c echo.Context) error {
 	Id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -127,8 +104,6 @@ func (bp *BuildingPresentation) GetBuildingById(c echo.Context) error {
 			"message": err.Error(),
 		})
 	}
-
-	//status := "verified"
 	ctx := c.Request().Context()
 	build, err2 := bp.buildingBusiness.GetBuildingById(ctx, uint(Id))
 	if err2 != nil {
@@ -164,19 +139,12 @@ func (bp *BuildingPresentation) UpdateBuilding(c echo.Context) error {
 }
 func (bp *BuildingPresentation) CreateExteriorPhoto(c echo.Context) error {
 	CreateExt := request.CreateExteriorPhoto{}
-	//Id, err0 := strconv.Atoi(c.Param("id"))
-	//if err0 != nil {
-	//	return c.JSON(http.StatusForbidden, map[string]interface{}{
-	//		"message": err0.Error(),
-	//	})
-	//}
 	err := c.Bind(&CreateExt)
 	if err != nil {
 		return err
 	}
 
 	ctx := c.Request().Context()
-	//data, err2 := bp.buildingBusiness.CreateExteriorPhoto(ctx, uint(Id), CreateExt.ToExteriorCore())
 	data, err2 := bp.buildingBusiness.CreateExteriorPhoto(ctx, CreateExt.ToExteriorCore())
 	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{

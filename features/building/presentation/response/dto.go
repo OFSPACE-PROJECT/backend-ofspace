@@ -7,47 +7,47 @@ import (
 )
 
 type Building struct {
-	Id                 uint `gorm:"primaryKey"`
-	UserId             uint `gorm:"not null"`
-	ComplexId          uint `gorm:"not null"`
-	Name               string
-	Description        string
-	OfficeHours        string
-	BuildingSize       string
-	AverageFloorSize   string
-	YearConstructed    string
-	Lifts              string
-	Parking            string
-	Toilets            string
-	BuildingStatus     string          `gorm:"default:unverified"`
-	BuildingFacilities []Facility      `gorm:"foreignKey:BuildingID;references:ID"`
-	ExteriorPhotos     []ExteriorPhoto `gorm:"foreignKey:BuildingID;references:ID"`
-	FloorPhotos        []FloorPhoto    `gorm:"foreignKey:BuildingID;references:ID"`
-	CreatedAt          time.Time
-	UpdatedAt          time.Time
+	Id                 uint            `gorm:"primaryKey" json:"id"`
+	UserId             uint            `gorm:"not null" json:"user_id"`
+	ComplexId          uint            `gorm:"not null" json:"complex_id"`
+	Name               string          `json:"name"`
+	Description        string          `json:"description"`
+	OfficeHours        string          `json:"office_hours"`
+	BuildingSize       string          `json:"building_size"`
+	AverageFloorSize   string          `json:"average_floor_size"`
+	YearConstructed    string          `json:"year_constructed"`
+	Lifts              string          `json:"lifts"`
+	Parking            string          `json:"parking"`
+	Toilets            string          `json:"toilets"`
+	BuildingStatus     string          `gorm:"default:unverified" json:"building_status"`
+	BuildingFacilities []Facility      `gorm:"foreignKey:BuildingID;references:ID" json:"building_facilities"`
+	ExteriorPhotos     []ExteriorPhoto `gorm:"foreignKey:BuildingID;references:ID" json:"exterior_photos"`
+	FloorPhotos        []FloorPhoto    `gorm:"foreignKey:BuildingID;references:ID" json:"floor_photos"`
+	CreatedAt          time.Time       `json:"created_at"`
+	UpdatedAt          time.Time       `json:"updated_at"`
 }
 
 type Facility struct {
-	Id   uint
-	Name string
+	Id   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
 type ExteriorPhoto struct {
-	Id          uint `gorm:"primaryKey"`
-	BuildingID  uint
-	PhotoURL    string
-	Description string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Id          uint      `gorm:"primaryKey" json:"id"`
+	BuildingID  uint      `json:"building_id"`
+	PhotoURL    string    `json:"photo_url"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type FloorPhoto struct {
-	Id          uint `gorm:"primaryKey"`
-	BuildingID  uint
-	PhotoURL    string
-	Description string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Id          uint      `gorm:"primaryKey" json:"id"`
+	BuildingID  uint      `json:"building_id"`
+	PhotoURL    string    `json:"photo_url"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func ToFacilityResponse(c building.Facility) Facility {
@@ -178,15 +178,6 @@ func ToListFacilityCore(core []building.Facility) (response []Facility) {
 	return
 }
 
-//func ToSliceExteriorPhotoCore(e []ExteriorPhoto) []building.ExteriorCore {
-//	photos := make([]building.ExteriorCore, len(e))
-//
-//	for i, v := range e {
-//		photos[i] = toExteriorPhotoCore(&v)
-//	}
-//
-//	return photos
-//}
 func fromSliceExteriorCore(photos []building.ExteriorCore) (result []ExteriorPhoto) {
 	for _, photo := range photos {
 		result = append(result, FromExteriorPhotoCore(photo))
@@ -204,15 +195,6 @@ func ToSliceFloorPhotoCore(e []FloorPhoto) []building.FloorCore {
 	return photos
 }
 
-//func ToSliceBuildingCore(e []Building) []building.Core {
-//	photos := make([]building.FloorCore, len(e))
-//
-//	for i, v := range e {
-//		photos[i] = toFloorPhotoCore(&v)
-//	}
-//
-//	return photos
-//}
 func fromSliceFloorCore(photos []building.FloorCore) (result []FloorPhoto) {
 	for _, photo := range photos {
 		result = append(result, FromFloorPhotoCore(photo))

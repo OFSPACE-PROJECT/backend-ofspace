@@ -7,14 +7,14 @@ import (
 )
 
 type Unit struct {
-	Id             uint `gorm:"primaryKey"`
-	UserId         uint `gorm:"not null"`
-	BuildingId     uint `gorm:"not null"`
-	Description    string
-	UnitType       string
-	Price          float32
-	TotalUnit      int
-	RemainingUnit  int
+	Id             uint            `gorm:"primaryKey" json:"id"`
+	UserId         uint            `gorm:"not null" json:"user_id"`
+	BuildingId     uint            `gorm:"not null" json:"building_id"`
+	Description    string          `json:"description"`
+	UnitType       string          `gorm:"default:office" json:"unit_type"`
+	Price          float32         `json:"price"`
+	TotalUnit      int             `json:"total_unit"`
+	RemainingUnit  int             `json:"remaining_unit"`
 	UnitFacilities []Facility      `gorm:"foreignKey:UnitID;references:ID"`
 	InteriorPhotos []InteriorPhoto `gorm:"foreignKey:UnitID;references:ID"`
 	CreatedAt      time.Time
@@ -22,19 +22,19 @@ type Unit struct {
 }
 
 type Facility struct {
-	Id uint
+	Id uint `json:"id"`
 	//UnitID     uint
 	//FacilityID uint
-	Name string
+	Name string `json:"name"`
 }
 
 type InteriorPhoto struct {
-	Id          uint `gorm:"primaryKey"`
-	UnitID      uint
-	PhotoURL    string
-	Description string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	Id          uint      `gorm:"primaryKey" json:"id"`
+	UnitID      uint      `json:"unit_id"`
+	PhotoURL    string    `json:"photo_url"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func ToUnitFacilityResponse(c unit.Facility) Facility {
