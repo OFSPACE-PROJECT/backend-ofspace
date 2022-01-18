@@ -61,10 +61,11 @@ func New() *echo.Echo {
 	iJWT.PUT("/building/:building_id/floor/:photo_id", presenter.BuildingPresentation.UpdateFloorPhoto)
 	iJWT.DELETE("/building/:building_id/floor/:photo_id", presenter.BuildingPresentation.DeleteFloorPhoto)
 	//building facilities
-	iJWT.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
-	e.GET("/building/:building_id/facility/:facility_id", presenter.BuildingPresentation.GetBuildingFacility)
-	e.GET("/building/:building_id/facility", presenter.BuildingPresentation.GetAllBuildingFacility)
-	iJWT.DELETE("/building/:building_id/facility/:photo_id", presenter.BuildingPresentation.DeleteFacility)
+	//iJWT.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
+	e.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
+	e.GET("/building/:id/facility/:facility_id", presenter.BuildingPresentation.GetBuildingFacility)
+	e.GET("/building/:id/facility", presenter.BuildingPresentation.GetAllBuildingFacility)
+	iJWT.DELETE("/building/:id/facility/:photo_id", presenter.BuildingPresentation.DeleteFacility)
 
 	//unit
 	e.POST("/unit", presenter.UnitPresentation.CreateUnit)

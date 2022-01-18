@@ -27,11 +27,8 @@ type Core struct {
 }
 
 type Facility struct {
-	Id         uint
-	BuildingId uint
-	Name       string
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	Id   uint
+	Name string
 }
 
 type ExteriorCore struct {
@@ -76,7 +73,7 @@ type Business interface {
 
 	//	for manage facility
 	AddFacilityToBuilding(c context.Context, facilityId uint, buildingId uint) (Facility, error)
-	GetAllBuildingFacility(c context.Context, buildingId uint) ([]Facility, error)
+	GetAllBuildingFacility(c context.Context, buildingId uint) (Core, error)
 	GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
 	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
 }
@@ -105,7 +102,7 @@ type Data interface {
 
 	//	for manage facility
 	AddFacilityToBuilding(c context.Context, facilityId uint, buildingId uint) (Facility, error)
-	GetAllBuildingFacility(c context.Context, buildingId uint) ([]Facility, error)
+	GetAllBuildingFacility(c context.Context, buildingId uint) (Core, error)
 	GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
 	DeleteFacility(c context.Context, buildingId uint, facilityId uint) (Facility, error)
 }

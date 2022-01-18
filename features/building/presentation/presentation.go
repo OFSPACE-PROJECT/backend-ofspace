@@ -439,18 +439,24 @@ func (bp *BuildingPresentation) AddFacilityToBuilding(c echo.Context) error {
 	//	"message": "Success",
 	//	"data":    response.FromBuildingFacilityCore(data),
 	//})
-	buildF := request.AddFacility{}
-	facId := buildF.FacilityId
-	buildId := buildF.BuildingId
-	err2 := c.Bind(&buildF)
+	//buildF := request.AddFacility{}
+	//facId := buildF.FacilityId
+	//buildId := buildF.BuildingId
+	fId, err2 := strconv.Atoi(c.QueryParam("facility_id"))
+	bId, err5 := strconv.Atoi(c.QueryParam("building_id"))
 	if err2 != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": err2.Error(),
 		})
 	}
+	if err5 != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": err5.Error(),
+		})
+	}
 	// fmt.Println("detail presentation ========== ", detail)
 	//data, err := bp.buildingBusiness.AddFacilityToBuilding(request.T(detail))
-	data, err := bp.buildingBusiness.AddFacilityToBuilding(ctx, facId, buildId)
+	data, err := bp.buildingBusiness.AddFacilityToBuilding(ctx, uint(fId), uint(bId))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": err.Error(),
@@ -480,7 +486,7 @@ func (bp *BuildingPresentation) GetAllBuildingFacility(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToListFacilityCore(fac),
+		"data":    response.ToBuildingResponse(fac),
 	})
 }
 
@@ -493,14 +499,14 @@ func (bp *BuildingPresentation) GetBuildingFacility(c echo.Context) error {
 			"message": err0.Error(),
 		})
 	}
-	photoIds, err3 := strconv.Atoi(photoId)
+	fIds, err3 := strconv.Atoi(photoId)
 	if err3 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err3.Error(),
 		})
 	}
 	ctx := c.Request().Context()
-	fac, err := bp.buildingBusiness.GetBuildingFacility(ctx, uint(ids), uint(photoIds))
+	fac, err := bp.buildingBusiness.GetBuildingFacility(ctx, uint(ids), uint(fIds))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),

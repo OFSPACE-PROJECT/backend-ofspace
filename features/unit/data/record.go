@@ -20,8 +20,8 @@ type Unit struct {
 }
 
 type UnitFacility struct {
-	UnitID     uint `gorm:"primaryKey"`
-	FacilityID uint `gorm:"primaryKey"`
+	BuildingID uint
+	FacilityID uint
 }
 
 type Facility struct {
@@ -92,10 +92,10 @@ func FromInteriorPhotoCore(e unit.InteriorCore) InteriorPhoto {
 	}
 }
 
-func FromUnitFacilityCore(e unit.Facility) UnitFacility {
-	return UnitFacility{
-		UnitID:     e.Id,
-		FacilityID: e.Id,
+func FromUnitFacilityCore(e unit.Facility) Facility {
+	return Facility{
+		ID:   e.Id,
+		Name: e.Name,
 	}
 }
 
@@ -122,14 +122,15 @@ func ListUnitToCore(buildings []Unit) (result []unit.Core) {
 	return
 }
 
-func toFacilityCore(b *UnitFacility) unit.Facility {
+func toFacilityCore(b *Facility) unit.Facility {
 	return unit.Facility{
-		Id: b.FacilityID,
+		Id:   b.ID,
+		Name: b.Name,
 		//FacilityId: b.FacilityID,
 	}
 }
 
-func ToSliceFacilityPhotoCore(e []UnitFacility) []unit.Facility {
+func ToSliceFacilityPhotoCore(e []Facility) []unit.Facility {
 	fac := make([]unit.Facility, len(e))
 
 	for i, v := range e {

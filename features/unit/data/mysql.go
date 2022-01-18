@@ -160,18 +160,23 @@ func (bd *UnitData) DeleteInteriorPhoto(ctx context.Context, unitId uint, photoI
 func (bd *UnitData) AddFacilityToUnit(c context.Context, facilityId uint, unitId uint) (unit.Facility, error) {
 	newFacility := UnitFacility{
 		FacilityID: facilityId,
-		UnitID:     unitId,
+		BuildingID: unitId,
 	}
-
-	err := bd.Connect.Preload("Unit").Where("facility_id= ? && unit_id= ?", facilityId, unitId).Create(&newFacility).Error
+	thisFacility := Facility{ID: facilityId}
+	fmt.Println(facilityId, unitId, "test")
+	//newFacility := Facility{
+	//	ID:         facilityId,
+	//	//BuildingID: buildingId,
+	//}
+	err := bd.Connect.Preload("Unit").Create(&newFacility).Error
 	if err != nil {
 		return unit.Facility{}, err
 	}
-	return toFacilityCore(&newFacility), nil
+	return toFacilityCore(&thisFacility), nil
 }
 
 func (bd *UnitData) GetAllUnitFacility(c context.Context, unitId uint) ([]unit.Facility, error) {
-	var facilities []UnitFacility
+	var facilities []Facility
 	result := bd.Connect.Find(&facilities, "id= ?", unitId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -180,7 +185,7 @@ func (bd *UnitData) GetAllUnitFacility(c context.Context, unitId uint) ([]unit.F
 	return ToSliceFacilityPhotoCore(facilities), nil
 }
 func (bd *UnitData) GetUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Facility, error) {
-	var facility UnitFacility
+	var facility Facility
 	result := bd.Connect.Where("id= ?", unitId).First(&facility, "id= ?", facilityId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -189,7 +194,7 @@ func (bd *UnitData) GetUnitFacility(c context.Context, unitId uint, facilityId u
 	return toFacilityCore(&facility), nil
 }
 func (bd *UnitData) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Facility, error) {
-	var facility UnitFacility
+	var facility Facility
 	result := bd.Connect.Where("unit_id= ?", unitId).Delete(&facility, "id= ?", facilityId)
 	if result.Error != nil {
 		return unit.Facility{}, result.Error

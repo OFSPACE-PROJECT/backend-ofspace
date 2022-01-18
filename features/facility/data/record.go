@@ -6,14 +6,16 @@ import (
 )
 
 type Facility struct {
-	Id        uint `gorm:"primaryKey"`
-	Name      string
+	Id   uint `gorm:"primaryKey"`
+	Name string
+	//Buildings []building.Building `gorm:"many2many:building_facilities;"`
+	//Units     []data.Unit         `gorm:"many2many:unit_facilities;"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
-func toFacilityCore(c Facility) facility.Core {
-	return facility.Core{
+func toFacilityCore(c Facility) facility.Facility {
+	return facility.Facility{
 		Id:        c.Id,
 		Name:      c.Name,
 		CreatedAt: c.CreatedAt,
@@ -21,7 +23,7 @@ func toFacilityCore(c Facility) facility.Core {
 	}
 }
 
-func fromFacilityCore(c facility.Core) Facility {
+func fromFacilityCore(c facility.Facility) Facility {
 	return Facility{
 		Id:        c.Id,
 		Name:      c.Name,
@@ -30,7 +32,7 @@ func fromFacilityCore(c facility.Core) Facility {
 	}
 }
 
-func ListToCore(core []Facility) (result []facility.Core) {
+func ListToCore(core []Facility) (result []facility.Facility) {
 	for _, complex1 := range core {
 		result = append(result, toFacilityCore(complex1))
 	}

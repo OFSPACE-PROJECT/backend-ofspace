@@ -21,9 +21,8 @@ type Core struct {
 }
 
 type Facility struct {
-	Id     uint
-	UnitID uint
-	Name   string
+	Id   uint
+	Name string
 }
 
 type InteriorCore struct {

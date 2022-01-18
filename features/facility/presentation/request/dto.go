@@ -8,8 +8,8 @@ type CreateFacility struct {
 	Name string `json:"name"`
 }
 
-func (c *CreateFacility) ToCore() facility.Core {
-	return facility.Core{
+func (c *CreateFacility) ToCore() facility.Facility {
+	return facility.Facility{
 		Name: c.Name,
 	}
 }
@@ -19,8 +19,8 @@ type UpdateFacility struct {
 	Name string `json:"name"`
 }
 
-func (c *UpdateFacility) ToUpdateCore() facility.Core {
-	return facility.Core{
+func (c *UpdateFacility) ToUpdateCore() facility.Facility {
+	return facility.Facility{
 		Id:   c.Id,
 		Name: c.Name,
 	}

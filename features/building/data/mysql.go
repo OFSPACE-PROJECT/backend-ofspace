@@ -198,39 +198,57 @@ func (bd *BuildingData) AddFacilityToBuilding(c context.Context, facilityId uint
 		FacilityID: facilityId,
 		BuildingID: buildingId,
 	}
+	thisFacility := Facility{ID: facilityId}
+	fmt.Println(facilityId, buildingId, "test")
 	//newFacility := Facility{
 	//	ID:         facilityId,
 	//	//BuildingID: buildingId,
 	//}
-	err := bd.Connect.Preload("Building").Where("facility_id= ? && building_id= ?", facilityId, buildingId).Create(&newFacility).Error
+	err := bd.Connect.Preload("Building").Create(&newFacility).Error
 	if err != nil {
 		return building.Facility{}, err
 	}
-	return toFacilityCore(&newFacility), nil
+	return toFacilityCore(&thisFacility), nil
 }
 
-func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uint) ([]building.Facility, error) {
-	var facilities []BuildingFacility
+func (bd *BuildingData) GetAllBuildingFacility(c context.Context, buildingId uint) (building.Core, error) {
+	var buildings Building
 	//var facilities []Facility
-	result := bd.Connect.Find(&facilities, "id= ?", buildingId)
+	//facilities := []facility.Facility{}
+	//result := bd.Connect.Preload("BuildingFacilities").Joins("JOIN building_facilities on (buildings.id=building_facilities.building_id) JOIN facilities on (facilities.id=building_facilities.facility_id) AND building_id= ?", buildingId).Find(&buildings)
+	//facilities := fromSliceFloorCore(buildings[0].BuildingFacilities)
+	result := bd.Connect.Preload("BuildingFacilities").Find(&buildings, "id", buildingId)
+
 	if result.Error != nil {
 		fmt.Println(result.Error)
-		return []building.Facility{}, result.Error
+		return building.Core{}, result.Error
 	}
-	return ToSliceFacilityPhotoCore(facilities), nil
+	return toBuildingCore(&buildings), nil
 }
+
+//SELECT buildings.id, buildings.name, facilities.id AS facility_id, facilities.name AS facility_name
+//FROM buildings
+
 func (bd *BuildingData) GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
-	var facility BuildingFacility
+	//facility := FromBuildingFacilityCore(building.Facility{Id: facilityId})
+	//var fac2 BuildingFacility
+	var fac3 Facility
+	//var build Building
+	//fac := Facility{
+	//	ID:   facilityId,
+	//	Name: facility.Name,
+	//}
 	//var facility Facility
-	result := bd.Connect.Where("id= ?", buildingId).First(&facility, "id= ?", facilityId)
+
+	result := bd.Connect.Preload("Building.BuildingFacilities").First(&fac3, "id= ?", facilityId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Facility{}, result.Error
 	}
-	return toFacilityCore(&facility), nil
+	return toFacilityCore(&fac3), nil
 }
 func (bd *BuildingData) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
-	var facility BuildingFacility
+	var facility Facility
 	//var facility Facility
 	result := bd.Connect.Where("building_id= ?", buildingId).Delete(&facility, "id= ?", facilityId)
 	if result.Error != nil {

@@ -259,18 +259,19 @@ func (bb *buildingBusiness) AddFacilityToBuilding(c context.Context, facilityId 
 	return data, nil
 
 }
-func (bb *buildingBusiness) GetAllBuildingFacility(c context.Context, buildingId uint) ([]building.Facility, error) {
+func (bb *buildingBusiness) GetAllBuildingFacility(c context.Context, buildingId uint) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
 	buildFacc, err := bb.buildingData.GetAllBuildingFacility(ctx, buildingId)
 	if err != nil {
-		return []building.Facility{}, err
+		return building.Core{}, err
 	}
 	return buildFacc, nil
 }
 func (bb *buildingBusiness) GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
+	//core := building.Facility{}
 	buildFacc, err := bb.buildingData.GetBuildingFacility(ctx, buildingId, facilityId)
 	if err != nil {
 		return building.Facility{}, err
@@ -280,6 +281,7 @@ func (bb *buildingBusiness) GetBuildingFacility(c context.Context, buildingId ui
 func (bb *buildingBusiness) DeleteFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
+	//core := building.Facility{}
 	thisFacility, err := bb.buildingData.GetBuildingFacility(ctx, buildingId, facilityId)
 	if err != nil {
 		return building.Facility{}, err

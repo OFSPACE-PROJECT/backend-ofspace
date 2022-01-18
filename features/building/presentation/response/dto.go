@@ -27,10 +27,8 @@ type Building struct {
 }
 
 type Facility struct {
-	//Id         uint
-	BuildingID uint
-	FacilityID uint
-	//Name       string
+	Id   uint
+	Name string
 }
 
 type ExteriorPhoto struct {
@@ -53,10 +51,10 @@ type FloorPhoto struct {
 
 func ToFacilityResponse(c building.Facility) Facility {
 	return Facility{
-		FacilityID: c.Id,
+		Id: c.Id,
 		//BuildingID: c.BuildingId,
 		//Id:   c.Id,
-		//Name: c.Name,
+		Name: c.Name,
 	}
 }
 func ToBuildingResponse(b building.Core) Building {
@@ -205,6 +203,15 @@ func ToSliceFloorPhotoCore(e []FloorPhoto) []building.FloorCore {
 	return photos
 }
 
+//func ToSliceBuildingCore(e []Building) []building.Core {
+//	photos := make([]building.FloorCore, len(e))
+//
+//	for i, v := range e {
+//		photos[i] = toFloorPhotoCore(&v)
+//	}
+//
+//	return photos
+//}
 func fromSliceFloorCore(photos []building.FloorCore) (result []FloorPhoto) {
 	for _, photo := range photos {
 		result = append(result, FromFloorPhotoCore(photo))
@@ -215,7 +222,8 @@ func fromSliceFloorCore(photos []building.FloorCore) (result []FloorPhoto) {
 func toFacilityCore(b *Facility) building.Facility {
 	return building.Facility{
 		//BuildingId: b.BuildingID,
-		Id: b.FacilityID,
+		Id:   b.Id,
+		Name: b.Name,
 	}
 }
 
@@ -233,7 +241,7 @@ func FromBuildingFacilityCore(c building.Facility) Facility {
 	return Facility{
 		//Id:         c.Id,
 		//BuildingID: c.BuildingId,
-		FacilityID: c.Id,
-		//Name:       c.Name,
+		Id:   c.Id,
+		Name: c.Name,
 	}
 }
