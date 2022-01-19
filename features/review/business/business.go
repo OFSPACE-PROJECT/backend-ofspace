@@ -29,3 +29,19 @@ func (ub *ReviewBusiness) CreateReview(c context.Context, data review.Core) (rev
 	}
 	return reviewData, nil
 }
+
+func (ub *ReviewBusiness) GetAllReview(c context.Context, unit uint) ([]review.Core, error) {
+
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+
+	res, err := ub.reviewData.GetAllReview(ctx, unit)
+	if err != nil {
+		return []review.Core{}, err
+	}
+	for i, num := range res {
+		res[i].CostumerOverallRating = (num.RatingAccess + num.RatingFacility + num.RatingManagement + num.RatingQuality) / 4
+	}
+	return res, nil
+
+}
