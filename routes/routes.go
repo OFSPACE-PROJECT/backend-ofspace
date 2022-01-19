@@ -94,5 +94,14 @@ func New() *echo.Echo {
 	e.GET("/wishlist/:id", presenter.WishlistPresentation.GetWishlist)
 	e.GET("/wishlist", presenter.WishlistPresentation.GetAllWishlists)
 	e.DELETE("/wishlist/:id", presenter.WishlistPresentation.DeleteWishlist)
+
+	//booking
+	e.POST("/booking", presenter.BookingPresentation.CreateBooking)
+	e.PUT("/booking", presenter.BookingPresentation.UpdateBooking)
+	e.GET("/booking", presenter.BookingPresentation.GetAllBooking)
+	e.GET("/booking/:id", presenter.BookingPresentation.GetOneBooking)
+	e.GET("/booking/:id/name", presenter.BookingPresentation.SearchBookingByName)
+	e.GET("/booking/:id/status", presenter.BookingPresentation.SearchBookingByPayment)
+	e.GET("/booking/:id/date", presenter.BookingPresentation.FindBookingByDate)
 	return e
 }

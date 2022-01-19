@@ -68,6 +68,7 @@ func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core
 		return unit.Core{}, err
 	}
 	data.UpdatedAt = time.Now()
+	//data.RemainingUnit = (data.TotalUnit - sum of unit sold)
 	up, err := ub.unitData.UpdateUnit(ctx, data)
 	if err != nil {
 		return unit.Core{}, err

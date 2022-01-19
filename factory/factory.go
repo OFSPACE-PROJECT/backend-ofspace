@@ -42,6 +42,11 @@ import (
 	wishlistData "ofspace-be/features/wishlist/data"
 	wishlistPresentation "ofspace-be/features/wishlist/presentation"
 
+	//booking
+	bookingBusiness "ofspace-be/features/booking/business"
+	bookingData "ofspace-be/features/booking/data"
+	bookingPresentation "ofspace-be/features/booking/presentation"
+
 	"time"
 )
 
@@ -53,6 +58,7 @@ type Presenter struct {
 	BuildingPresentation      *buildingPresentation.BuildingPresentation
 	UnitPresentation          *unitPresentation.UnitPresentation
 	WishlistPresentation      *wishlistPresentation.WishlistPresentation
+	BookingPresentation       *bookingPresentation.BookingPresentation
 }
 
 func New() *Presenter {
@@ -98,7 +104,12 @@ func New() *Presenter {
 	//wishlist
 	wData := wishlistData.NewWishlistData(config.DB)
 	wBusiness := wishlistBusiness.NewWishlistBusiness(wData, timeoutContext)
-	wPresentation := wishlistPresentation.NewFacilityPresentation(wBusiness)
+	wPresentation := wishlistPresentation.NewWishlistPresentation(wBusiness)
+
+	//wishlist
+	bookData := bookingData.NewBookingData(config.DB)
+	bookBusiness := bookingBusiness.NewBookingBusiness(bookData, timeoutContext)
+	bookPresentation := bookingPresentation.NewBookingPresentation(bookBusiness)
 	return &Presenter{
 		usPresentation,
 		compPresentation,
@@ -107,5 +118,6 @@ func New() *Presenter {
 		bPresentation,
 		uPresentation,
 		wPresentation,
+		bookPresentation,
 	}
 }

@@ -14,7 +14,7 @@ type WishlistPresentation struct {
 	wishlistBusiness wishlist.Business
 }
 
-func NewFacilityPresentation(wb wishlist.Business) *WishlistPresentation {
+func NewWishlistPresentation(wb wishlist.Business) *WishlistPresentation {
 	return &WishlistPresentation{wishlistBusiness: wb}
 }
 
