@@ -1,6 +1,7 @@
 package business
 
 import (
+	"errors"
 	"ofspace-be/features/review"
 	"time"
 
@@ -42,6 +43,23 @@ func (ub *ReviewBusiness) GetAllReview(c context.Context, unit uint) ([]review.C
 	for i, num := range res {
 		res[i].CostumerOverallRating = (num.RatingAccess + num.RatingFacility + num.RatingManagement + num.RatingQuality) / 4
 	}
+	return res, nil
+
+}
+func (ub *ReviewBusiness) GetOneReview(c context.Context, id uint) (review.Core, error) {
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+
+	if id == 0 {
+		return review.Core{}, errors.New("invalid input")
+	}
+
+	res, err := ub.reviewData.GetOneReview(ctx, id)
+	if err != nil {
+		return review.Core{}, err
+	}
+	res.CostumerOverallRating = (res.RatingAccess + res.RatingFacility + res.RatingManagement + res.RatingQuality) / 4
+
 	return res, nil
 
 }
