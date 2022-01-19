@@ -63,3 +63,26 @@ func (ub *ReviewBusiness) GetOneReview(c context.Context, id uint) (review.Core,
 	return res, nil
 
 }
+
+func (ub *ReviewBusiness) UpdateReview(c context.Context, data review.Core) (review.Core, error) {
+
+	if data.Id == 0 {
+		return review.Core{}, errors.New("invalid input")
+	}
+
+	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+	defer error()
+	_, err := ub.reviewData.GetOneReview(ctx, data.Id)
+	if err != nil {
+		return review.Core{}, err
+	}
+	data.UpdatedAt = time.Now()
+
+	up, err := ub.reviewData.UpdateReview(ctx, data)
+	if err != nil {
+		return review.Core{}, err
+	}
+
+	return up, nil
+
+}
