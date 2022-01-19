@@ -42,3 +42,9 @@ func ListToCore(core []Complex) (result []complex2.Core) {
 	}
 	return
 }
+func toSliceComplexCore(complexes []Complex) (result []complex2.Core) {
+	for _, complex1 := range complexes {
+		result = append(result, toComplexCore(complex1))
+	}
+	return
+}

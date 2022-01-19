@@ -8,6 +8,7 @@ import (
 	facility "ofspace-be/features/facility/data"
 	unit "ofspace-be/features/unit/data"
 	user "ofspace-be/features/users/data"
+	wishlist "ofspace-be/features/wishlist/data"
 )
 
 func AutoMigrate() {
@@ -18,21 +19,13 @@ func AutoMigrate() {
 	//if err := db.Exec("DROP TABLE IF EXISTS users").Error; err != nil {
 	//	panic(err)
 	//}
-	//if err := db.Exec("DROP TABLE IF EXISTS complexs").Error; err != nil {
-	//	panic(err)
-	//}
-	//if err := db.Exec("DROP TABLE IF EXISTS complex").Error; err != nil {
+	//if err := db.Exec("DROP TABLE IF EXISTS complexes").Error; err != nil {
 	//	panic(err)
 	//}
 	//if err := db.Exec("DROP TABLE IF EXISTS accessibility").Error; err != nil {
 	//	panic(err)
 	//}
-	//if err := db.Exec("DROP TABLE IF EXISTS accessibilitys").Error; err != nil {
-	//	panic(err)
-	//}
-	//if err := db.Exec("DROP TABLE IF EXISTS accessibilities").Error; err != nil {
-	//	panic(err)
-	//}
+
 	//if err := db.Exec("DROP TABLE IF EXISTS facility").Error; err != nil {
 	//	panic(err)
 	//}
@@ -53,6 +46,7 @@ func AutoMigrate() {
 		&building.ExteriorPhoto{},
 		&building.FloorPhoto{},
 		&unit.InteriorPhoto{},
+		&wishlist.Wishlist{},
 	)
 	if err != nil {
 		panic(err)

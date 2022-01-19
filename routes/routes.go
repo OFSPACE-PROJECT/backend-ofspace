@@ -23,6 +23,7 @@ func New() *echo.Echo {
 	// complex
 	iJWT.POST("/complex", presenter.ComplexPresentation.CreateComplex)
 	e.GET("/complex/:id", presenter.ComplexPresentation.GetComplex)
+	e.GET("/complex", presenter.ComplexPresentation.GetAllComplex)
 	iJWT.POST("/complex/:id", presenter.ComplexPresentation.RequestComplex)
 	e.GET("/complex/search", presenter.ComplexPresentation.SearchComplex)
 	iJWT.PUT("/complex", presenter.ComplexPresentation.UpdateComplex)
@@ -86,5 +87,10 @@ func New() *echo.Echo {
 	e.GET("/unit/:id/facility", presenter.UnitPresentation.GetAllUnitFacility)
 	e.DELETE("/unit/:id/facility/:photo_id", presenter.UnitPresentation.DeleteUnitFacility)
 
+	//wishlist
+	e.POST("/wishlist", presenter.WishlistPresentation.CreateWishlist)
+	e.GET("/wishlist/:id", presenter.WishlistPresentation.GetWishlist)
+	e.GET("/wishlist", presenter.WishlistPresentation.GetAllWishlists)
+	e.DELETE("/wishlist/:id", presenter.WishlistPresentation.DeleteWishlist)
 	return e
 }

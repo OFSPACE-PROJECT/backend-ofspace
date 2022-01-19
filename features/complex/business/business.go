@@ -35,7 +35,15 @@ func (cb *complexBusiness) GetComplex(c context.Context, id uint) (complex2.Core
 	}
 	return complex1, nil
 }
-
+func (cb *complexBusiness) GetAllComplex(c context.Context) ([]complex2.Core, error) {
+	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
+	defer error1()
+	complex1, err := cb.complexData.GetAllComplex(ctx)
+	if err != nil {
+		return []complex2.Core{}, err
+	}
+	return complex1, nil
+}
 func (cb *complexBusiness) SearchComplex(c context.Context, name string) ([]complex2.Core, error) {
 	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
 	defer error1()

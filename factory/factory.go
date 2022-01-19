@@ -37,6 +37,11 @@ import (
 	unitData "ofspace-be/features/unit/data"
 	unitPresentation "ofspace-be/features/unit/presentation"
 
+	//wishlist
+	wishlistBusiness "ofspace-be/features/wishlist/business"
+	wishlistData "ofspace-be/features/wishlist/data"
+	wishlistPresentation "ofspace-be/features/wishlist/presentation"
+
 	"time"
 )
 
@@ -47,6 +52,7 @@ type Presenter struct {
 	FacilityPresentation      *facilityPresentation.FacilityPresentation
 	BuildingPresentation      *buildingPresentation.BuildingPresentation
 	UnitPresentation          *unitPresentation.UnitPresentation
+	WishlistPresentation      *wishlistPresentation.WishlistPresentation
 }
 
 func New() *Presenter {
@@ -60,9 +66,9 @@ func New() *Presenter {
 	}
 	timeoutContext := time.Duration(ctx) * time.Second
 	//users
-	userData := userData.NewUserData(config.DB)
-	userBusiness := userBusiness.NewUserBusiness(userData, timeoutContext)
-	userPresentation := userPresentation.NewUserPresentation(userBusiness)
+	usData := userData.NewUserData(config.DB)
+	usBusiness := userBusiness.NewUserBusiness(usData, timeoutContext)
+	usPresentation := userPresentation.NewUserPresentation(usBusiness)
 
 	//complex
 	compData := complexData.NewComplexData(config.DB)
@@ -81,19 +87,25 @@ func New() *Presenter {
 
 	//building
 	bData := buildingData.NewBuildingData(config.DB)
-	bBusiness := buildingBusiness.NewBuildingBusiness(bData, timeoutContext, userBusiness, facBusiness)
+	bBusiness := buildingBusiness.NewBuildingBusiness(bData, timeoutContext, usBusiness, facBusiness)
 	bPresentation := buildingPresentation.NewBuildingPresentation(bBusiness)
 
 	//unit
 	uData := unitData.NewUnitData(config.DB)
-	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, userBusiness, facBusiness, timeoutContext)
+	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, usBusiness, facBusiness, timeoutContext)
 	uPresentation := unitPresentation.NewUnitPresentation(uBusiness)
+
+	//wishlist
+	wData := wishlistData.NewWishlistData(config.DB)
+	wBusiness := wishlistBusiness.NewWishlistBusiness(wData, timeoutContext)
+	wPresentation := wishlistPresentation.NewFacilityPresentation(wBusiness)
 	return &Presenter{
-		userPresentation,
+		usPresentation,
 		compPresentation,
 		accPresentation,
 		facPresentation,
 		bPresentation,
 		uPresentation,
+		wPresentation,
 	}
 }

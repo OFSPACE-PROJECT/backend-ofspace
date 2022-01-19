@@ -31,7 +31,14 @@ func (cd *complexData) GetComplex(ctx context.Context, id uint) (complex2.Core, 
 	}
 	return toComplexCore(complex1), nil
 }
-
+func (cd *complexData) GetAllComplex(ctx context.Context) ([]complex2.Core, error) {
+	var complex1 []Complex
+	result := cd.Connect.Find(&complex1)
+	if result.Error != nil {
+		return []complex2.Core{}, result.Error
+	}
+	return toSliceComplexCore(complex1), nil
+}
 func (cd *complexData) SearchComplex(ctx context.Context, name string) ([]complex2.Core, error) {
 	var complex1 []Complex
 	result := cd.Connect.Where("name LIKE ?", name+"%").Find(&complex1)

@@ -86,6 +86,20 @@ func (cp *ComplexPresentation) GetComplex(c echo.Context) error {
 	})
 }
 
+func (cp *ComplexPresentation) GetAllComplex(c echo.Context) error {
+	ctx := c.Request().Context()
+	comp, err2 := cp.complexBusiness.GetAllComplex(ctx)
+	if err2 != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err2.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListCompCore(comp),
+	})
+}
 func (cp *ComplexPresentation) SearchComplex(c echo.Context) error {
 	name := c.QueryParam("name")
 	ctx := c.Request().Context()
