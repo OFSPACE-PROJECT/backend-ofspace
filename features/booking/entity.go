@@ -32,6 +32,7 @@ type Business interface {
 	SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]Core, error)
 	GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]Core, error)
 	FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]Core, error)
+	GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error)
 }
 
 type Data interface {
@@ -44,4 +45,5 @@ type Data interface {
 	SearchBookingByName(ctx context.Context, buildingId uint, name string) ([]Core, error)
 	SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]Core, error)
 	FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]Core, error)
+	GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error)
 }

@@ -85,7 +85,7 @@ func (b *BookingData) SearchBookingByName(ctx context.Context, buildingId uint, 
 	return toSliceBookingCore(booking1), nil
 }
 
-func (b BookingData) SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]booking.Core, error) {
+func (b *BookingData) SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]booking.Core, error) {
 	var booking1 []Booking
 	result := b.Connect.Find(&booking1, "building_id= ? && payment_status= ?", buildingId, paymentStatus)
 	if result.Error != nil {
@@ -94,7 +94,7 @@ func (b BookingData) SearchBookingByPayment(ctx context.Context, buildingId uint
 	return toSliceBookingCore(booking1), nil
 }
 
-func (b BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
+func (b *BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
 	var booking1 []Booking
 	result := b.Connect.Find(&booking1, "building_id= ? && booking_status= ?", buildingId, bookingStatus)
 	if result.Error != nil {
@@ -103,11 +103,24 @@ func (b BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, bo
 	return toSliceBookingCore(booking1), nil
 }
 
-func (b BookingData) FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
+func (b *BookingData) FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
 	var booking1 []Booking
 	result := b.Connect.Find(&booking1, "building_id= ? && start_date= ? && end_date= ?", buildingId, startDate, endDate)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}
 	return toSliceBookingCore(booking1), nil
+}
+
+func (b *BookingData) GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error) {
+	var booking1 []Booking
+	result := b.Connect.Find("booking_status='rented' && unit_id= ?", unitId)
+	if result.Error != nil {
+		return 0, result.Error
+	}
+	sum := 0
+	for _, j := range booking1 {
+		sum += int(j.TotalBought)
+	}
+	return sum, nil
 }

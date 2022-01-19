@@ -163,6 +163,23 @@ func (bp *BookingPresentation) SearchBookingByPayment(c echo.Context) error {
 		"data":    response.FromListBookingCore(fac),
 	})
 }
+
+func (bp *BookingPresentation) GetSumOfTotalBoughtInUnit(c echo.Context) error {
+	unitId, _ := strconv.Atoi(c.Param("id"))
+	ctx := c.Request().Context()
+	fac, err := bp.bookingBusiness.GetSumOfTotalBoughtInUnit(ctx, uint(unitId))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    fac,
+	})
+}
+
 func (bp *BookingPresentation) FindBookingByDate(c echo.Context) error {
 	layoutFormat := "2006-01-02"
 	value1 := c.QueryParam("start_date")

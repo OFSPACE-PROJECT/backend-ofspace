@@ -105,5 +105,6 @@ func New() *echo.Echo {
 	e.GET("/booking/:id/payment", presenter.BookingPresentation.SearchBookingByPayment)
 	e.GET("/booking/:id/status", presenter.BookingPresentation.GetBookingByStatus)
 	e.GET("/booking/:id/date", presenter.BookingPresentation.FindBookingByDate)
+	e.GET("/booking/:id/sum", presenter.BookingPresentation.GetSumOfTotalBoughtInUnit)
 	return e
 }

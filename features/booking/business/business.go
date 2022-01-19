@@ -110,3 +110,19 @@ func (b bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, s
 	}
 	return data, nil
 }
+
+func (b bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uint) (int, error) {
+	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+	defer error1()
+	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+	if err2 != nil {
+		return 0, err2
+	}
+	totalSold := 0
+	for _, j := range fromBooking {
+		if j.BookingStatus == "rented" {
+			totalSold += int(j.TotalBought)
+		}
+	}
+	return totalSold, nil
+}
