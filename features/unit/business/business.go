@@ -2,6 +2,7 @@ package business
 
 import (
 	"context"
+	"ofspace-be/features/booking"
 	"ofspace-be/features/building"
 	"ofspace-be/features/facility"
 	"ofspace-be/features/unit"
@@ -14,11 +15,12 @@ type unitBusiness struct {
 	buildingBusiness building.Business
 	facilityBusiness facility.Business
 	userBusiness     users.Business
+	bookingBusiness  booking.Business
 	contextTimeout   time.Duration
 }
 
-func NewUnitBusiness(unitData unit.Data, buildingBusiness building.Business, userBusiness users.Business, facilityBusiness facility.Business, timeout time.Duration) unit.Business {
-	return &unitBusiness{unitData: unitData, contextTimeout: timeout, buildingBusiness: buildingBusiness, userBusiness: userBusiness, facilityBusiness: facilityBusiness}
+func NewUnitBusiness(unitData unit.Data, buildingBusiness building.Business, userBusiness users.Business, facilityBusiness facility.Business, bookingBusiness booking.Business, timeout time.Duration) unit.Business {
+	return &unitBusiness{unitData: unitData, contextTimeout: timeout, buildingBusiness: buildingBusiness, userBusiness: userBusiness, facilityBusiness: facilityBusiness, bookingBusiness: bookingBusiness}
 }
 
 func (ub *unitBusiness) CreateUnit(c context.Context, data unit.Core) (unit.Core, error) {
@@ -68,6 +70,11 @@ func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core
 		return unit.Core{}, err
 	}
 	data.UpdatedAt = time.Now()
+	//fromBooking, err2 := ub.bookingBusiness.GetAllBookingByBuilding(ctx, data.BuildingId)
+	//if err2 != nil {
+	//	return unit.Core{}, err2
+	//}
+
 	//data.RemainingUnit = (data.TotalUnit - sum of unit sold)
 	up, err := ub.unitData.UpdateUnit(ctx, data)
 	if err != nil {

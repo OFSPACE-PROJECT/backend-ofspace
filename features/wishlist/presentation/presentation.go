@@ -1,7 +1,7 @@
 package presentation
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"net/http"
 	"ofspace-be/features/wishlist/presentation/request"
 	"ofspace-be/features/wishlist/presentation/response"

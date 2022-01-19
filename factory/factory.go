@@ -91,6 +91,11 @@ func New() *Presenter {
 	facBusiness := facilityBusiness.NewFacilityBusiness(facData, timeoutContext)
 	facPresentation := facilityPresentation.NewFacilityPresentation(facBusiness)
 
+	//booking
+	bookData := bookingData.NewBookingData(config.DB)
+	bookBusiness := bookingBusiness.NewBookingBusiness(bookData, timeoutContext)
+	bookPresentation := bookingPresentation.NewBookingPresentation(bookBusiness)
+
 	//building
 	bData := buildingData.NewBuildingData(config.DB)
 	bBusiness := buildingBusiness.NewBuildingBusiness(bData, timeoutContext, usBusiness, facBusiness)
@@ -98,7 +103,7 @@ func New() *Presenter {
 
 	//unit
 	uData := unitData.NewUnitData(config.DB)
-	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, usBusiness, facBusiness, timeoutContext)
+	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, usBusiness, facBusiness, bookBusiness, timeoutContext)
 	uPresentation := unitPresentation.NewUnitPresentation(uBusiness)
 
 	//wishlist
@@ -106,10 +111,6 @@ func New() *Presenter {
 	wBusiness := wishlistBusiness.NewWishlistBusiness(wData, timeoutContext)
 	wPresentation := wishlistPresentation.NewWishlistPresentation(wBusiness)
 
-	//wishlist
-	bookData := bookingData.NewBookingData(config.DB)
-	bookBusiness := bookingBusiness.NewBookingBusiness(bookData, timeoutContext)
-	bookPresentation := bookingPresentation.NewBookingPresentation(bookBusiness)
 	return &Presenter{
 		usPresentation,
 		compPresentation,
