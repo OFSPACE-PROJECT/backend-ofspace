@@ -10,6 +10,7 @@ import (
 func New() *echo.Echo {
 	presenter := factory.New()
 	e := echo.New()
+	e.Pre(middleware.RemoveTrailingSlash())
 	mid.Logger(e)
 	iJWT := e.Group("")
 	iJWT.Use(middleware.JWT([]byte("123")))
