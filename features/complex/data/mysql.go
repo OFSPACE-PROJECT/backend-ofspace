@@ -41,7 +41,7 @@ func (cd *complexData) GetAllComplex(ctx context.Context) ([]complex2.Core, erro
 }
 func (cd *complexData) SearchComplex(ctx context.Context, name string) ([]complex2.Core, error) {
 	var complex1 []Complex
-	result := cd.Connect.Where("name LIKE ?", name+"%").Find(&complex1)
+	result := cd.Connect.Where("name LIKE ?", "%"+name+"%").Find(&complex1)
 	if result.Error != nil {
 		return []complex2.Core{}, result.Error
 	}

@@ -121,3 +121,35 @@ func (up *UsersPresentation) GetUserByID(c echo.Context) error {
 		"data":    response.ToGetUserResponse(user),
 	})
 }
+
+func (up *UsersPresentation) SearchUserByName(c echo.Context) error {
+	name := c.QueryParam("name")
+	ctx := c.Request().Context()
+	comp, err := up.usersBusiness.SearchUserByName(ctx, name)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListUserCore(comp),
+	})
+}
+
+func (up *UsersPresentation) SearchUserByAdminStatus(c echo.Context) error {
+	status := c.QueryParam("status")
+	ctx := c.Request().Context()
+	comp, err := up.usersBusiness.SearchUserByName(ctx, status)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListUserCore(comp),
+	})
+}

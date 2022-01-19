@@ -49,6 +49,22 @@ func (rep *UserData) GetUserByID(ctx context.Context, id uint) (users.Core, erro
 	return toUserCore(user), nil
 }
 
+func (rep *UserData) SearchUserByName(ctx context.Context, name string) ([]users.Core, error) {
+	var user []User
+	result := rep.Connect.Where("name LIKE ?", "%"+name+"%").Find(&user)
+	if result.Error != nil {
+		return []users.Core{}, result.Error
+	}
+	return ListToCore(user), nil
+}
+func (rep *UserData) GetUserByAdminStatus(ctx context.Context, status string) ([]users.Core, error) {
+	var user []User
+	result := rep.Connect.Where("admin_status LIKE ?", "%"+status+"%").Find(&user)
+	if result.Error != nil {
+		return []users.Core{}, result.Error
+	}
+	return ListToCore(user), nil
+}
 func (rep *UserData) UpdateUser(ctx context.Context, domain users.Core) (users.Core, error) {
 	user := FromCore(domain)
 	result := rep.Connect.Where("id = ?", user.ID).Updates(&User{Name: user.Name, Email: user.Email, Password: user.Password, Role: user.Role, Phone: user.Phone, AdminStatus: user.AdminStatus})
