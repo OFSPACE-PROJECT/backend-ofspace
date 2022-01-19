@@ -2,38 +2,36 @@ package response
 
 import (
 	"ofspace-be/features/users"
+	"time"
 )
 
 type User struct {
 	ID          uint   `json:"id" form:"id"`
 	Name        string `json:"name" form:"name"`
 	Email       string `json:"Email" form:"username"`
+	Role        string `json:"role" form:"username"`
 	Password    string `json:"password" form:"password"`
 	Phone       string `json:"phone" form:"phone"`
 	AdminStatus string `json:"admin_status"`
 }
 
-func FromUserCore(req User) users.Core {
-	return users.Core{
-		ID:       req.ID,
-		Name:     req.Name,
-		Email:    req.Email,
-		Password: req.Password,
-		Phone:    req.Phone,
-	}
-}
-
 type UserResponse struct {
-	ID    uint   `json:"id"`
-	Name  string `json:"name"`
-	Token string `json:"token"`
+	ID          uint   `json:"id" form:"id"`
+	Name        string `json:"name" form:"name"`
+	Role        string `json:"role" form:"username"`
+	Phone       string `json:"phone" form:"phone"`
+	AdminStatus string `json:"admin_status"`
+	Token       string `json:"token"`
 }
 
 func ToUserLoginResponse(user users.Core) UserResponse {
 	return UserResponse{
-		ID:    user.ID,
-		Name:  user.Name,
-		Token: user.Token,
+		ID:          user.ID,
+		Name:        user.Name,
+		Role:        user.Role,
+		Phone:       user.Phone,
+		AdminStatus: user.AdminStatus,
+		Token:       user.Token,
 	}
 }
 func ToUserRegisterResponse(user users.Core) User {
@@ -41,6 +39,7 @@ func ToUserRegisterResponse(user users.Core) User {
 		ID:          user.ID,
 		Name:        user.Name,
 		Email:       user.Email,
+		Role:        user.Role,
 		Password:    user.Password,
 		Phone:       user.Phone,
 		AdminStatus: user.AdminStatus,
@@ -48,16 +47,20 @@ func ToUserRegisterResponse(user users.Core) User {
 }
 
 type GetUserResponse struct {
-	ID          uint   `json:"id"`
-	Name        string `json:"name"`
-	Phone       string `json:"phone"`
-	AdminStatus string `json:"admin_status"`
+	ID          uint      `json:"id"`
+	Name        string    `json:"name"`
+	Role        string    `json:"role"`
+	Phone       string    `json:"phone"`
+	AdminStatus string    `json:"admin_status"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 func ToGetUserResponse(user users.Core) GetUserResponse {
 	return GetUserResponse{
 		ID:          user.ID,
 		Name:        user.Name,
+		Role:        user.Role,
 		Phone:       user.Phone,
 		AdminStatus: user.AdminStatus,
 	}
