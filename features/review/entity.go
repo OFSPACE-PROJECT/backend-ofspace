@@ -7,9 +7,10 @@ import (
 
 type Core struct {
 	Id                    uint
-	CostumerId            uint
-	BuildingId            uint
-	UnitType              string
+	CustomerId            uint
+	Customer              User
+	UnitId                uint
+	Unit                  Unit
 	BookingId             uint
 	RatingAccess          float32
 	RatingFacility        float32
@@ -21,16 +22,28 @@ type Core struct {
 	UpdatedAt             time.Time
 }
 
+type User struct {
+	ID   uint
+	Name string
+}
+
+type Unit struct {
+	Id          uint
+	BuildingId  uint
+	Description string
+	UnitType    string
+}
+
 type Business interface {
 	CreateReview(ctx context.Context, review Core) (Core, error)
-	GetAllReview(ctx context.Context, buildingId uint, unitType string) ([]Core, error)
-	GetOneReview(ctx context.Context, buildingId uint, unitType string, id uint) (Core, error)
-	UpdateReview(ctx context.Context, id uint, review Core) (Core, error)
+	GetAllReview(ctx context.Context, unitType uint) ([]Core, error)
+	GetOneReview(ctx context.Context, id uint) (Core, error)
+	UpdateReview(ctx context.Context, data Core) (Core, error)
 }
 
 type Data interface {
 	CreateReview(ctx context.Context, review Core) (Core, error)
-	GetAllReview(ctx context.Context, buildingId uint, unitType string) ([]Core, error)
-	GetOneReview(ctx context.Context, buildingId uint, unitType string, id uint) (Core, error)
-	UpdateReview(ctx context.Context, id uint, review Core) (Core, error)
+	GetAllReview(ctx context.Context, unitType uint) ([]Core, error)
+	GetOneReview(ctx context.Context, id uint) (Core, error)
+	UpdateReview(ctx context.Context, data Core) (Core, error)
 }
