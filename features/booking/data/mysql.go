@@ -56,9 +56,9 @@ func (b *BookingData) GetAllBooking(ctx context.Context) ([]booking.Core, error)
 	return toSliceBookingCore(bookings), nil
 }
 
-func (b *BookingData) GetAllBookingByBuilding(ctx context.Context, buildingId uint) ([]booking.Core, error) {
+func (b *BookingData) GetAllBookingByUnit(ctx context.Context, unitId uint) ([]booking.Core, error) {
 	var bookings []Booking
-	result := b.Connect.Debug().Find(&bookings, "building_id", buildingId)
+	result := b.Connect.Debug().Find(&bookings, "unit_id", unitId)
 
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -88,6 +88,15 @@ func (b *BookingData) SearchBookingByName(ctx context.Context, buildingId uint, 
 func (b BookingData) SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]booking.Core, error) {
 	var booking1 []Booking
 	result := b.Connect.Find(&booking1, "building_id= ? && payment_status= ?", buildingId, paymentStatus)
+	if result.Error != nil {
+		return []booking.Core{}, result.Error
+	}
+	return toSliceBookingCore(booking1), nil
+}
+
+func (b BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
+	var booking1 []Booking
+	result := b.Connect.Find(&booking1, "building_id= ? && booking_status= ?", buildingId, bookingStatus)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}

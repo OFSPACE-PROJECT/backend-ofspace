@@ -18,6 +18,7 @@ type Booking struct {
 	StartDate     time.Time
 	EndDate       time.Time
 	PaymentStatus string `gorm:"default:unconfirmed"`
+	BookingStatus string `gorm:"default:deal"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
@@ -36,6 +37,7 @@ func fromBookingCore(c booking.Core) Booking {
 		StartDate:     c.StartDate,
 		EndDate:       c.EndDate,
 		PaymentStatus: c.PaymentStatus,
+		BookingStatus: c.BookingStatus,
 		CreatedAt:     c.CreatedAt,
 		UpdatedAt:     c.UpdatedAt,
 	}
@@ -55,6 +57,7 @@ func toBookingCore(c Booking) booking.Core {
 		StartDate:     c.StartDate,
 		EndDate:       c.EndDate,
 		PaymentStatus: c.PaymentStatus,
+		BookingStatus: c.BookingStatus,
 		CreatedAt:     c.CreatedAt,
 		UpdatedAt:     c.UpdatedAt,
 	}

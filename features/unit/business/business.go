@@ -2,6 +2,7 @@ package business
 
 import (
 	"context"
+	"fmt"
 	"ofspace-be/features/booking"
 	"ofspace-be/features/building"
 	"ofspace-be/features/facility"
@@ -47,10 +48,12 @@ func (ub *unitBusiness) GetAllUnit(c context.Context, buildingId uint) ([]unit.C
 func (ub *unitBusiness) GetUnitById(c context.Context, buildingId uint, facilityId uint) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
+
 	unit1, err := ub.unitData.GetUnitById(ctx, buildingId, facilityId)
 	if err != nil {
 		return unit.Core{}, err
 	}
+	fmt.Println(unit1.TotalUnit)
 	return unit1, nil
 }
 func (ub *unitBusiness) GetUnitByType(c context.Context, buildingId uint, typeUnit string) (unit.Core, error) {
@@ -70,15 +73,10 @@ func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core
 		return unit.Core{}, err
 	}
 	data.UpdatedAt = time.Now()
-	//fromBooking, err2 := ub.bookingBusiness.GetAllBookingByBuilding(ctx, data.BuildingId)
-	//if err2 != nil {
-	//	return unit.Core{}, err2
-	//}
 
-	//data.RemainingUnit = (data.TotalUnit - sum of unit sold)
-	up, err := ub.unitData.UpdateUnit(ctx, data)
-	if err != nil {
-		return unit.Core{}, err
+	up, err4 := ub.unitData.UpdateUnit(ctx, data)
+	if err4 != nil {
+		return unit.Core{}, err4
 	}
 	return up, nil
 }

@@ -51,10 +51,10 @@ func (b *bookingBusiness) GetAllBooking(c context.Context) ([]booking.Core, erro
 	return data, nil
 }
 
-func (b *bookingBusiness) GetAllBookingByBuilding(c context.Context, buildingId uint) ([]booking.Core, error) {
+func (b *bookingBusiness) GetAllBookingByUnit(c context.Context, unitId uint) ([]booking.Core, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
-	data, err := b.bookingData.GetAllBookingByBuilding(ctx, buildingId)
+	data, err := b.bookingData.GetAllBookingByUnit(ctx, unitId)
 	if err != nil {
 		return []booking.Core{}, err
 	}
@@ -85,6 +85,16 @@ func (b bookingBusiness) SearchBookingByPayment(c context.Context, buildingId ui
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	data, err := b.bookingData.SearchBookingByPayment(ctx, buildingId, paymentStatus)
+	if err != nil {
+		return []booking.Core{}, err
+	}
+	return data, nil
+}
+
+func (b bookingBusiness) GetBookingByStatus(c context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
+	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+	defer error1()
+	data, err := b.bookingData.GetBookingByStatus(ctx, buildingId, bookingStatus)
 	if err != nil {
 		return []booking.Core{}, err
 	}
