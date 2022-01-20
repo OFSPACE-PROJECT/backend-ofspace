@@ -118,7 +118,7 @@ func New() *Presenter {
 	//wishlist
 	wData := wishlistData.NewWishlistData(config.DB)
 	wBusiness := wishlistBusiness.NewWishlistBusiness(wData, timeoutContext)
-	wPresentation := wishlistPresentation.NewFacilityPresentation(wBusiness)
+	wPresentation := wishlistPresentation.NewWishlistPresentation(wBusiness)
 
 	//review
 	rData := reviewData.NewReviewData(config.DB)
