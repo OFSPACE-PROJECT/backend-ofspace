@@ -1,6 +1,6 @@
 name: "running unit test, build docker image"
 on:
-  pull request:
+  pull_request:
     branches:
       - "master"
   push:
