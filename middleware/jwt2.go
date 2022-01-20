@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"github.com/joho/godotenv"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -8,6 +10,10 @@ import (
 )
 
 func CreateTokens(userId uint, name string, role string) (string, error) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err.Error())
+	}
 	claims := jwt.MapClaims{}
 
 	claims["userId"] = userId
@@ -16,7 +22,7 @@ func CreateTokens(userId uint, name string, role string) (string, error) {
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	JWT := "123"
+	JWT := os.Getenv("JWT_SECRET")
 	return token.SignedString([]byte(JWT))
 }
 
