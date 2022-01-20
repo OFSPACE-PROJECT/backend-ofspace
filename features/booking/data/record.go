@@ -1,1 +1,74 @@
 package data
+
+import (
+	"ofspace-be/features/booking"
+	"time"
+)
+
+type Booking struct {
+	ID           uint `gorm:"primaryKey"`
+	CostumerId   uint
+	ConsultantId uint
+	//User          user.User `gorm:"foreignKey:CostumerId"`
+	BuildingId uint
+	//Building      building.Building `gorm:"foreignKey:BuildingId"`
+	UnitId uint
+	//Unit          unit.Unit `gorm:"foreignKey:UnitId"`
+	ConfirmedName string
+	TotalBought   uint
+	Price         float32
+	DealDate      time.Time
+	StartDate     time.Time
+	EndDate       time.Time
+	PaymentStatus string `gorm:"default:unconfirmed"`
+	BookingStatus string `gorm:"default:deal"`
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+}
+
+func fromBookingCore(c booking.Core) Booking {
+	return Booking{
+		ID:            c.ID,
+		CostumerId:    c.CostumerId,
+		ConsultantId:  c.ConsultantId,
+		BuildingId:    c.BuildingId,
+		UnitId:        c.UnitId,
+		ConfirmedName: c.ConfirmedName,
+		TotalBought:   c.TotalBought,
+		Price:         c.Price,
+		DealDate:      c.DealDate,
+		StartDate:     c.StartDate,
+		EndDate:       c.EndDate,
+		PaymentStatus: c.PaymentStatus,
+		BookingStatus: c.BookingStatus,
+		CreatedAt:     c.CreatedAt,
+		UpdatedAt:     c.UpdatedAt,
+	}
+}
+
+func toBookingCore(c Booking) booking.Core {
+	return booking.Core{
+		ID:            c.ID,
+		CostumerId:    c.CostumerId,
+		ConsultantId:  c.ConsultantId,
+		BuildingId:    c.BuildingId,
+		UnitId:        c.UnitId,
+		ConfirmedName: c.ConfirmedName,
+		TotalBought:   c.TotalBought,
+		Price:         c.Price,
+		DealDate:      c.DealDate,
+		StartDate:     c.StartDate,
+		EndDate:       c.EndDate,
+		PaymentStatus: c.PaymentStatus,
+		BookingStatus: c.BookingStatus,
+		CreatedAt:     c.CreatedAt,
+		UpdatedAt:     c.UpdatedAt,
+	}
+}
+
+func toSliceBookingCore(bookings []Booking) (result []booking.Core) {
+	for _, booking1 := range bookings {
+		result = append(result, toBookingCore(booking1))
+	}
+	return
+}

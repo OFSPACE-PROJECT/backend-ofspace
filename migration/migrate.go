@@ -3,6 +3,7 @@ package migration
 import (
 	"ofspace-be/config"
 	accessibility "ofspace-be/features/accessibility/data"
+	booking "ofspace-be/features/booking/data"
 	building "ofspace-be/features/building/data"
 	complex "ofspace-be/features/complex/data"
 	facility "ofspace-be/features/facility/data"
@@ -50,6 +51,7 @@ func AutoMigrate() {
 		&wishlist.Wishlist{},
 		&review.Review{},
 		&review.Booking{},
+		&booking.Booking{},
 	)
 	if err != nil {
 		panic(err)

@@ -11,6 +11,7 @@ import (
 func New() *echo.Echo {
 	presenter := factory.New()
 	e := echo.New()
+	e.Pre(middleware.RemoveTrailingSlash())
 	mid.Logger(e)
 	iJWT := e.Group("")
 	iJWT.Use(middleware.JWT([]byte("123")))
@@ -101,5 +102,19 @@ func New() *echo.Echo {
 	e.GET("/review/:id", presenter.ReviewPresentation.GetOneReview)
 	e.GET("/review/all/:unit", presenter.ReviewPresentation.GetAllReview)
 	e.PUT("/review", presenter.ReviewPresentation.UpdateReview)
+
+	//booking
+	e.POST("/booking", presenter.BookingPresentation.CreateBooking)
+	e.PUT("/booking", presenter.BookingPresentation.UpdateBooking)
+	e.GET("/booking", presenter.BookingPresentation.GetAllBooking)
+	e.GET("/booking/:id", presenter.BookingPresentation.GetOneBooking)
+	e.GET("/booking/:id/name", presenter.BookingPresentation.SearchBookingByName)
+	e.GET("/booking/:id/payment", presenter.BookingPresentation.SearchBookingByPayment)
+	e.GET("/booking/:id/status", presenter.BookingPresentation.GetBookingByStatus)
+	e.GET("/booking/:id/date", presenter.BookingPresentation.FindBookingByDate)
+	e.GET("/booking/:id/sum", presenter.BookingPresentation.GetSumOfTotalBoughtInUnit)
+	e.GET("/booking/:id/earning", presenter.BookingPresentation.GetEarningsInUnitWithDateFilter)
+	e.GET("/booking/:id/sumpayment", presenter.BookingPresentation.GetSumOfPaymentConfirmed)
+
 	return e
 }

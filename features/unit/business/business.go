@@ -2,6 +2,8 @@ package business
 
 import (
 	"context"
+	"fmt"
+	"ofspace-be/features/booking"
 	"ofspace-be/features/building"
 	"ofspace-be/features/facility"
 	"ofspace-be/features/unit"
@@ -14,11 +16,12 @@ type unitBusiness struct {
 	buildingBusiness building.Business
 	facilityBusiness facility.Business
 	userBusiness     users.Business
+	bookingBusiness  booking.Business
 	contextTimeout   time.Duration
 }
 
-func NewUnitBusiness(unitData unit.Data, buildingBusiness building.Business, userBusiness users.Business, facilityBusiness facility.Business, timeout time.Duration) unit.Business {
-	return &unitBusiness{unitData: unitData, contextTimeout: timeout, buildingBusiness: buildingBusiness, userBusiness: userBusiness, facilityBusiness: facilityBusiness}
+func NewUnitBusiness(unitData unit.Data, buildingBusiness building.Business, userBusiness users.Business, facilityBusiness facility.Business, bookingBusiness booking.Business, timeout time.Duration) unit.Business {
+	return &unitBusiness{unitData: unitData, contextTimeout: timeout, buildingBusiness: buildingBusiness, userBusiness: userBusiness, facilityBusiness: facilityBusiness, bookingBusiness: bookingBusiness}
 }
 
 func (ub *unitBusiness) CreateUnit(c context.Context, data unit.Core) (unit.Core, error) {
@@ -45,10 +48,12 @@ func (ub *unitBusiness) GetAllUnit(c context.Context, buildingId uint) ([]unit.C
 func (ub *unitBusiness) GetUnitById(c context.Context, buildingId uint, facilityId uint) (unit.Core, error) {
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
+
 	unit1, err := ub.unitData.GetUnitById(ctx, buildingId, facilityId)
 	if err != nil {
 		return unit.Core{}, err
 	}
+	fmt.Println(unit1.TotalUnit)
 	return unit1, nil
 }
 func (ub *unitBusiness) GetUnitByType(c context.Context, buildingId uint, typeUnit string) (unit.Core, error) {
@@ -68,9 +73,10 @@ func (ub *unitBusiness) UpdateUnit(c context.Context, data unit.Core) (unit.Core
 		return unit.Core{}, err
 	}
 	data.UpdatedAt = time.Now()
-	up, err := ub.unitData.UpdateUnit(ctx, data)
-	if err != nil {
-		return unit.Core{}, err
+
+	up, err4 := ub.unitData.UpdateUnit(ctx, data)
+	if err4 != nil {
+		return unit.Core{}, err4
 	}
 	return up, nil
 }

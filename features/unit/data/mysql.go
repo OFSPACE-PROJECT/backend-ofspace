@@ -94,7 +94,7 @@ func (bd *UnitData) UpdateUnit(ctx context.Context, core unit.Core) (unit.Core, 
 
 func (bd *UnitData) CreateInteriorPhoto(ctx context.Context, core unit.InteriorCore) (unit.InteriorCore, error) {
 	photo := FromInteriorPhotoCore(core)
-	result := bd.Connect.Preload("Unit").Where("unit_id= ?", photo.UnitID).Create(&photo)
+	result := bd.Connect.Where("unit_id= ?", photo.UnitID).Create(&photo)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.InteriorCore{}, result.Error
@@ -154,7 +154,7 @@ func (bd *UnitData) AddFacilityToUnit(c context.Context, facilityId uint, unitId
 		UnitID:     unitId,
 	}
 	thisFacility := facility.Facility{Id: facilityId}
-	err := bd.Connect.Preload("Building").Create(&newFacility).Error
+	err := bd.Connect.Create(&newFacility).Error
 	if err != nil {
 		return unit.Facility{}, err
 	}
@@ -182,8 +182,8 @@ func (bd *UnitData) GetUnitFacility(c context.Context, unitId uint, facilityId u
 }
 func (bd *UnitData) DeleteUnitFacility(c context.Context, unitId uint, facilityId uint) (unit.Core, error) {
 	facs := FromUnitCore(unit.Core{})
-	var facility UnitFacility
-	result := bd.Connect.Debug().Delete(&facility, "unit_id= ? && facility_id= ?", unitId, facilityId)
+	var facility1 UnitFacility
+	result := bd.Connect.Debug().Delete(&facility1, "unit_id= ? && facility_id= ?", unitId, facilityId)
 	if result.Error != nil {
 		return unit.Core{}, result.Error
 	}

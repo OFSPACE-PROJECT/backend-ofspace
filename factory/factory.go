@@ -42,11 +42,19 @@ import (
 	wishlistData "ofspace-be/features/wishlist/data"
 	wishlistPresentation "ofspace-be/features/wishlist/presentation"
 
+
+
+
+	//booking
+	bookingBusiness "ofspace-be/features/booking/business"
+	bookingData "ofspace-be/features/booking/data"
+	bookingPresentation "ofspace-be/features/booking/presentation"
+
 	//review
 	reviewBusiness "ofspace-be/features/review/business"
 	reviewData "ofspace-be/features/review/data"
 	reviewPresentation "ofspace-be/features/review/presentation"
-
+  
 	"time"
 )
 
@@ -58,6 +66,7 @@ type Presenter struct {
 	BuildingPresentation      *buildingPresentation.BuildingPresentation
 	UnitPresentation          *unitPresentation.UnitPresentation
 	WishlistPresentation      *wishlistPresentation.WishlistPresentation
+  BookingPresentation       *bookingPresentation.BookingPresentation
 	ReviewPresentation        *reviewPresentation.ReviewPresentation
 }
 
@@ -91,6 +100,11 @@ func New() *Presenter {
 	facBusiness := facilityBusiness.NewFacilityBusiness(facData, timeoutContext)
 	facPresentation := facilityPresentation.NewFacilityPresentation(facBusiness)
 
+	//booking
+	bookData := bookingData.NewBookingData(config.DB)
+	bookBusiness := bookingBusiness.NewBookingBusiness(bookData, timeoutContext)
+	bookPresentation := bookingPresentation.NewBookingPresentation(bookBusiness)
+
 	//building
 	bData := buildingData.NewBuildingData(config.DB)
 	bBusiness := buildingBusiness.NewBuildingBusiness(bData, timeoutContext, usBusiness, facBusiness)
@@ -98,7 +112,7 @@ func New() *Presenter {
 
 	//unit
 	uData := unitData.NewUnitData(config.DB)
-	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, usBusiness, facBusiness, timeoutContext)
+	uBusiness := unitBusiness.NewUnitBusiness(uData, bBusiness, usBusiness, facBusiness, bookBusiness, timeoutContext)
 	uPresentation := unitPresentation.NewUnitPresentation(uBusiness)
 
 	//wishlist
@@ -110,6 +124,7 @@ func New() *Presenter {
 	rData := reviewData.NewReviewData(config.DB)
 	rBusiness := reviewBusiness.NewReviewBusiness(rData, timeoutContext)
 	rPresentation := reviewPresentation.NewReviewPresentation(rBusiness)
+
 	return &Presenter{
 		usPresentation,
 		compPresentation,
@@ -118,6 +133,7 @@ func New() *Presenter {
 		bPresentation,
 		uPresentation,
 		wPresentation,
+	  bookPresentation,
 		rPresentation,
 	}
 }

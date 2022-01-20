@@ -262,11 +262,11 @@ func (bb *buildingBusiness) AddFacilityToBuilding(c context.Context, facilityId 
 func (bb *buildingBusiness) GetAllBuildingFacility(c context.Context, buildingId uint) (building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
-	buildFacc, err := bb.buildingData.GetAllBuildingFacility(ctx, buildingId)
+	buildFac, err := bb.buildingData.GetAllBuildingFacility(ctx, buildingId)
 	if err != nil {
 		return building.Core{}, err
 	}
-	return buildFacc, nil
+	return buildFac, nil
 }
 func (bb *buildingBusiness) GetBuildingFacility(c context.Context, buildingId uint, facilityId uint) (building.Facility, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
