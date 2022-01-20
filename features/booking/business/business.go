@@ -71,7 +71,7 @@ func (b *bookingBusiness) GetOneBooking(c context.Context, userId uint) (booking
 	return data, nil
 }
 
-func (b bookingBusiness) SearchBookingByName(c context.Context, buildingId uint, name string) ([]booking.Core, error) {
+func (b *bookingBusiness) SearchBookingByName(c context.Context, buildingId uint, name string) ([]booking.Core, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	data, err := b.bookingData.SearchBookingByName(ctx, buildingId, name)
@@ -91,7 +91,7 @@ func (b bookingBusiness) SearchBookingByPayment(c context.Context, buildingId ui
 	return data, nil
 }
 
-func (b bookingBusiness) GetBookingByStatus(c context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
+func (b *bookingBusiness) GetBookingByStatus(c context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	data, err := b.bookingData.GetBookingByStatus(ctx, buildingId, bookingStatus)
@@ -101,7 +101,7 @@ func (b bookingBusiness) GetBookingByStatus(c context.Context, buildingId uint, 
 	return data, nil
 }
 
-func (b bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
+func (b *bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	data, err := b.bookingData.FindBookingByDate(ctx, buildingId, startDate, endDate)
@@ -111,7 +111,7 @@ func (b bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, s
 	return data, nil
 }
 
-func (b bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uint) (int, error) {
+func (b *bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uint) (int, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
@@ -125,4 +125,21 @@ func (b bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uin
 		}
 	}
 	return totalSold, nil
+}
+
+func (b *bookingBusiness) GetEarningsInUnitWithDateFilter(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
+	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+	defer error1()
+	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+	if err2 != nil {
+		return 0, err2
+	}
+	var totalEarning float32 = 0
+	var canceled string = "canceled"
+	for _, j := range fromBooking {
+		if j.DealDate.After(startDate.Local()) && j.DealDate.Before(endDate.Local()) && j.BookingStatus != canceled {
+			totalEarning += j.Price
+		}
+	}
+	return int(totalEarning), nil
 }

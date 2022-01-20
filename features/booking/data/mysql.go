@@ -112,15 +112,25 @@ func (b *BookingData) FindBookingByDate(ctx context.Context, buildingId uint, st
 	return toSliceBookingCore(booking1), nil
 }
 
-func (b *BookingData) GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error) {
-	var booking1 []Booking
-	result := b.Connect.Find("booking_status='rented' && unit_id= ?", unitId)
-	if result.Error != nil {
-		return 0, result.Error
-	}
-	sum := 0
-	for _, j := range booking1 {
-		sum += int(j.TotalBought)
-	}
-	return sum, nil
-}
+//func (b *BookingData) GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error) {
+//	var booking1 []Booking
+//	result := b.Connect.Find("booking_status='rented' && unit_id= ?", unitId)
+//	if result.Error != nil {
+//		return 0, result.Error
+//	}
+//	sum := 0
+//	for _, j := range booking1 {
+//		sum += int(j.TotalBought)
+//	}
+//	return sum, nil
+//}
+
+//func (b *BookingData) GetEarningsInUnitWithDateFilter(ctx context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
+//	//var booking1 []Booking
+//	//result := b.Connect.Debug().Find("DATE(deal_date) BETWEEN ? AND ? && unit_id= ? AND booking_status='rented'", startDate, endDate, unitId)
+//	//result := b.Connect.Debug().Raw("SELECT * from 'bookings' unit_id= ? AND booking_status='rented'", unitId)
+//	//if result.Error != nil {
+//	//	return 0, result.Error
+//	//}
+//	return 1, nil
+//}
