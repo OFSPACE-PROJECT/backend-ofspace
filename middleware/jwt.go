@@ -1,19 +1,37 @@
 package middleware
 
 import (
+	"github.com/joho/godotenv"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/labstack/echo/v4"
 )
 
-func CreateToken(userId int) (string, error) {
-	claims := jwt.MapClaims{
-		"userid": int64(userId),
-		"role":   "admin",
-		"exp":    time.Now().Add(time.Hour * 72).Unix(),
+func CreateTokens(userId uint, name string, role string) (string, error) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err.Error())
 	}
-	//JWT := os.Getenv("JWT_SECRET")
-	tokenWithClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tk, err := tokenWithClaims.SignedString([]byte("JWT"))
-	return tk, err
+	claims := jwt.MapClaims{}
+
+	claims["userId"] = userId
+	claims["name"] = name
+	claims["role"] = role
+	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	JWT := os.Getenv("JWT_SECRET")
+	return token.SignedString([]byte(JWT))
+}
+
+func ExtractClaim(e echo.Context) (claims map[string]interface{}) {
+	user := e.Get("user").(*jwt.Token)
+
+	if user.Valid {
+		claims = user.Claims.(jwt.MapClaims)
+	}
+
+	return
 }
