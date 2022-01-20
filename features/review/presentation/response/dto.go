@@ -22,15 +22,15 @@ type Review struct {
 }
 
 type User struct {
-	ID   uint   `json:"customer_id"`
-	Name string `json:"customer_name"`
+	ID   uint   `json:"customer_id,omitempty"`
+	Name string `json:"customer_name,omitempty"`
 }
 
 type Unit struct {
-	Id          uint   `json:"unit_id"`
-	BuildingId  uint   `json:"unit_building_id"`
-	Description string `json:"unit_description"`
-	UnitType    string `json:"unit_type"`
+	Id          uint   `json:"unit_id,omitempty"`
+	BuildingId  uint   `json:"unit_building_id,omitempty"`
+	Description string `json:"unit_description,omitempty"`
+	UnitType    string `json:"unit_type,omitempty"`
 }
 
 func FromUserCore(req review.User) User {
