@@ -2,15 +2,19 @@ package booking
 
 import (
 	"context"
+	"ofspace-be/features/unit"
 	"time"
 )
 
 type Core struct {
-	ID            uint
-	CostumerId    uint
-	ConsultantId  uint
-	BuildingId    uint
+	ID           uint
+	CostumerId   uint
+	ConsultantId uint
+	//User          users.Core
+	BuildingId uint
+	//Building      building.Core
 	UnitId        uint
+	Unit          unit.Core
 	ConfirmedName string
 	TotalBought   uint
 	Price         float32
@@ -34,6 +38,7 @@ type Business interface {
 	FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]Core, error)
 	GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error)
 	GetEarningsInUnitWithDateFilter(ctx context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error)
+	GetSumOfPaymentConfirmed(ctx context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error)
 }
 
 type Data interface {
@@ -46,6 +51,7 @@ type Data interface {
 	SearchBookingByName(ctx context.Context, buildingId uint, name string) ([]Core, error)
 	SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]Core, error)
 	FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]Core, error)
+
 	//GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error)
 	//GetEarningsInUnitWithDateFilter(ctx context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error)
 }

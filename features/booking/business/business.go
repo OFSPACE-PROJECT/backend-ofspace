@@ -143,3 +143,19 @@ func (b *bookingBusiness) GetEarningsInUnitWithDateFilter(c context.Context, uni
 	}
 	return int(totalEarning), nil
 }
+
+func (b *bookingBusiness) GetSumOfPaymentConfirmed(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
+	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+	defer error1()
+	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+	if err2 != nil {
+		return 0, err2
+	}
+	var totalConfirm int = 0
+	for _, j := range fromBooking {
+		if j.DealDate.After(startDate) && j.DealDate.Before(endDate) && j.PaymentStatus == "confirmed" {
+			totalConfirm += 1
+		}
+	}
+	return int(totalConfirm), nil
+}

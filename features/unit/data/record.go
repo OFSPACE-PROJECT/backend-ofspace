@@ -7,9 +7,10 @@ import (
 )
 
 type Unit struct {
-	Id             uint `gorm:"primaryKey"`
-	UserId         uint `gorm:"not null"`
-	BuildingId     uint `gorm:"not null" json:"building_id"`
+	Id         uint `gorm:"primaryKey"`
+	UserId     uint `gorm:"not null"`
+	BuildingId uint `gorm:"not null" json:"building_id"`
+	//Building       building.Building `gorm:"foreignKey:BuildingId"`
 	Description    string
 	UnitType       string
 	Price          float32
@@ -42,32 +43,34 @@ type InteriorPhoto struct {
 
 func toUnitCore(b *Unit) unit.Core {
 	return unit.Core{
-		Id:             b.Id,
-		UserId:         b.UserId,
-		BuildingId:     b.BuildingId,
-		Description:    b.Description,
-		UnitType:       b.UnitType,
-		Price:          b.Price,
-		TotalUnit:      b.TotalUnit,
-		RemainingUnit:  b.RemainingUnit,
-		UnitFacilities: ToSliceUnitFacilityCore(b.UnitFacilities),
-		InteriorPhoto:  ToSliceInteriorPhotoCore(b.InteriorPhotos),
-		CreatedAt:      time.Time{},
-		UpdatedAt:      time.Time{},
-	}
-}
-
-func FromUnitCore(b unit.Core) Unit {
-	return Unit{
-		Id:            b.Id,
-		UserId:        b.UserId,
-		BuildingId:    b.BuildingId,
+		Id:         b.Id,
+		UserId:     b.UserId,
+		BuildingId: b.BuildingId,
+		//Building:      b.Building.ToBuildingCore(),
 		Description:   b.Description,
 		UnitType:      b.UnitType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
-		//UnitFacilities: fromb.UnitFacilities,
+		//UnitFacilities: ToSliceUnitFacilityCore(b.UnitFacilities),
+		InteriorPhoto: ToSliceInteriorPhotoCore(b.InteriorPhotos),
+		CreatedAt:     time.Time{},
+		UpdatedAt:     time.Time{},
+	}
+}
+
+func FromUnitCore(b unit.Core) Unit {
+	return Unit{
+		Id:         b.Id,
+		UserId:     b.UserId,
+		BuildingId: b.BuildingId,
+		//Building:      building.FromBuildingCore(b.Building),
+		Description:   b.Description,
+		UnitType:      b.UnitType,
+		Price:         b.Price,
+		TotalUnit:     b.TotalUnit,
+		RemainingUnit: b.RemainingUnit,
+		//UnitFacilities: FromUnitFacilityCore(b.UnitFacilities),
 		InteriorPhotos: fromSliceInteriorCore(b.InteriorPhoto),
 		CreatedAt:      time.Time{},
 		UpdatedAt:      time.Time{},
@@ -134,7 +137,17 @@ func toFacilityCore(b *facility.Facility) unit.Facility {
 	}
 }
 
-func ToSliceUnitFacilityCore(e []facility.Facility) []unit.Facility {
+//func ToSliceUnitFacilityCore(e []unit.Facility) []unit.Facility {
+//	fac := make([]unit.Facility, len(e))
+//
+//	for i, v := range e {
+//		fac[i] = toFacilityCore(&v)
+//	}
+//
+//	return fac
+//}
+
+func FromSliceUnitFacilityCore(e []facility.Facility) []unit.Facility {
 	fac := make([]unit.Facility, len(e))
 
 	for i, v := range e {

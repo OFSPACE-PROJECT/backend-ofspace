@@ -6,9 +6,11 @@ import (
 )
 
 type Core struct {
-	Id             uint
-	UserId         uint
-	BuildingId     uint
+	Id     uint
+	UserId uint
+	//User           users.Core
+	BuildingId uint
+	//Building       building.Core
 	Description    string
 	UnitType       string
 	Price          float32
