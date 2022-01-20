@@ -1,10 +1,11 @@
 package routes
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"ofspace-be/factory"
 	mid "ofspace-be/middleware"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func New() *echo.Echo {
@@ -95,6 +96,12 @@ func New() *echo.Echo {
 	e.GET("/wishlist/:id", presenter.WishlistPresentation.GetWishlist)
 	e.GET("/wishlist", presenter.WishlistPresentation.GetAllWishlists)
 	e.DELETE("/wishlist/:id", presenter.WishlistPresentation.DeleteWishlist)
+
+	// review
+	e.POST("/review", presenter.ReviewPresentation.CreateReview)
+	e.GET("/review/:id", presenter.ReviewPresentation.GetOneReview)
+	e.GET("/review/all/:unit", presenter.ReviewPresentation.GetAllReview)
+	e.PUT("/review", presenter.ReviewPresentation.UpdateReview)
 
 	//booking
 	e.POST("/booking", presenter.BookingPresentation.CreateBooking)
