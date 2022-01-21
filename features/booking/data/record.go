@@ -6,14 +6,12 @@ import (
 )
 
 type Booking struct {
-	ID           uint `gorm:"primaryKey"`
-	CostumerId   uint
-	ConsultantId uint
-	User         User `gorm:"foreignKey:CostumerId"`
-	BuildingId   uint
-	//Building      building.Building `gorm:"foreignKey:BuildingId"`
-	UnitId uint
-	//Unit          unit.Unit `gorm:"foreignKey:UnitId"`
+	ID            uint `gorm:"primaryKey"`
+	CostumerId    uint
+	ConsultantId  uint
+	User          User `gorm:"foreignKey:CostumerId"`
+	BuildingId    uint
+	UnitId        uint
 	ConfirmedName string
 	TotalBought   uint
 	Price         float32

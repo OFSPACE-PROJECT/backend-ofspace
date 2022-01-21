@@ -17,10 +17,15 @@ func NewBookingBusiness(bookingData booking.Data, timeout time.Duration) booking
 }
 
 func (b *bookingBusiness) CreateBooking(c context.Context, data booking.Core) (booking.Core, error) {
+
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()
 	data.UpdatedAt = time.Now()
 	build, err2 := b.bookingData.CreateBooking(ctx, data)
+	err := email.SendEmail(build)
+	if err != nil {
+		return booking.Core{}, err
+	}
 	if err2 != nil {
 		return booking.Core{}, err2
 	}
