@@ -23,6 +23,7 @@ func SendEmail(bookData booking.Core) error {
 	if err != nil {
 		log.Fatalf("Error getting env, %v", err)
 	}
+
 	data := Message{
 		ReceiverName:  bookData.ConfirmedName,
 		SenderName:    "Ofspace",
