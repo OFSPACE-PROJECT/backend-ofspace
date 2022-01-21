@@ -3,6 +3,7 @@ package business
 import (
 	"context"
 	"ofspace-be/features/booking"
+	"ofspace-be/helpers/email"
 	"time"
 )
 
@@ -33,10 +34,17 @@ func (b *bookingBusiness) UpdateBooking(c context.Context, data booking.Core) (b
 	if err != nil {
 		return booking.Core{}, err
 	}
+
 	data.UpdatedAt = time.Now()
 	up, err2 := b.bookingData.UpdateBooking(ctx, data)
 	if err2 != nil {
 		return booking.Core{}, err
+	}
+	if up.BookingStatus == "deal" || up.BookingStatus == "rented" {
+		err = email.SendEmail(up)
+		if err != nil {
+			return booking.Core{}, err
+		}
 	}
 	return up, nil
 }

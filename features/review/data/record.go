@@ -46,13 +46,29 @@ type Unit struct {
 	UnitType    string
 }
 
+func toUserCore(u User) review.User {
+	return review.User{
+		ID:   u.ID,
+		Name: u.Name,
+	}
+}
+
+func toUnitCore(b Unit) review.Unit {
+	return review.Unit{
+		Id:          b.Id,
+		BuildingId:  b.BuildingId,
+		Description: b.Description,
+		UnitType:    b.UnitType,
+	}
+}
+
 func toReviewCore(u Review) review.Core {
 	return review.Core{
 		Id:               u.Id,
 		CustomerId:       u.CustomerId,
-		Customer:         review.User(u.Customer),
+		Customer:         toUserCore(u.Customer),
 		UnitId:           u.UnitId,
-		Unit:             review.Unit(u.Unit),
+		Unit:             toUnitCore(u.Unit),
 		BookingId:        u.BookingId,
 		RatingAccess:     u.RatingAccess,
 		RatingFacility:   u.RatingFacility,

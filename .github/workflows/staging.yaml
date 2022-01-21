@@ -25,10 +25,10 @@ jobs:
     needs: unit-test
     steps:
       - uses: actions/checkout@v2
-     # - name: add env
-      #  env :
-      #    .ENV: ${{secrets.ENV}}
-      #  run : echo "$.ENV" > .env
+      - name: add .env
+        env :
+         ENV: ${{secrets.ENV}}
+        run : echo "$ENV" > .env
       - name: build image
         run: docker build -t rizamahard/ofspace .
       - name: login dockerhub
