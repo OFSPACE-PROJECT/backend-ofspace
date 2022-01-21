@@ -8,10 +8,15 @@ import (
 type Core struct {
 	Id         uint
 	UserId     uint
+	User       User
 	BuildingId uint
 	UnitId     uint
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+}
+type User struct {
+	ID   uint
+	Name string
 }
 type Business interface {
 	CreateWishlist(ctx context.Context, wishlist Core) (Core, error)

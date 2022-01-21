@@ -25,7 +25,7 @@ func (wd *wishlistData) CreateWishlist(ctx context.Context, core wishlist.Core) 
 }
 func (wd *wishlistData) GetWishlist(ctx context.Context, wishlistId uint) (wishlist.Core, error) {
 	var wishlist1 Wishlist
-	result := wd.Connect.First(&wishlist1, "id= ?", wishlistId)
+	result := wd.Connect.Preload("User").First(&wishlist1, "id= ?", wishlistId)
 	if result.Error != nil {
 		return wishlist.Core{}, result.Error
 	}

@@ -25,7 +25,7 @@ func (cd *complexData) CreateComplex(ctx context.Context, core complex2.Core) (c
 
 func (cd *complexData) GetComplex(ctx context.Context, id uint) (complex2.Core, error) {
 	var complex1 Complex
-	result := cd.Connect.First(&complex1, "id= ?", id)
+	result := cd.Connect.Preload("Buildings").First(&complex1, "id= ?", id)
 	if result.Error != nil {
 		return complex2.Core{}, result.Error
 	}

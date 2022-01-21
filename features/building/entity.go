@@ -2,6 +2,7 @@ package building
 
 import (
 	"context"
+	"ofspace-be/features/unit"
 	"time"
 )
 
@@ -9,6 +10,7 @@ type Core struct {
 	Id                 uint
 	UserId             uint
 	ComplexId          uint
+	Units              []unit.Core
 	Name               string
 	Description        string
 	OfficeHours        string

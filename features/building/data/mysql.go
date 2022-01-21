@@ -59,7 +59,7 @@ func (bd *BuildingData) SearchBuildingByName(ctx context.Context, name string, s
 
 func (bd *BuildingData) GetBuildingById(ctx context.Context, id uint) (building.Core, error) {
 	var build Building
-	result := bd.Connect.Preload("BuildingFacilities").Preload("ExteriorPhotos").Preload("FloorPhotos").First(&build, "id= ?", id)
+	result := bd.Connect.Preload("BuildingFacilities").Preload("ExteriorPhotos").Preload("FloorPhotos").Preload("Units").First(&build, "id= ?", id)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Core{}, result.Error

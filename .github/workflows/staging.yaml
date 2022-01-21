@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - "master"
+      - "code_review"
 jobs:
   unit-test:
     name: "unit test"

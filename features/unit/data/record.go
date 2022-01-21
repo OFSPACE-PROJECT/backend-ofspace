@@ -7,10 +7,9 @@ import (
 )
 
 type Unit struct {
-	Id         uint `gorm:"primaryKey"`
-	UserId     uint `gorm:"not null"`
-	BuildingId uint `gorm:"not null" json:"building_id"`
-	//Building       building.Building `gorm:"foreignKey:BuildingId"`
+	Id             uint `gorm:"primaryKey"`
+	UserId         uint `gorm:"not null"`
+	BuildingId     uint `gorm:"not null" json:"building_id"`
 	Description    string
 	UnitType       string
 	Price          float32
@@ -46,13 +45,13 @@ func toUnitCore(b *Unit) unit.Core {
 		Id:         b.Id,
 		UserId:     b.UserId,
 		BuildingId: b.BuildingId,
-		//Building:      b.Building.ToBuildingCore(),
+		//Building:
 		Description:   b.Description,
 		UnitType:      b.UnitType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
-		//UnitFacilities: ToSliceUnitFacilityCore(b.UnitFacilities),
+		//UnitFacilities: (b.UnitFacilities),
 		InteriorPhoto: ToSliceInteriorPhotoCore(b.InteriorPhotos),
 		CreatedAt:     time.Time{},
 		UpdatedAt:     time.Time{},
@@ -61,10 +60,9 @@ func toUnitCore(b *Unit) unit.Core {
 
 func FromUnitCore(b unit.Core) Unit {
 	return Unit{
-		Id:         b.Id,
-		UserId:     b.UserId,
-		BuildingId: b.BuildingId,
-		//Building:      building.FromBuildingCore(b.Building),
+		Id:            b.Id,
+		UserId:        b.UserId,
+		BuildingId:    b.BuildingId,
 		Description:   b.Description,
 		UnitType:      b.UnitType,
 		Price:         b.Price,
@@ -118,6 +116,12 @@ func ToSliceInteriorPhotoCore(e []InteriorPhoto) []unit.InteriorCore {
 func fromSliceInteriorCore(photos []unit.InteriorCore) (result []InteriorPhoto) {
 	for _, photo := range photos {
 		result = append(result, FromInteriorPhotoCore(photo))
+	}
+	return
+}
+func FromSliceUnitCore(units []unit.Core) (result []Unit) {
+	for _, unit1 := range units {
+		result = append(result, FromUnitCore(unit1))
 	}
 	return
 }

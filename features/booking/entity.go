@@ -7,12 +7,11 @@ import (
 )
 
 type Core struct {
-	ID           uint
-	CostumerId   uint
-	ConsultantId uint
-	User         User
-	BuildingId   uint
-	//Building      building.Core
+	ID            uint
+	CostumerId    uint
+	ConsultantId  uint
+	User          User
+	BuildingId    uint
 	UnitId        uint
 	Unit          unit.Core
 	ConfirmedName string

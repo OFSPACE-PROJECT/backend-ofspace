@@ -18,6 +18,7 @@ type Booking struct {
 	StartDate     time.Time `json:"start_date"`
 	EndDate       time.Time `json:"end_date"`
 	PaymentStatus string    `json:"payment_status"`
+	BookingStatus string    `json:"booking_status"`
 }
 
 func FromBookingCore(b booking.Core) Booking {
@@ -34,6 +35,7 @@ func FromBookingCore(b booking.Core) Booking {
 		StartDate:     b.StartDate,
 		EndDate:       b.EndDate,
 		PaymentStatus: b.PaymentStatus,
+		BookingStatus: b.BookingStatus,
 	}
 }
 func FromListBookingCore(core []booking.Core) (response []Booking) {

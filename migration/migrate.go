@@ -40,9 +40,9 @@ func AutoMigrate() {
 
 	err := db.AutoMigrate(
 		&user.User{},
-		&complex.Complex{},
 		&accessibility.Accessibility{},
 		&facility.Facility{},
+		&complex.Complex{},
 		&building.Building{},
 		&unit.Unit{},
 		&building.ExteriorPhoto{},

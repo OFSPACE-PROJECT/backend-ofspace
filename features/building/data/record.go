@@ -3,6 +3,7 @@ package data
 import (
 	"ofspace-be/features/building"
 	facility2 "ofspace-be/features/facility"
+	unit "ofspace-be/features/unit/data"
 
 	//"ofspace-be/features/facility"
 	facility "ofspace-be/features/facility/data"
@@ -10,9 +11,10 @@ import (
 )
 
 type Building struct {
-	Id                 uint `gorm:"primaryKey"`
-	UserId             uint `gorm:"not null"`
-	ComplexId          uint `gorm:"not null" json:"complex_id"`
+	Id                 uint        `gorm:"primaryKey"`
+	UserId             uint        `gorm:"not null"`
+	ComplexId          uint        `gorm:"not null" json:"complex_id"`
+	Units              []unit.Unit `gorm:"foreignKey:BuildingId"`
 	Name               string
 	Description        string
 	OfficeHours        string
@@ -58,6 +60,8 @@ type FloorPhoto struct {
 	UpdatedAt   time.Time
 }
 
+var a = building.Core{}
+
 func toBuildingCore(b *Building) building.Core {
 	return building.Core{
 		Id:                 b.Id,
@@ -73,6 +77,7 @@ func toBuildingCore(b *Building) building.Core {
 		Parking:            b.Parking,
 		Toilets:            b.Toilets,
 		BuildingStatus:     b.BuildingStatus,
+		Units:              unit.ListUnitToCore(b.Units),
 		BuildingFacilities: ToSliceFacilityCore(b.BuildingFacilities),
 		ExteriorPhotos:     ToSliceExteriorPhotoCore(b.ExteriorPhotos),
 		FloorPhotos:        ToSliceFloorPhotoCore(b.FloorPhotos),
@@ -104,6 +109,7 @@ func FromBuildingCore(b building.Core) Building {
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,
 		BuildingStatus:   b.BuildingStatus,
+		Units:            unit.FromSliceUnitCore(b.Units),
 		//BuildingFacilities: FromBuildingFacilityCore(c.BuildingFacilities,
 		ExteriorPhotos: fromSliceExteriorCore(b.ExteriorPhotos),
 		FloorPhotos:    fromSliceFloorCore(b.FloorPhotos),
@@ -163,10 +169,41 @@ func (c *Building) ToBuildingCore() building.Core {
 		UpdatedAt:          time.Time{},
 	}
 }
+
+//func (c *building.Core) FromBuildingCore() Building {
+//	return Building{
+//		Id:                 c.Id,
+//		UserId:             c.UserId,
+//		ComplexId:          c.ComplexId,
+//		Name:               c.Name,
+//		Description:        c.Description,
+//		OfficeHours:        c.OfficeHours,
+//		BuildingSize:       c.BuildingSize,
+//		AverageFloorSize:   c.AverageFloorSize,
+//		YearConstructed:    c.YearConstructed,
+//		Lifts:              c.Lifts,
+//		Parking:            c.Parking,
+//		Toilets:            c.Toilets,
+//		BuildingStatus:     c.BuildingStatus,
+//		BuildingFacilities: ToSliceFacilityCore(c.BuildingFacilities),
+//		ExteriorPhotos:     ToSliceExteriorPhotoCore(c.ExteriorPhotos),
+//		FloorPhotos:        ToSliceFloorPhotoCore(c.FloorPhotos),
+//		CreatedAt:          time.Time{},
+//		UpdatedAt:          time.Time{},
+//	}
+//}
+
 func ToListBuildingCore(data []Building) (result []building.Core) {
 	result = []building.Core{}
 	for _, builds := range data {
 		result = append(result, builds.ToBuildingCore())
+	}
+	return
+}
+func FromListBuildingCore(data []building.Core) (result []Building) {
+	result = []Building{}
+	for _, builds := range data {
+		result = append(result, FromBuildingCore(builds))
 	}
 	return
 }
