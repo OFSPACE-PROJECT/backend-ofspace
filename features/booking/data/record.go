@@ -9,8 +9,8 @@ type Booking struct {
 	ID           uint `gorm:"primaryKey"`
 	CostumerId   uint
 	ConsultantId uint
-	//User          user.User `gorm:"foreignKey:CostumerId"`
-	BuildingId uint
+	User         User `gorm:"foreignKey:CostumerId"`
+	BuildingId   uint
 	//Building      building.Building `gorm:"foreignKey:BuildingId"`
 	UnitId uint
 	//Unit          unit.Unit `gorm:"foreignKey:UnitId"`
@@ -24,6 +24,19 @@ type Booking struct {
 	BookingStatus string `gorm:"default:deal"`
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
+}
+
+type User struct {
+	ID    uint
+	Name  string
+	Email string
+}
+
+func toUserCore(u User) booking.User {
+	return booking.User{
+		ID:   u.ID,
+		Name: u.Name,
+	}
 }
 
 func fromBookingCore(c booking.Core) Booking {
@@ -50,6 +63,7 @@ func toBookingCore(c Booking) booking.Core {
 	return booking.Core{
 		ID:            c.ID,
 		CostumerId:    c.CostumerId,
+		User:          toUserCore(c.User),
 		ConsultantId:  c.ConsultantId,
 		BuildingId:    c.BuildingId,
 		UnitId:        c.UnitId,

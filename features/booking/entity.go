@@ -10,8 +10,8 @@ type Core struct {
 	ID           uint
 	CostumerId   uint
 	ConsultantId uint
-	//User          users.Core
-	BuildingId uint
+	User         User
+	BuildingId   uint
 	//Building      building.Core
 	UnitId        uint
 	Unit          unit.Core
@@ -26,6 +26,13 @@ type Core struct {
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 }
+
+type User struct {
+	ID    uint
+	Name  string
+	Email string
+}
+
 type Business interface {
 	GetAllBooking(ctx context.Context) ([]Core, error)
 	GetAllBookingByUnit(ctx context.Context, unitId uint) ([]Core, error)
