@@ -1,8 +1,10 @@
 package routes
 
 import (
+	"github.com/joho/godotenv"
 	"ofspace-be/factory"
 	mid "ofspace-be/middleware"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -13,8 +15,13 @@ func New() *echo.Echo {
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
 	mid.Logger(e)
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err.Error())
+	}
+	JWTSecret := os.Getenv("JWT_SECRET")
 	iJWT := e.Group("")
-	iJWT.Use(middleware.JWT([]byte("123")))
+	iJWT.Use(middleware.JWT([]byte(JWTSecret)))
 	// user
 	e.POST("/register", presenter.UserPresentation.RegisterUser)
 	e.POST("/login", presenter.UserPresentation.LoginUser)
