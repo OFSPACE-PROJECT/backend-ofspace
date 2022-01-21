@@ -13,6 +13,7 @@ type Core struct {
 	Units              []unit.Core
 	Name               string
 	Description        string
+	ImageURL           string
 	OfficeHours        string
 	BuildingSize       string
 	AverageFloorSize   string

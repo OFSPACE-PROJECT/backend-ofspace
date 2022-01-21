@@ -9,6 +9,7 @@ type CreateBuilding struct {
 	ComplexId        uint   `json:"complex_id"`
 	Name             string `json:"name"`
 	Description      string `json:"description"`
+	ImageURL         string `json:"image_url"`
 	OfficeHours      string `json:"office_hours"`
 	BuildingSize     string `json:"building_size"`
 	AverageFloorSize string `json:"average_floor_size"`
@@ -22,6 +23,7 @@ type UpdateBuilding struct {
 	Id               uint   `json:"id"`
 	Name             string `json:"name"`
 	Description      string `json:"description"`
+	ImageURL         string `json:"image_url"`
 	OfficeHours      string `json:"office_hours"`
 	BuildingSize     string `json:"building_size"`
 	AverageFloorSize string `json:"average_floor_size"`
@@ -73,6 +75,7 @@ func (c *UpdateBuilding) ToUpdateCore() building.Core {
 		Name:             c.Name,
 		Description:      c.Description,
 		OfficeHours:      c.OfficeHours,
+		ImageURL:         c.ImageURL,
 		BuildingSize:     c.BuildingSize,
 		AverageFloorSize: c.AverageFloorSize,
 		YearConstructed:  c.YearConstructed,
@@ -112,6 +115,7 @@ func (c *CreateBuilding) ToCore() building.Core {
 		ComplexId:        c.ComplexId,
 		Name:             c.Name,
 		Description:      c.Description,
+		ImageURL:         c.ImageURL,
 		OfficeHours:      c.OfficeHours,
 		BuildingSize:     c.BuildingSize,
 		AverageFloorSize: c.AverageFloorSize,
