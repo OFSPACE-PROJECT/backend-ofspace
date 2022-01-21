@@ -50,7 +50,6 @@ func AutoMigrate() {
 		&unit.InteriorPhoto{},
 		&wishlist.Wishlist{},
 		&review.Review{},
-		&review.Booking{},
 		&booking.Booking{},
 	)
 	if err != nil {
