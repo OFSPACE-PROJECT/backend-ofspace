@@ -4,6 +4,8 @@ import (
 	"log"
 	"ofspace-be/features/booking"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 type Message struct {
@@ -17,6 +19,10 @@ type Message struct {
 }
 
 func SendEmail(bookData booking.Core) error {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error getting env, %v", err)
+	}
 	data := Message{
 		ReceiverName:  bookData.ConfirmedName,
 		SenderName:    "Ofspace",
