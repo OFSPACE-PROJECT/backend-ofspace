@@ -1,12 +1,8 @@
 name: "running unit test, build docker image"
 on:
-  pull_request:
-    branches:
-      - "master"
   push:
     branches:
       - "master"
-      - "code_review"
 jobs:
   unit-test:
     name: "unit test"
