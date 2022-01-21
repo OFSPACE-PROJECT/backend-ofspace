@@ -12,6 +12,7 @@ type Building struct {
 	ComplexId          uint            `gorm:"not null" json:"complex_id"`
 	Name               string          `json:"name"`
 	Description        string          `json:"description"`
+	ImageURL           string          `json:"image_url"`
 	OfficeHours        string          `json:"office_hours"`
 	BuildingSize       string          `json:"building_size"`
 	AverageFloorSize   string          `json:"average_floor_size"`
@@ -65,6 +66,7 @@ func ToBuildingResponse(b building.Core) Building {
 		ComplexId:        b.ComplexId,
 		Name:             b.Name,
 		Description:      b.Description,
+		ImageURL:         b.ImageURL,
 		OfficeHours:      b.OfficeHours,
 		BuildingSize:     b.BuildingSize,
 		AverageFloorSize: b.AverageFloorSize,
@@ -85,6 +87,7 @@ func FromBuildingCore(b building.Core) Building {
 		ComplexId:          b.ComplexId,
 		Name:               b.Name,
 		Description:        b.Description,
+		ImageURL:           b.ImageURL,
 		OfficeHours:        b.OfficeHours,
 		BuildingSize:       b.BuildingSize,
 		AverageFloorSize:   b.AverageFloorSize,

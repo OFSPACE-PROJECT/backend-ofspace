@@ -31,6 +31,7 @@ type UpdateBooking struct {
 	StartDate     time.Time `json:"start_date"`
 	EndDate       time.Time `json:"end_date"`
 	PaymentStatus string    `json:"payment_status"`
+	BookingStatus string    `json:"booking_status"`
 }
 
 func (c *CreateBooking) ToCore() booking.Core {
@@ -63,5 +64,6 @@ func (c *UpdateBooking) ToUpdateCore() booking.Core {
 		StartDate:     c.StartDate,
 		EndDate:       c.EndDate,
 		PaymentStatus: c.PaymentStatus,
+		BookingStatus: c.BookingStatus,
 	}
 }

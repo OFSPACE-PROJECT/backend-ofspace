@@ -15,6 +15,7 @@ type Building struct {
 	ComplexId          uint `gorm:"not null" json:"complex_id"`
 	Name               string
 	Description        string
+	ImageURL           string
 	OfficeHours        string
 	BuildingSize       string
 	AverageFloorSize   string
@@ -65,6 +66,7 @@ func toBuildingCore(b *Building) building.Core {
 		ComplexId:          b.ComplexId,
 		Name:               b.Name,
 		Description:        b.Description,
+		ImageURL:           b.ImageURL,
 		OfficeHours:        b.OfficeHours,
 		BuildingSize:       b.BuildingSize,
 		AverageFloorSize:   b.AverageFloorSize,
@@ -100,6 +102,7 @@ func FromBuildingCore(b building.Core) Building {
 		BuildingSize:     b.BuildingSize,
 		AverageFloorSize: b.AverageFloorSize,
 		YearConstructed:  b.YearConstructed,
+		ImageURL:         b.ImageURL,
 		Lifts:            b.Lifts,
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,

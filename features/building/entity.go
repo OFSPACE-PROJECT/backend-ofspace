@@ -11,6 +11,7 @@ type Core struct {
 	ComplexId          uint
 	Name               string
 	Description        string
+	ImageURL           string
 	OfficeHours        string
 	BuildingSize       string
 	AverageFloorSize   string
