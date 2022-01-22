@@ -58,7 +58,7 @@ func (b *BookingData) GetAllBooking(ctx context.Context) ([]booking.Core, error)
 
 func (b *BookingData) GetAllBookingByUnit(ctx context.Context, unitId uint) ([]booking.Core, error) {
 	var bookings []Booking
-	result := b.Connect.Debug().Find(&bookings, "unit_id", unitId)
+	result := b.Connect.Debug().Preload("Building").Find(&bookings, "unit_id", unitId)
 
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -67,9 +67,20 @@ func (b *BookingData) GetAllBookingByUnit(ctx context.Context, unitId uint) ([]b
 	return toSliceBookingCore(bookings), nil
 }
 
-func (b *BookingData) GetOneBooking(ctx context.Context, userId uint) (booking.Core, error) {
+func (b *BookingData) GetAllBookingByUser(ctx context.Context, userId uint) ([]booking.Core, error) {
+	var bookings []Booking
+	result := b.Connect.Debug().Preload("Building").Find(&bookings, "costumer_id", userId)
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return []booking.Core{}, result.Error
+	}
+	return toSliceBookingCore(bookings), nil
+}
+
+func (b *BookingData) GetOneBooking(ctx context.Context, Id uint) (booking.Core, error) {
 	var booking1 Booking
-	result := b.Connect.First(&booking1, "id= ?", userId)
+	result := b.Connect.Preload("Building").First(&booking1, "id= ?", Id)
 	if result.Error != nil {
 		return booking.Core{}, result.Error
 	}
@@ -78,7 +89,7 @@ func (b *BookingData) GetOneBooking(ctx context.Context, userId uint) (booking.C
 
 func (b *BookingData) SearchBookingByName(ctx context.Context, buildingId uint, name string) ([]booking.Core, error) {
 	var booking1 []Booking
-	result := b.Connect.Find(&booking1, "building_id= ? && confirmed_name= ?", buildingId, name)
+	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && confirmed_name= ?", buildingId, name)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}
@@ -87,7 +98,7 @@ func (b *BookingData) SearchBookingByName(ctx context.Context, buildingId uint, 
 
 func (b *BookingData) SearchBookingByPayment(ctx context.Context, buildingId uint, paymentStatus string) ([]booking.Core, error) {
 	var booking1 []Booking
-	result := b.Connect.Find(&booking1, "building_id= ? && payment_status= ?", buildingId, paymentStatus)
+	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && payment_status= ?", buildingId, paymentStatus)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}
@@ -96,7 +107,7 @@ func (b *BookingData) SearchBookingByPayment(ctx context.Context, buildingId uin
 
 func (b *BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]booking.Core, error) {
 	var booking1 []Booking
-	result := b.Connect.Find(&booking1, "building_id= ? && booking_status= ?", buildingId, bookingStatus)
+	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && booking_status= ?", buildingId, bookingStatus)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}
@@ -105,7 +116,7 @@ func (b *BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, b
 
 func (b *BookingData) FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
 	var booking1 []Booking
-	result := b.Connect.Find(&booking1, "building_id= ? && start_date= ? && end_date= ?", buildingId, startDate, endDate)
+	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && start_date= ? && end_date= ?", buildingId, startDate, endDate)
 	if result.Error != nil {
 		return []booking.Core{}, result.Error
 	}

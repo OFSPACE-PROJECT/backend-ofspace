@@ -123,6 +123,7 @@ func New() *echo.Echo {
 	iJWT.GET("/booking/:id/sum", presenter.BookingPresentation.GetSumOfTotalBoughtInUnit)
 	iJWT.GET("/booking/:id/earning", presenter.BookingPresentation.GetEarningsInUnitWithDateFilter)
 	iJWT.GET("/booking/:id/sumpayment", presenter.BookingPresentation.GetSumOfPaymentConfirmed)
+	iJWT.GET("/booking/user", presenter.BookingPresentation.GetAllBookingByUser)
 
 	return e
 }
