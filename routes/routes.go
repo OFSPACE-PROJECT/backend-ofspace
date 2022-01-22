@@ -14,6 +14,7 @@ func New() *echo.Echo {
 	presenter := factory.New()
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
+	e.Use(middleware.CORS())
 	mid.Logger(e)
 	err := godotenv.Load(".env")
 	if err != nil {
