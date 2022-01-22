@@ -8,6 +8,7 @@ import (
 type Booking struct {
 	ID            uint      `json:"id"`
 	CostumerId    uint      `json:"costumer_id"`
+	Building      Building  `json:"building"`
 	ConsultantId  uint      `json:"consultant_id"`
 	BuildingId    uint      `json:"building_id"`
 	UnitId        uint      `json:"unit_id"`
@@ -19,6 +20,12 @@ type Booking struct {
 	EndDate       time.Time `json:"end_date"`
 	PaymentStatus string    `json:"payment_status"`
 	BookingStatus string    `json:"booking_status"`
+}
+
+type Building struct {
+	ID        uint `gorm:"primaryKey"`
+	ComplexID uint
+	Name      string
 }
 
 func FromBookingCore(b booking.Core) Booking {

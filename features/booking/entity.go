@@ -14,6 +14,7 @@ type Core struct {
 	BuildingId    uint
 	UnitId        uint
 	Unit          unit.Core
+	Building      Building
 	ConfirmedName string
 	TotalBought   uint
 	Price         float32
@@ -32,10 +33,16 @@ type User struct {
 	Email string
 }
 
+type Building struct {
+	ID   uint
+	Name string
+}
+
 type Business interface {
 	GetAllBooking(ctx context.Context) ([]Core, error)
 	GetAllBookingByUnit(ctx context.Context, unitId uint) ([]Core, error)
-	GetOneBooking(ctx context.Context, userId uint) (Core, error)
+	GetAllBookingByUser(ctx context.Context, userId uint) ([]Core, error)
+	GetOneBooking(ctx context.Context, Id uint) (Core, error)
 	CreateBooking(ctx context.Context, booking Core) (Core, error)
 	UpdateBooking(ctx context.Context, booking Core) (Core, error)
 	SearchBookingByName(ctx context.Context, buildingId uint, name string) ([]Core, error)
@@ -51,7 +58,8 @@ type Data interface {
 	GetAllBooking(ctx context.Context) ([]Core, error)
 	GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]Core, error)
 	GetAllBookingByUnit(ctx context.Context, unitId uint) ([]Core, error)
-	GetOneBooking(ctx context.Context, userId uint) (Core, error)
+	GetAllBookingByUser(ctx context.Context, userId uint) ([]Core, error)
+	GetOneBooking(ctx context.Context, Id uint) (Core, error)
 	CreateBooking(ctx context.Context, booking Core) (Core, error)
 	UpdateBooking(ctx context.Context, booking Core) (Core, error)
 	SearchBookingByName(ctx context.Context, buildingId uint, name string) ([]Core, error)
