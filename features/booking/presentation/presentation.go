@@ -102,7 +102,7 @@ func (bp *BookingPresentation) GetAllBookingByUser(c echo.Context) error {
 		})
 	}
 	ctx := c.Request().Context()
-	fac, err := bp.bookingBusiness.GetAllBookingByUnit(ctx, uint(ids))
+	fac, err := bp.bookingBusiness.GetAllBookingByUser(ctx, uint(ids))
 	if err != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err.Error(),
