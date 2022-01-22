@@ -29,7 +29,7 @@ func (up *UsersPresentation) LoginUser(c echo.Context) error {
 	}
 	ctx := c.Request().Context()
 	data, err2 := up.usersBusiness.LoginUser(ctx, user.ToCore())
-	if err != nil {
+	if err2 != nil {
 		return c.JSON(http.StatusForbidden, map[string]interface{}{
 			"message": err2.Error(),
 		})
