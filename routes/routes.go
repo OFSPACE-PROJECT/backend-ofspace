@@ -25,11 +25,11 @@ func New() *echo.Echo {
 	// user
 	e.POST("/register", presenter.UserPresentation.RegisterUser)
 	e.POST("/login", presenter.UserPresentation.LoginUser)
-	e.GET("/user/:id", presenter.UserPresentation.GetUserByID)
-	e.PUT("/user", presenter.UserPresentation.UpdateUser)
-	e.DELETE("/user/:id", presenter.UserPresentation.DeleteUser)
-	e.GET("/user/search", presenter.UserPresentation.SearchUserByName)
-	e.GET("/user/status", presenter.UserPresentation.SearchUserByAdminStatus)
+	iJWT.GET("/user/:id", presenter.UserPresentation.GetUserByID)
+	iJWT.PUT("/user", presenter.UserPresentation.UpdateUser)
+	iJWT.DELETE("/user/:id", presenter.UserPresentation.DeleteUser)
+	iJWT.GET("/user/search", presenter.UserPresentation.SearchUserByName)
+	iJWT.GET("/user/status", presenter.UserPresentation.SearchUserByAdminStatus)
 
 	// complex
 	iJWT.POST("/complex", presenter.ComplexPresentation.CreateComplex)
@@ -74,54 +74,54 @@ func New() *echo.Echo {
 	iJWT.DELETE("/building/:id/floor/:photo_id", presenter.BuildingPresentation.DeleteFloorPhoto)
 	//building facilities
 	//iJWT.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
-	e.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
+	iJWT.POST("/building/facility", presenter.BuildingPresentation.AddFacilityToBuilding)
 	e.GET("/building/:id/facility/:facility_id", presenter.BuildingPresentation.GetBuildingFacility)
 	e.GET("/building/:id/facility", presenter.BuildingPresentation.GetAllBuildingFacility)
 	//iJWT.DELETE("/building/:id/facility/:photo_id", presenter.BuildingPresentation.DeleteFacility)
-	e.DELETE("/building/:id/facility/:facility_id", presenter.BuildingPresentation.DeleteFacility)
+	iJWT.DELETE("/building/:id/facility/:facility_id", presenter.BuildingPresentation.DeleteFacility)
 
 	//unit
-	e.POST("/unit", presenter.UnitPresentation.CreateUnit)
+	iJWT.POST("/unit", presenter.UnitPresentation.CreateUnit)
 	e.GET("/unit/:id", presenter.UnitPresentation.GetUnitById)
 	e.GET("/unit", presenter.UnitPresentation.GetAllUnit)
 	e.GET("/unit/:id/type", presenter.UnitPresentation.GetUnitByType)
-	e.PUT("/unit", presenter.UnitPresentation.UpdateUnit)
+	iJWT.PUT("/unit", presenter.UnitPresentation.UpdateUnit)
 	//unit interior photo
-	e.POST("/unit/interior", presenter.UnitPresentation.CreateInteriorPhoto)
+	iJWT.POST("/unit/interior", presenter.UnitPresentation.CreateInteriorPhoto)
 	e.GET("/unit/:id/interior/:photo_id", presenter.UnitPresentation.GetInteriorPhoto)
 	e.GET("/unit/:id/interior", presenter.UnitPresentation.GetAllInteriorPhoto)
-	e.PUT("/unit/:id/interior/:photo_id", presenter.UnitPresentation.UpdateInteriorPhoto)
-	e.DELETE("/unit/:id/interior/:photo_id", presenter.UnitPresentation.DeleteInteriorPhoto)
+	iJWT.PUT("/unit/:id/interior/:photo_id", presenter.UnitPresentation.UpdateInteriorPhoto)
+	iJWT.DELETE("/unit/:id/interior/:photo_id", presenter.UnitPresentation.DeleteInteriorPhoto)
 	//unit facilities
-	e.POST("/unit/facility", presenter.UnitPresentation.AddFacilityToUnit)
+	iJWT.POST("/unit/facility", presenter.UnitPresentation.AddFacilityToUnit)
 	e.GET("/unit/:id/facility/:facility_id", presenter.UnitPresentation.GetUnitFacility)
 	e.GET("/unit/:id/facility", presenter.UnitPresentation.GetAllUnitFacility)
-	e.DELETE("/unit/:id/facility/:photo_id", presenter.UnitPresentation.DeleteUnitFacility)
+	iJWT.DELETE("/unit/:id/facility/:photo_id", presenter.UnitPresentation.DeleteUnitFacility)
 
 	//wishlist
-	e.POST("/wishlist", presenter.WishlistPresentation.CreateWishlist)
-	e.GET("/wishlist/:id", presenter.WishlistPresentation.GetWishlist)
-	e.GET("/wishlist", presenter.WishlistPresentation.GetAllWishlists)
-	e.DELETE("/wishlist/:id", presenter.WishlistPresentation.DeleteWishlist)
+	iJWT.POST("/wishlist", presenter.WishlistPresentation.CreateWishlist)
+	iJWT.GET("/wishlist/:id", presenter.WishlistPresentation.GetWishlist)
+	iJWT.GET("/wishlist", presenter.WishlistPresentation.GetAllWishlists)
+	iJWT.DELETE("/wishlist/:id", presenter.WishlistPresentation.DeleteWishlist)
 
 	// review
-	e.POST("/review", presenter.ReviewPresentation.CreateReview)
+	iJWT.POST("/review", presenter.ReviewPresentation.CreateReview)
 	e.GET("/review/:id", presenter.ReviewPresentation.GetOneReview)
 	e.GET("/review/all/:unit", presenter.ReviewPresentation.GetAllReview)
-	e.PUT("/review", presenter.ReviewPresentation.UpdateReview)
+	iJWT.PUT("/review", presenter.ReviewPresentation.UpdateReview)
 
 	//booking
-	e.POST("/booking", presenter.BookingPresentation.CreateBooking)
-	e.PUT("/booking", presenter.BookingPresentation.UpdateBooking)
-	e.GET("/booking", presenter.BookingPresentation.GetAllBooking)
-	e.GET("/booking/:id", presenter.BookingPresentation.GetOneBooking)
-	e.GET("/booking/:id/name", presenter.BookingPresentation.SearchBookingByName)
-	e.GET("/booking/:id/payment", presenter.BookingPresentation.SearchBookingByPayment)
-	e.GET("/booking/:id/status", presenter.BookingPresentation.GetBookingByStatus)
-	e.GET("/booking/:id/date", presenter.BookingPresentation.FindBookingByDate)
-	e.GET("/booking/:id/sum", presenter.BookingPresentation.GetSumOfTotalBoughtInUnit)
-	e.GET("/booking/:id/earning", presenter.BookingPresentation.GetEarningsInUnitWithDateFilter)
-	e.GET("/booking/:id/sumpayment", presenter.BookingPresentation.GetSumOfPaymentConfirmed)
+	iJWT.POST("/booking", presenter.BookingPresentation.CreateBooking)
+	iJWT.PUT("/booking", presenter.BookingPresentation.UpdateBooking)
+	iJWT.GET("/booking", presenter.BookingPresentation.GetAllBooking)
+	iJWT.GET("/booking/:id", presenter.BookingPresentation.GetOneBooking)
+	iJWT.GET("/booking/:id/name", presenter.BookingPresentation.SearchBookingByName)
+	iJWT.GET("/booking/:id/payment", presenter.BookingPresentation.SearchBookingByPayment)
+	iJWT.GET("/booking/:id/status", presenter.BookingPresentation.GetBookingByStatus)
+	iJWT.GET("/booking/:id/date", presenter.BookingPresentation.FindBookingByDate)
+	iJWT.GET("/booking/:id/sum", presenter.BookingPresentation.GetSumOfTotalBoughtInUnit)
+	iJWT.GET("/booking/:id/earning", presenter.BookingPresentation.GetEarningsInUnitWithDateFilter)
+	iJWT.GET("/booking/:id/sumpayment", presenter.BookingPresentation.GetSumOfPaymentConfirmed)
 
 	return e
 }
