@@ -3,6 +3,7 @@ package data
 import (
 	"ofspace-be/features/building"
 	facility2 "ofspace-be/features/facility"
+	review "ofspace-be/features/review/data"
 	unit "ofspace-be/features/unit/data"
 
 	//"ofspace-be/features/facility"
@@ -11,10 +12,11 @@ import (
 )
 
 type Building struct {
-	Id                 uint        `gorm:"primaryKey"`
-	UserId             uint        `gorm:"not null"`
-	ComplexId          uint        `gorm:"not null" json:"complex_id"`
-	Units              []unit.Unit `gorm:"foreignKey:BuildingId"`
+	Id                 uint            `gorm:"primaryKey"`
+	UserId             uint            `gorm:"not null"`
+	ComplexId          uint            `gorm:"not null" json:"complex_id"`
+	Units              []unit.Unit     `gorm:"foreignKey:BuildingId"`
+	Reviews            []review.Review `gorm:"foreignKey:BuildingId"`
 	Name               string
 	Description        string
 	ImageURL           string
@@ -80,6 +82,7 @@ func toBuildingCore(b *Building) building.Core {
 		Toilets:            b.Toilets,
 		BuildingStatus:     b.BuildingStatus,
 		Units:              unit.ListUnitToCore(b.Units),
+		Reviews:            review.ToListCore(b.Reviews),
 		BuildingFacilities: ToSliceFacilityCore(b.BuildingFacilities),
 		ExteriorPhotos:     ToSliceExteriorPhotoCore(b.ExteriorPhotos),
 		FloorPhotos:        ToSliceFloorPhotoCore(b.FloorPhotos),
@@ -113,6 +116,7 @@ func FromBuildingCore(b building.Core) Building {
 		Toilets:          b.Toilets,
 		BuildingStatus:   b.BuildingStatus,
 		Units:            unit.FromSliceUnitCore(b.Units),
+		Reviews:          review.FromListCore(b.Reviews),
 		//BuildingFacilities: FromBuildingFacilityCore(c.BuildingFacilities,
 		ExteriorPhotos: fromSliceExteriorCore(b.ExteriorPhotos),
 		FloorPhotos:    fromSliceFloorCore(b.FloorPhotos),

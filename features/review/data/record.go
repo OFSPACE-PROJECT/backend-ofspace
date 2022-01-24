@@ -87,7 +87,13 @@ func ToListCore(data []Review) (result []review.Core) {
 	}
 	return
 }
-
+func FromListCore(data []review.Core) (result []Review) {
+	result = []Review{}
+	for _, res := range data {
+		result = append(result, FromCore(res))
+	}
+	return
+}
 func FromCore(core review.Core) Review {
 	return Review{
 		Id:               core.Id,

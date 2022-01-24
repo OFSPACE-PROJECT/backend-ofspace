@@ -37,8 +37,8 @@ type InteriorPhoto struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 }
 
-func ToUnitFacilityResponse(c unit.Facility) Facility {
-	return Facility{
+func ToUnitFacilityResponse(c Facility) unit.Facility {
+	return unit.Facility{
 		Id: c.Id,
 		//UnitID: c.UnitId,
 		//Id:   c.Id,
@@ -46,8 +46,8 @@ func ToUnitFacilityResponse(c unit.Facility) Facility {
 	}
 }
 
-func ToUnitResponse(b unit.Core) Unit {
-	return Unit{
+func ToUnitResponse(b Unit) unit.Core {
+	return unit.Core{
 		Id:            b.Id,
 		UserId:        b.UserId,
 		BuildingId:    b.BuildingId,
@@ -88,10 +88,10 @@ func FromBuildingFacilityCore(c unit.Facility) Facility {
 		Name: c.Name,
 	}
 }
-func ToInteriorResponse(b unit.InteriorCore) InteriorPhoto {
-	return InteriorPhoto{
+func ToInteriorResponse(b InteriorPhoto) unit.InteriorCore {
+	return unit.InteriorCore{
 		Id:          b.Id,
-		UnitID:      b.UnitId,
+		UnitId:      b.UnitID,
 		PhotoURL:    b.PhotoURL,
 		Description: b.Description,
 		CreatedAt:   time.Time{},
@@ -110,7 +110,13 @@ func FromInteriorPhotoCore(e unit.InteriorCore) InteriorPhoto {
 	}
 }
 
-func ToListUnitCore(core []unit.Core) (response []Unit) {
+func ToListUnitCore(core []Unit) (response []unit.Core) {
+	for _, build := range core {
+		response = append(response, ToUnitResponse(build))
+	}
+	return
+}
+func FromListUnitCore(core []unit.Core) (response []Unit) {
 	for _, build := range core {
 		response = append(response, FromUnitCore(build))
 	}

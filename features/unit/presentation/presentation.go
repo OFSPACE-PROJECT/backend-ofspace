@@ -33,7 +33,7 @@ func (bp *UnitPresentation) CreateUnit(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToUnitResponse(data),
+		"data":    response.FromUnitCore(data),
 	})
 
 }
@@ -55,7 +55,7 @@ func (bp *UnitPresentation) GetAllUnit(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToListUnitCore(fac),
+		"data":    response.FromListUnitCore(fac),
 	})
 }
 
@@ -107,7 +107,7 @@ func (bp *UnitPresentation) GetUnitById(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToUnitResponse(build),
+		"data":    response.FromUnitCore(build),
 	})
 }
 func (bp *UnitPresentation) GetUnitByType(c echo.Context) error {
@@ -129,7 +129,7 @@ func (bp *UnitPresentation) GetUnitByType(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToUnitResponse(build),
+		"data":    response.FromUnitCore(build),
 	})
 }
 func (bp *UnitPresentation) UpdateUnit(c echo.Context) error {
@@ -149,7 +149,7 @@ func (bp *UnitPresentation) UpdateUnit(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToUnitResponse(data),
+		"data":    response.FromUnitCore(data),
 	})
 }
 func (bp *UnitPresentation) CreateInteriorPhoto(c echo.Context) error {
@@ -176,7 +176,7 @@ func (bp *UnitPresentation) CreateInteriorPhoto(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToInteriorResponse(data),
+		"data":    response.FromInteriorPhotoCore(data),
 	})
 
 }
@@ -197,7 +197,7 @@ func (bp *UnitPresentation) UpdateInteriorPhoto(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToInteriorResponse(data),
+		"data":    response.FromInteriorPhotoCore(data),
 	})
 }
 func (bp *UnitPresentation) GetInteriorPhoto(c echo.Context) error {
@@ -225,7 +225,7 @@ func (bp *UnitPresentation) GetInteriorPhoto(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToInteriorResponse(fac),
+		"data":    response.FromInteriorPhotoCore(fac),
 	})
 }
 func (bp *UnitPresentation) GetAllInteriorPhoto(c echo.Context) error {
@@ -350,7 +350,7 @@ func (bp *UnitPresentation) GetUnitFacility(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Success",
-		"data":    response.ToUnitFacilityResponse(fac),
+		"data":    response.FromUnitFacilityCore(fac),
 	})
 }
 

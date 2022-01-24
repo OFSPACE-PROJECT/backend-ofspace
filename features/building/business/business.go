@@ -61,6 +61,18 @@ func (bb *buildingBusiness) GetAllVerifiedBuilding(c context.Context, complexId 
 	}
 	return data, nil
 }
+
+//func (bb *buildingBusiness) GetAllBuildingWithUnit(c context.Context, complexId uint, buildingStatus string, unitType string) ([]building.Core, error) {
+//	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
+//	defer error1()
+//	unitT, err := bb.unit
+//	data, err := bb.buildingData.GetAllBuildingWithUnit(ctx, complexId, buildingStatus, unitType)
+//	if err != nil {
+//		return []building.Core{}, err
+//	}
+//	return data, nil
+//
+//}
 func (bb *buildingBusiness) SearchBuildingByName(c context.Context, name string, status string) ([]building.Core, error) {
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
