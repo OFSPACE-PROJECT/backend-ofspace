@@ -26,7 +26,7 @@ type Booking struct {
 }
 
 type User struct {
-	ID    uint
+	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Email string
 }
