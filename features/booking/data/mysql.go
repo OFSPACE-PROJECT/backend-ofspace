@@ -3,9 +3,10 @@ package data
 import (
 	"context"
 	"fmt"
-	"gorm.io/gorm"
 	"ofspace-be/features/booking"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type BookingData struct {
@@ -20,7 +21,12 @@ func NewBookingData(connect *gorm.DB) booking.Data {
 
 func (b *BookingData) CreateBooking(ctx context.Context, core booking.Core) (booking.Core, error) {
 	booking1 := fromBookingCore(core)
-	result := b.Connect.Create(&booking1)
+	result := b.Connect.Preload("User").Create(&booking1)
+	if result.Error != nil {
+		return booking.Core{}, result.Error
+	}
+	result = b.Connect.Preload("User").First(&booking1, "id= ?", booking1.ID)
+	// fmt.Println(booking1.User)
 	if result.Error != nil {
 		return booking.Core{}, result.Error
 	}
