@@ -12,7 +12,7 @@ import (
 )
 
 func templateParse(templateFileName string, data interface{}, bookData booking.Core) (string, error) {
-	templatePath, err := filepath.Abs(fmt.Sprintf("helper/email_templates/%s", templateFileName))
+	templatePath, err := filepath.Abs(fmt.Sprintf("helpers/email/message/%s", templateFileName))
 	if err != nil {
 		return "", errors.New("invalid template name")
 	}

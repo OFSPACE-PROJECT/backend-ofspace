@@ -33,7 +33,7 @@ func SendEmail(bookData booking.Core) error {
 		BookingStatus: bookData.BookingStatus,
 		Email:         bookData.User.Email,
 	}
-	to := []string{bookData.User.Email}
+	to := []string{data.Email}
 	var message string
 	if bookData.BookingStatus == "deal" {
 		message = "booking.html"
