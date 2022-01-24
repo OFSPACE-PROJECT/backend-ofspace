@@ -22,12 +22,12 @@ func (b *bookingBusiness) CreateBooking(c context.Context, data booking.Core) (b
 	defer error1()
 	data.UpdatedAt = time.Now()
 	build, err2 := b.bookingData.CreateBooking(ctx, data)
+	if err2 != nil {
+		return booking.Core{}, err2
+	}
 	err := email.SendEmail(build)
 	if err != nil {
 		return booking.Core{}, err
-	}
-	if err2 != nil {
-		return booking.Core{}, err2
 	}
 	return build, nil
 }

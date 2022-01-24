@@ -3,9 +3,10 @@ package data
 import (
 	"context"
 	"fmt"
-	"gorm.io/gorm"
 	"ofspace-be/features/building"
 	facility "ofspace-be/features/facility/data"
+
+	"gorm.io/gorm"
 )
 
 type BuildingData struct {
@@ -49,7 +50,7 @@ func (bd *BuildingData) GetAllVerifiedBuilding(ctx context.Context, complexId ui
 func (bd *BuildingData) SearchBuildingByName(ctx context.Context, name string, status string) ([]building.Core, error) {
 	var buildings []Building
 	status = "verified"
-	result := bd.Connect.Where("name LIKE ? && building_status= ?", "%"+name+"%", status).Find(&buildings)
+	result := bd.Connect.Preload("Units").Where("name LIKE ? && building_status= ?", "%"+name+"%", status).Find(&buildings)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []building.Core{}, result.Error
