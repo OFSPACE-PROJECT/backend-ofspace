@@ -36,7 +36,7 @@ type UpdateBooking struct {
 
 func (c *CreateBooking) ToCore() booking.Core {
 	return booking.Core{
-		CostumerId:    c.BuildingId,
+		CostumerId:    c.CostumerId,
 		ConsultantId:  c.ConsultantId,
 		BuildingId:    c.BuildingId,
 		UnitId:        c.UnitId,

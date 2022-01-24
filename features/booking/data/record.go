@@ -38,8 +38,9 @@ type Building struct {
 
 func toUserCore(u User) booking.User {
 	return booking.User{
-		ID:   u.ID,
-		Name: u.Name,
+		ID:    u.ID,
+		Name:  u.Name,
+		Email: u.Email,
 	}
 }
 func toBuildingCore(u Building) booking.Building {
