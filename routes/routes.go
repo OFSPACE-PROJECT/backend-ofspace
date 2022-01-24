@@ -57,8 +57,8 @@ func New() *echo.Echo {
 	//building
 	e.POST("/building", presenter.BuildingPresentation.CreateBuilding)
 	e.GET("/building/:id", presenter.BuildingPresentation.GetBuildingById)
-	iJWT.GET("/building", presenter.BuildingPresentation.GetAllBuilding)
-	e.GET("/building/status", presenter.BuildingPresentation.GetAllVerifiedBuilding)
+	iJWT.GET("/building/admin", presenter.BuildingPresentation.GetAllBuilding)
+	e.GET("/building", presenter.BuildingPresentation.GetAllVerifiedBuilding)
 	e.GET("/building/search", presenter.BuildingPresentation.SearchBuildingByName)
 	iJWT.PUT("/building", presenter.BuildingPresentation.UpdateBuilding)
 	//building exterior photo

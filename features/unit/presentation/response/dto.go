@@ -1,22 +1,24 @@
 package response
 
 import (
+	response2 "ofspace-be/features/review/presentation/response"
 	//"ofspace-be/features/facility"
 	"ofspace-be/features/unit"
 	"time"
 )
 
 type Unit struct {
-	Id             uint            `gorm:"primaryKey" json:"id"`
-	UserId         uint            `gorm:"not null" json:"user_id"`
-	BuildingId     uint            `gorm:"not null" json:"building_id"`
-	Description    string          `json:"description"`
-	UnitType       string          `gorm:"default:office" json:"unit_type"`
-	Price          float32         `json:"price"`
-	TotalUnit      int             `json:"total_unit"`
-	RemainingUnit  int             `json:"remaining_unit"`
-	UnitFacilities []Facility      `gorm:"foreignKey:UnitID;references:ID"`
-	InteriorPhotos []InteriorPhoto `gorm:"foreignKey:UnitID;references:ID"`
+	Id             uint               `gorm:"primaryKey" json:"id"`
+	UserId         uint               `gorm:"not null" json:"user_id"`
+	BuildingId     uint               `gorm:"not null" json:"building_id"`
+	Description    string             `json:"description"`
+	UnitType       string             `gorm:"default:office" json:"unit_type"`
+	Price          float32            `json:"price"`
+	TotalUnit      int                `json:"total_unit"`
+	RemainingUnit  int                `json:"remaining_unit"`
+	Reviews        []response2.Review `json:"reviews" gorm:"foreignKey:BuildingId"`
+	UnitFacilities []Facility         `gorm:"foreignKey:UnitID;references:ID"`
+	InteriorPhotos []InteriorPhoto    `gorm:"foreignKey:UnitID;references:ID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
@@ -37,8 +39,8 @@ type InteriorPhoto struct {
 	UpdatedAt   time.Time `json:"updated_at"`
 }
 
-func ToUnitFacilityResponse(c unit.Facility) Facility {
-	return Facility{
+func ToUnitFacilityResponse(c Facility) unit.Facility {
+	return unit.Facility{
 		Id: c.Id,
 		//UnitID: c.UnitId,
 		//Id:   c.Id,
@@ -46,8 +48,8 @@ func ToUnitFacilityResponse(c unit.Facility) Facility {
 	}
 }
 
-func ToUnitResponse(b unit.Core) Unit {
-	return Unit{
+func ToUnitResponse(b Unit) unit.Core {
+	return unit.Core{
 		Id:            b.Id,
 		UserId:        b.UserId,
 		BuildingId:    b.BuildingId,
@@ -55,6 +57,7 @@ func ToUnitResponse(b unit.Core) Unit {
 		UnitType:      b.UnitType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
+		Reviews:       response2.FromListReview(b.Reviews),
 		RemainingUnit: b.RemainingUnit,
 		UpdatedAt:     time.Time{},
 	}
@@ -70,6 +73,7 @@ func FromUnitCore(b unit.Core) Unit {
 		Price:          b.Price,
 		TotalUnit:      b.TotalUnit,
 		RemainingUnit:  b.RemainingUnit,
+		Reviews:        response2.ToListReview(b.Reviews),
 		UnitFacilities: fromSliceUnitFacilityCore(b.UnitFacilities),
 		InteriorPhotos: fromSliceInteriorCore(b.InteriorPhoto),
 		UpdatedAt:      time.Time{},
@@ -88,10 +92,10 @@ func FromBuildingFacilityCore(c unit.Facility) Facility {
 		Name: c.Name,
 	}
 }
-func ToInteriorResponse(b unit.InteriorCore) InteriorPhoto {
-	return InteriorPhoto{
+func ToInteriorResponse(b InteriorPhoto) unit.InteriorCore {
+	return unit.InteriorCore{
 		Id:          b.Id,
-		UnitID:      b.UnitId,
+		UnitId:      b.UnitID,
 		PhotoURL:    b.PhotoURL,
 		Description: b.Description,
 		CreatedAt:   time.Time{},
@@ -110,7 +114,13 @@ func FromInteriorPhotoCore(e unit.InteriorCore) InteriorPhoto {
 	}
 }
 
-func ToListUnitCore(core []unit.Core) (response []Unit) {
+func ToListUnitCore(core []Unit) (response []unit.Core) {
+	for _, build := range core {
+		response = append(response, ToUnitResponse(build))
+	}
+	return
+}
+func FromListUnitCore(core []unit.Core) (response []Unit) {
 	for _, build := range core {
 		response = append(response, FromUnitCore(build))
 	}

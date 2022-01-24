@@ -2,14 +2,16 @@ package data
 
 import (
 	facility "ofspace-be/features/facility/data"
+	review "ofspace-be/features/review/data"
 	"ofspace-be/features/unit"
 	"time"
 )
 
 type Unit struct {
-	Id             uint `gorm:"primaryKey"`
-	UserId         uint `gorm:"not null"`
-	BuildingId     uint `gorm:"not null" json:"building_id"`
+	Id             uint            `gorm:"primaryKey"`
+	UserId         uint            `gorm:"not null"`
+	BuildingId     uint            `gorm:"not null" json:"building_id"`
+	Reviews        []review.Review `gorm:"foreignKey:UnitId"`
 	Description    string
 	UnitType       string
 	Price          float32
@@ -52,6 +54,7 @@ func toUnitCore(b *Unit) unit.Core {
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
 		//UnitFacilities: (b.UnitFacilities),
+		Reviews:       review.ToListCore(b.Reviews),
 		InteriorPhoto: ToSliceInteriorPhotoCore(b.InteriorPhotos),
 		CreatedAt:     time.Time{},
 		UpdatedAt:     time.Time{},
@@ -68,6 +71,7 @@ func FromUnitCore(b unit.Core) Unit {
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
 		RemainingUnit: b.RemainingUnit,
+		Reviews:       review.FromListCore(b.Reviews),
 		//UnitFacilities: FromUnitFacilityCore(b.UnitFacilities),
 		InteriorPhotos: fromSliceInteriorCore(b.InteriorPhoto),
 		CreatedAt:      time.Time{},

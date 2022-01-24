@@ -2,6 +2,7 @@ package unit
 
 import (
 	"context"
+	"ofspace-be/features/review"
 	"time"
 )
 
@@ -16,6 +17,7 @@ type Core struct {
 	Price          float32
 	TotalUnit      int
 	RemainingUnit  int
+	Reviews        []review.Core
 	UnitFacilities []Facility
 	InteriorPhoto  []InteriorCore
 	CreatedAt      time.Time

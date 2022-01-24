@@ -11,10 +11,11 @@ import (
 )
 
 type Building struct {
-	Id                 uint        `gorm:"primaryKey"`
-	UserId             uint        `gorm:"not null"`
-	ComplexId          uint        `gorm:"not null" json:"complex_id"`
-	Units              []unit.Unit `gorm:"foreignKey:BuildingId"`
+	Id        uint        `gorm:"primaryKey"`
+	UserId    uint        `gorm:"not null"`
+	ComplexId uint        `gorm:"not null" json:"complex_id"`
+	Units     []unit.Unit `gorm:"foreignKey:BuildingId"`
+
 	Name               string
 	Description        string
 	ImageURL           string
@@ -61,25 +62,26 @@ type FloorPhoto struct {
 	UpdatedAt   time.Time
 }
 
-var a = building.Core{}
+//var a = building.Core{}
 
 func toBuildingCore(b *Building) building.Core {
 	return building.Core{
-		Id:                 b.Id,
-		UserId:             b.UserId,
-		ComplexId:          b.ComplexId,
-		Name:               b.Name,
-		Description:        b.Description,
-		ImageURL:           b.ImageURL,
-		OfficeHours:        b.OfficeHours,
-		BuildingSize:       b.BuildingSize,
-		AverageFloorSize:   b.AverageFloorSize,
-		YearConstructed:    b.YearConstructed,
-		Lifts:              b.Lifts,
-		Parking:            b.Parking,
-		Toilets:            b.Toilets,
-		BuildingStatus:     b.BuildingStatus,
-		Units:              unit.ListUnitToCore(b.Units),
+		Id:               b.Id,
+		UserId:           b.UserId,
+		ComplexId:        b.ComplexId,
+		Name:             b.Name,
+		Description:      b.Description,
+		ImageURL:         b.ImageURL,
+		OfficeHours:      b.OfficeHours,
+		BuildingSize:     b.BuildingSize,
+		AverageFloorSize: b.AverageFloorSize,
+		YearConstructed:  b.YearConstructed,
+		Lifts:            b.Lifts,
+		Parking:          b.Parking,
+		Toilets:          b.Toilets,
+		BuildingStatus:   b.BuildingStatus,
+		Units:            unit.ListUnitToCore(b.Units),
+
 		BuildingFacilities: ToSliceFacilityCore(b.BuildingFacilities),
 		ExteriorPhotos:     ToSliceExteriorPhotoCore(b.ExteriorPhotos),
 		FloorPhotos:        ToSliceFloorPhotoCore(b.FloorPhotos),
@@ -113,6 +115,7 @@ func FromBuildingCore(b building.Core) Building {
 		Toilets:          b.Toilets,
 		BuildingStatus:   b.BuildingStatus,
 		Units:            unit.FromSliceUnitCore(b.Units),
+
 		//BuildingFacilities: FromBuildingFacilityCore(c.BuildingFacilities,
 		ExteriorPhotos: fromSliceExteriorCore(b.ExteriorPhotos),
 		FloorPhotos:    fromSliceFloorCore(b.FloorPhotos),

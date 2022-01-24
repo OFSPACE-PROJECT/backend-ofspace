@@ -29,7 +29,7 @@ func (bd *UnitData) CreateUnit(ctx context.Context, core unit.Core) (unit.Core, 
 }
 func (bd *UnitData) GetAllUnit(ctx context.Context, buildingId uint) ([]unit.Core, error) {
 	var units []Unit
-	result := bd.Connect.Find(&units, "building_id= ?", buildingId)
+	result := bd.Connect.Preload("Reviews").Find(&units, "building_id= ?", buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []unit.Core{}, result.Error
@@ -50,7 +50,7 @@ func (bd *UnitData) SearchUnitByName(ctx context.Context, name string, status st
 
 func (bd *UnitData) GetUnitById(ctx context.Context, facilityId uint, buildingId uint) (unit.Core, error) {
 	var build Unit
-	result := bd.Connect.First(&build, "id= ? && building_id= ?", facilityId, buildingId)
+	result := bd.Connect.Preload("Reviews").First(&build, "id= ? && building_id= ?", facilityId, buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.Core{}, result.Error
@@ -59,7 +59,7 @@ func (bd *UnitData) GetUnitById(ctx context.Context, facilityId uint, buildingId
 }
 func (bd *UnitData) GetUnitByType(ctx context.Context, buildingId uint, unitType string) (unit.Core, error) {
 	var build Unit
-	result := bd.Connect.First(&build, "unit_type= ? && building_id= ?", unitType, buildingId)
+	result := bd.Connect.Preload("Reviews").First(&build, "unit_type= ? && building_id= ?", unitType, buildingId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return unit.Core{}, result.Error

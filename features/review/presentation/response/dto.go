@@ -49,6 +49,22 @@ func FromUnitCore(req review.Unit) Unit {
 	}
 }
 
+func ToUserCore(req User) review.User {
+	return review.User{
+		ID:   req.ID,
+		Name: req.Name,
+	}
+}
+
+func ToUnitCore(req Unit) review.Unit {
+	return review.Unit{
+		Id:          req.Id,
+		BuildingId:  req.BuildingId,
+		Description: req.Description,
+		UnitType:    req.UnitType,
+	}
+}
+
 func FromReviewCore(req review.Core) Review {
 	return Review{
 		Id:                    req.Id,
@@ -66,11 +82,35 @@ func FromReviewCore(req review.Core) Review {
 		UpdatedAt:             req.UpdatedAt,
 	}
 }
-
+func ToReviewCore(req Review) review.Core {
+	return review.Core{
+		Id:                    req.Id,
+		CustomerId:            req.CustomerId,
+		Customer:              ToUserCore(req.Customer),
+		UnitId:                req.UnitId,
+		Unit:                  ToUnitCore(req.Unit),
+		RatingAccess:          req.RatingAccess,
+		RatingFacility:        req.RatingFacility,
+		RatingManagement:      req.RatingManagement,
+		RatingQuality:         req.RatingQuality,
+		CostumerOverallRating: req.CostumerOverallRating,
+		Comment:               req.Comment,
+		CreatedAt:             req.CreatedAt,
+		UpdatedAt:             req.UpdatedAt,
+	}
+}
 func ToListReview(data []review.Core) (result []Review) {
 	result = []Review{}
 	for _, review := range data {
 		result = append(result, FromReviewCore(review))
+	}
+	return
+}
+
+func FromListReview(data []Review) (result []review.Core) {
+	result = []review.Core{}
+	for _, review := range data {
+		result = append(result, ToReviewCore(review))
 	}
 	return
 }

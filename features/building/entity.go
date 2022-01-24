@@ -2,6 +2,7 @@ package building
 
 import (
 	"context"
+	"ofspace-be/features/review"
 	"ofspace-be/features/unit"
 	"time"
 )
@@ -11,6 +12,7 @@ type Core struct {
 	UserId             uint
 	ComplexId          uint
 	Units              []unit.Core
+	Reviews            []review.Core
 	Name               string
 	Description        string
 	ImageURL           string
@@ -56,6 +58,7 @@ type Business interface {
 	CreateBuilding(ctx context.Context, building Core) (Core, error)
 	GetAllBuilding(ctx context.Context, complexId uint) ([]Core, error)
 	GetAllVerifiedBuilding(ctx context.Context, complexId uint, buildingStatus string) ([]Core, error)
+	//GetAllBuildingWithUnit(ctx context.Context, complexId uint, buildingStatus string, unitType string) ([]Core, error)
 	SearchBuildingByName(ctx context.Context, name string, status string) ([]Core, error)
 	GetBuildingById(ctx context.Context, id uint) (Core, error)
 	UpdateBuilding(ctx context.Context, building Core) (Core, error)
@@ -85,6 +88,7 @@ type Data interface {
 	CreateBuilding(ctx context.Context, building Core) (Core, error)
 	GetAllBuilding(ctx context.Context, complexId uint) ([]Core, error)
 	GetAllVerifiedBuilding(ctx context.Context, complexId uint, buildingStatus string) ([]Core, error)
+	//GetAllBuildingWithUnit(ctx context.Context, complexId uint, buildingStatus string, unitType string) ([]Core, error)
 	SearchBuildingByName(ctx context.Context, name string, status string) ([]Core, error)
 	GetBuildingById(ctx context.Context, id uint) (Core, error)
 	UpdateBuilding(ctx context.Context, building Core) (Core, error)

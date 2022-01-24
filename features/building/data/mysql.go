@@ -28,7 +28,7 @@ func (bd *BuildingData) CreateBuilding(ctx context.Context, core building.Core) 
 }
 func (bd *BuildingData) GetAllBuilding(ctx context.Context, complexId uint) ([]building.Core, error) {
 	var buildings []Building
-	result := bd.Connect.Find(&buildings, "complex_id= ?", complexId)
+	result := bd.Connect.Preload("Units").Find(&buildings, "complex_id= ?", complexId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []building.Core{}, result.Error
@@ -38,7 +38,7 @@ func (bd *BuildingData) GetAllBuilding(ctx context.Context, complexId uint) ([]b
 
 func (bd *BuildingData) GetAllVerifiedBuilding(ctx context.Context, complexId uint, buildingStatus string) ([]building.Core, error) {
 	var buildings []Building
-	result := bd.Connect.Where("building_status= 'verified'").Find(&buildings, "complex_id= ?", complexId)
+	result := bd.Connect.Preload("Units").Where("building_status= 'verified'").Find(&buildings, "complex_id= ?", complexId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []building.Core{}, result.Error
