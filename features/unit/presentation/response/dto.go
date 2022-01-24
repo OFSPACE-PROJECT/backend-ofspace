@@ -1,22 +1,24 @@
 package response
 
 import (
+	response2 "ofspace-be/features/review/presentation/response"
 	//"ofspace-be/features/facility"
 	"ofspace-be/features/unit"
 	"time"
 )
 
 type Unit struct {
-	Id             uint            `gorm:"primaryKey" json:"id"`
-	UserId         uint            `gorm:"not null" json:"user_id"`
-	BuildingId     uint            `gorm:"not null" json:"building_id"`
-	Description    string          `json:"description"`
-	UnitType       string          `gorm:"default:office" json:"unit_type"`
-	Price          float32         `json:"price"`
-	TotalUnit      int             `json:"total_unit"`
-	RemainingUnit  int             `json:"remaining_unit"`
-	UnitFacilities []Facility      `gorm:"foreignKey:UnitID;references:ID"`
-	InteriorPhotos []InteriorPhoto `gorm:"foreignKey:UnitID;references:ID"`
+	Id             uint               `gorm:"primaryKey" json:"id"`
+	UserId         uint               `gorm:"not null" json:"user_id"`
+	BuildingId     uint               `gorm:"not null" json:"building_id"`
+	Description    string             `json:"description"`
+	UnitType       string             `gorm:"default:office" json:"unit_type"`
+	Price          float32            `json:"price"`
+	TotalUnit      int                `json:"total_unit"`
+	RemainingUnit  int                `json:"remaining_unit"`
+	Reviews        []response2.Review `json:"reviews" gorm:"foreignKey:BuildingId"`
+	UnitFacilities []Facility         `gorm:"foreignKey:UnitID;references:ID"`
+	InteriorPhotos []InteriorPhoto    `gorm:"foreignKey:UnitID;references:ID"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
@@ -55,6 +57,7 @@ func ToUnitResponse(b Unit) unit.Core {
 		UnitType:      b.UnitType,
 		Price:         b.Price,
 		TotalUnit:     b.TotalUnit,
+		Reviews:       response2.FromListReview(b.Reviews),
 		RemainingUnit: b.RemainingUnit,
 		UpdatedAt:     time.Time{},
 	}
@@ -70,6 +73,7 @@ func FromUnitCore(b unit.Core) Unit {
 		Price:          b.Price,
 		TotalUnit:      b.TotalUnit,
 		RemainingUnit:  b.RemainingUnit,
+		Reviews:        response2.ToListReview(b.Reviews),
 		UnitFacilities: fromSliceUnitFacilityCore(b.UnitFacilities),
 		InteriorPhotos: fromSliceInteriorCore(b.InteriorPhoto),
 		UpdatedAt:      time.Time{},
