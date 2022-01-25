@@ -1,10 +1,11 @@
 package routes
 
 import (
-	"github.com/joho/godotenv"
 	"ofspace-be/factory"
 	mid "ofspace-be/middleware"
 	"os"
+
+	"github.com/joho/godotenv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -38,6 +39,7 @@ func New() *echo.Echo {
 	e.GET("/complex", presenter.ComplexPresentation.GetAllComplex)
 	iJWT.POST("/complex/:id", presenter.ComplexPresentation.RequestComplex)
 	e.GET("/complex/search", presenter.ComplexPresentation.SearchComplex)
+	e.GET("/complex/address", presenter.ComplexPresentation.SearchComplexByAddress)
 	iJWT.PUT("/complex", presenter.ComplexPresentation.UpdateComplex)
 
 	// accessibility
