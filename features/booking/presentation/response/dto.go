@@ -23,11 +23,16 @@ type Booking struct {
 }
 
 type Building struct {
-	ID        uint `gorm:"primaryKey"`
-	ComplexID uint
-	Name      string
+	Id   uint   `json:"id"`
+	Name string `json:"name"`
 }
 
+func FromBuildingCore(b booking.Building) Building {
+	return Building{
+		Id:   b.ID,
+		Name: b.Name,
+	}
+}
 func FromBookingCore(b booking.Core) Booking {
 	return Booking{
 		ID:            b.ID,
