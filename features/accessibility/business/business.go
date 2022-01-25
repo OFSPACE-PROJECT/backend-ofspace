@@ -45,6 +45,15 @@ func (cb *accessibilityBusiness) SearchAccessibility(c context.Context, name str
 	}
 	return accessibility1, nil
 }
+func (cb *accessibilityBusiness) SearchAccessibilityByAddress(c context.Context, address string) ([]accessibility.Core, error) {
+	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
+	defer error1()
+	accessibility1, err := cb.accessibilityData.SearchAccessibilityByAddress(ctx, address)
+	if err != nil {
+		return []accessibility.Core{}, err
+	}
+	return accessibility1, nil
+}
 
 func (cb *accessibilityBusiness) UpdateAccessibility(c context.Context, data accessibility.Core) (accessibility.Core, error) {
 	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
