@@ -100,6 +100,21 @@ func (fp *FacilityPresentation) SearchFacility(c echo.Context) error {
 	})
 }
 
+func (fp *FacilityPresentation) GetAllFacility(c echo.Context) error {
+	ctx := c.Request().Context()
+	fac, err := fp.facilityBusiness.GetAllFacility(ctx)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListFacilityCore(fac),
+	})
+}
+
 func (fp *FacilityPresentation) DeleteFacility(c echo.Context) error {
 
 	Id, err := strconv.Atoi(c.Param("id"))

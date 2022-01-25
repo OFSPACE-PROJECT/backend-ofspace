@@ -50,6 +50,7 @@ func New() *echo.Echo {
 	// facility
 	iJWT.POST("/facility", presenter.FacilityPresentation.CreateFacility)
 	e.GET("/facility/:id", presenter.FacilityPresentation.GetFacility)
+	e.GET("/facility", presenter.FacilityPresentation.GetAllFacility)
 	e.GET("/facility/search", presenter.FacilityPresentation.SearchFacility)
 	iJWT.PUT("/facility", presenter.FacilityPresentation.UpdateFacility)
 	iJWT.DELETE("/facility/:id", presenter.FacilityPresentation.DeleteFacility)

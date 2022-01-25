@@ -32,6 +32,15 @@ func (cd *facilityData) GetFacility(ctx context.Context, id uint) (facility.Faci
 	return toFacilityCore(facility1), nil
 }
 
+func (cd *facilityData) GetAllFacility(ctx context.Context) ([]facility.Facility, error) {
+	var facility1 []Facility
+	result := cd.Connect.Find(&facility1)
+	if result.Error != nil {
+		return []facility.Facility{}, result.Error
+	}
+	return ListToCore(facility1), nil
+}
+
 func (cd *facilityData) SearchFacility(ctx context.Context, name string) ([]facility.Facility, error) {
 	var facility1 []Facility
 	result := cd.Connect.Where("name LIKE ?", "%"+name+"%").Find(&facility1)
