@@ -31,6 +31,7 @@ func (c *CreateComplex) ToCore() complex2.Core {
 func (c *UpdateComplex) ToUpdateCore() complex2.Core {
 	return complex2.Core{
 		Id:        c.Id,
+		Address:   c.Address,
 		Name:      c.Name,
 		Longitude: c.Longitude,
 		Latitude:  c.Latitude,
