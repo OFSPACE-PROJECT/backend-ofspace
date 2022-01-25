@@ -2,8 +2,9 @@ package data
 
 import (
 	"context"
-	"gorm.io/gorm"
 	accessibility "ofspace-be/features/accessibility"
+
+	"gorm.io/gorm"
 )
 
 type accessibilityData struct {
@@ -42,6 +43,14 @@ func (cd *accessibilityData) SearchAccessibility(ctx context.Context, name strin
 	//if result2.Error != nil {
 	//	return []accessibility.Core{}, result2.Error
 	//}
+	return ListToCore(accessibility1), nil
+}
+func (cd *accessibilityData) SearchAccessibilityByAddress(ctx context.Context, address string) ([]accessibility.Core, error) {
+	var accessibility1 []Accessibility
+	result := cd.Connect.Where("address LIKE ?", "%"+address+"%").Find(&accessibility1)
+	if result.Error != nil {
+		return []accessibility.Core{}, result.Error
+	}
 	return ListToCore(accessibility1), nil
 }
 

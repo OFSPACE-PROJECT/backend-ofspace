@@ -61,6 +61,7 @@ func (cd *complexData) UpdateComplex(ctx context.Context, core complex2.Core) (c
 	complex1 := fromComplexCore(core)
 	result := cd.Connect.Where("id= ?", complex1.Id).Updates(&Complex{
 		Name:      complex1.Name,
+		Address:   complex1.Address,
 		Longitude: complex1.Longitude,
 		Latitude:  complex1.Latitude,
 	})
