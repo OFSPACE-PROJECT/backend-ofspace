@@ -33,6 +33,19 @@ func toUserCore(u User) users.Core {
 		UpdatedAt:   u.UpdatedAt,
 	}
 }
+func ToUserCore(u User) users.Core {
+	return users.Core{
+		ID:          u.ID,
+		Name:        u.Name,
+		Role:        u.Role,
+		Email:       u.Email,
+		Password:    u.Password,
+		Phone:       u.Phone,
+		AdminStatus: u.AdminStatus,
+		CreatedAt:   u.CreatedAt,
+		UpdatedAt:   u.UpdatedAt,
+	}
+}
 
 func FromCore(core users.Core) User {
 	return User{

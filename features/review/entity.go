@@ -10,6 +10,7 @@ type Core struct {
 	CustomerId            uint
 	Customer              User
 	UnitId                uint
+	BuildingId            uint
 	Unit                  Unit
 	BookingId             uint
 	RatingAccess          float32
@@ -37,6 +38,7 @@ type Unit struct {
 type Business interface {
 	CreateReview(ctx context.Context, review Core) (Core, error)
 	GetAllReview(ctx context.Context, unitType uint) ([]Core, error)
+	//GetBuildingReview(ctx context.Context, unitType uint) ([]Core, error)
 	GetOneReview(ctx context.Context, id uint) (Core, error)
 	UpdateReview(ctx context.Context, data Core) (Core, error)
 }
@@ -44,6 +46,7 @@ type Business interface {
 type Data interface {
 	CreateReview(ctx context.Context, review Core) (Core, error)
 	GetAllReview(ctx context.Context, unitType uint) ([]Core, error)
+	//GetBuildingReview(ctx context.Context, unitType uint) ([]Core, error)
 	GetOneReview(ctx context.Context, id uint) (Core, error)
 	UpdateReview(ctx context.Context, data Core) (Core, error)
 }

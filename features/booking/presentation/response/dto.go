@@ -39,6 +39,7 @@ func FromBookingCore(b booking.Core) Booking {
 		CostumerId:    b.CostumerId,
 		ConsultantId:  b.ConsultantId,
 		BuildingId:    b.BuildingId,
+		Building:      FromBuildingCore(b.Building),
 		UnitId:        b.UnitId,
 		ConfirmedName: b.ConfirmedName,
 		TotalBought:   b.TotalBought,

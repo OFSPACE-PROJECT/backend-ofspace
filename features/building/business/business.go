@@ -12,6 +12,7 @@ import (
 type buildingBusiness struct {
 	buildingData building.Data
 	userBusiness users.Business
+	//reviewBusiness review.Business
 	//unitBusiness     unit.Business
 	facilityBusiness facility.Business
 	contextTimeout   time.Duration
@@ -21,6 +22,7 @@ func NewBuildingBusiness(
 	buildingData building.Data,
 	timeout time.Duration,
 	userBusiness users.Business,
+	//reviewBusiness review.Business,
 	//unitBusiness unit.Business,
 	facilityBusiness facility.Business,
 ) building.Business {
@@ -28,6 +30,7 @@ func NewBuildingBusiness(
 		buildingData:     buildingData,
 		userBusiness:     userBusiness,
 		facilityBusiness: facilityBusiness,
+		//reviewBusiness: reviewBusiness,
 		//unitBusiness:     unitBusiness,
 		contextTimeout: timeout}
 }

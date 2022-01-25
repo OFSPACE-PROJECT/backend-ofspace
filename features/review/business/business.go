@@ -46,6 +46,22 @@ func (ub *ReviewBusiness) GetAllReview(c context.Context, unit uint) ([]review.C
 	return res, nil
 
 }
+
+//func (ub *ReviewBusiness) GetBuildingReview(c context.Context, building uint) ([]review.Core, error) {
+//
+//	ctx, error := context.WithTimeout(c, ub.contextTimeout)
+//	defer error()
+//
+//	res, err := ub.reviewData.GetBuildingReview(ctx, building)
+//	if err != nil {
+//		return []review.Core{}, err
+//	}
+//	for i, num := range res {
+//		res[i].CostumerOverallRating = (num.RatingAccess + num.RatingFacility + num.RatingManagement + num.RatingQuality) / 4
+//	}
+//	return res, nil
+//
+//}
 func (ub *ReviewBusiness) GetOneReview(c context.Context, id uint) (review.Core, error) {
 	ctx, error := context.WithTimeout(c, ub.contextTimeout)
 	defer error()
