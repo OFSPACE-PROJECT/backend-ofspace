@@ -2,7 +2,6 @@ package booking
 
 import (
 	"context"
-	"ofspace-be/features/unit"
 	"time"
 )
 
@@ -13,7 +12,7 @@ type Core struct {
 	User          User
 	BuildingId    uint
 	UnitId        uint
-	Unit          unit.Core
+	Unit          Unit
 	Building      Building
 	ConfirmedName string
 	TotalBought   uint
@@ -31,6 +30,7 @@ type User struct {
 	ID    uint
 	Name  string
 	Email string
+	Phone string
 }
 
 type Building struct {
@@ -38,9 +38,15 @@ type Building struct {
 	Name string
 }
 
+type Unit struct {
+	ID       uint
+	UnitType string
+}
+
 type Business interface {
 	GetAllBooking(ctx context.Context) ([]Core, error)
 	GetAllBookingByUnit(ctx context.Context, unitId uint) ([]Core, error)
+	GetAllBookingByBuilding(ctx context.Context, buildingId uint) ([]Core, error)
 	GetAllBookingByUser(ctx context.Context, userId uint) ([]Core, error)
 	GetOneBooking(ctx context.Context, Id uint) (Core, error)
 	CreateBooking(ctx context.Context, booking Core) (Core, error)
@@ -58,6 +64,7 @@ type Data interface {
 	GetAllBooking(ctx context.Context) ([]Core, error)
 	GetBookingByStatus(ctx context.Context, buildingId uint, bookingStatus string) ([]Core, error)
 	GetAllBookingByUnit(ctx context.Context, unitId uint) ([]Core, error)
+	GetAllBookingByBuilding(ctx context.Context, buildingId uint) ([]Core, error)
 	GetAllBookingByUser(ctx context.Context, userId uint) ([]Core, error)
 	GetOneBooking(ctx context.Context, Id uint) (Core, error)
 	CreateBooking(ctx context.Context, booking Core) (Core, error)

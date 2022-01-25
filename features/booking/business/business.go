@@ -74,6 +74,16 @@ func (b *bookingBusiness) GetAllBookingByUnit(c context.Context, unitId uint) ([
 	return data, nil
 }
 
+func (b *bookingBusiness) GetAllBookingByBuilding(c context.Context, buildingId uint) ([]booking.Core, error) {
+	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+	defer error1()
+	data, err := b.bookingData.GetAllBookingByBuilding(ctx, buildingId)
+	if err != nil {
+		return []booking.Core{}, err
+	}
+	return data, nil
+}
+
 func (b *bookingBusiness) GetAllBookingByUser(c context.Context, userId uint) ([]booking.Core, error) {
 	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
 	defer error1()

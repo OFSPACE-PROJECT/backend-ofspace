@@ -8,10 +8,12 @@ import (
 type Booking struct {
 	ID            uint      `json:"id"`
 	CostumerId    uint      `json:"costumer_id"`
+	User          User      `json:"user"`
 	Building      Building  `json:"building"`
 	ConsultantId  uint      `json:"consultant_id"`
 	BuildingId    uint      `json:"building_id"`
 	UnitId        uint      `json:"unit_id"`
+	Unit          Unit      `json:"unit"`
 	ConfirmedName string    `json:"confirmed_name"`
 	TotalBought   uint      `json:"total_bought"`
 	Price         float32   `json:"price"`
@@ -27,10 +29,38 @@ type Building struct {
 	Name string `json:"name"`
 }
 
+type User struct {
+	Id    uint   `json:"id"`
+	Name  string `json:"name"`
+	Phone string `json:"phone"`
+	Email string `json:"email"`
+}
+
+type Unit struct {
+	ID       uint   `json:"id"`
+	UnitType string `json:"unit_type"`
+}
+
 func FromBuildingCore(b booking.Building) Building {
 	return Building{
 		Id:   b.ID,
 		Name: b.Name,
+	}
+}
+
+func FromUnitCore(b booking.Unit) Unit {
+	return Unit{
+		ID:       b.ID,
+		UnitType: b.UnitType,
+	}
+}
+
+func FromUserCore(b booking.User) User {
+	return User{
+		Id:    b.ID,
+		Name:  b.Name,
+		Phone: b.Phone,
+		Email: b.Email,
 	}
 }
 func FromBookingCore(b booking.Core) Booking {
@@ -39,6 +69,8 @@ func FromBookingCore(b booking.Core) Booking {
 		CostumerId:    b.CostumerId,
 		ConsultantId:  b.ConsultantId,
 		BuildingId:    b.BuildingId,
+		Unit:          FromUnitCore(b.Unit),
+		User:          FromUserCore(b.User),
 		Building:      FromBuildingCore(b.Building),
 		UnitId:        b.UnitId,
 		ConfirmedName: b.ConfirmedName,
