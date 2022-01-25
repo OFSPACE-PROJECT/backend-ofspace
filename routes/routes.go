@@ -47,6 +47,7 @@ func New() *echo.Echo {
 	e.GET("/accessibility/:id", presenter.AccessibilityPresentation.GetAccessibility)
 	iJWT.POST("/accessibility/:id", presenter.AccessibilityPresentation.RequestAccessibility)
 	e.GET("/accessibility/search", presenter.AccessibilityPresentation.SearchAccessibility)
+	e.GET("/accessibility/address", presenter.AccessibilityPresentation.SearchAccessibilityByAddress)
 	iJWT.PUT("/accessibility", presenter.AccessibilityPresentation.UpdateAccessibility)
 
 	// facility
