@@ -16,6 +16,7 @@ type Business interface {
 	CreateFacility(ctx context.Context, core Facility) (Facility, error)
 	GetFacility(ctx context.Context, id uint) (Facility, error)
 	SearchFacility(ctx context.Context, name string) ([]Facility, error)
+	GetAllFacility(ctx context.Context) ([]Facility, error)
 	UpdateFacility(ctx context.Context, core Facility) (Facility, error)
 	DeleteFacility(ctx context.Context, id uint) (Facility, error)
 }
@@ -23,6 +24,7 @@ type Business interface {
 type Data interface {
 	CreateFacility(ctx context.Context, core Facility) (Facility, error)
 	GetFacility(ctx context.Context, id uint) (Facility, error)
+	GetAllFacility(ctx context.Context) ([]Facility, error)
 	UpdateFacility(ctx context.Context, core Facility) (Facility, error)
 	DeleteFacility(ctx context.Context, id uint) (Facility, error)
 	SearchFacility(ctx context.Context, name string) ([]Facility, error)

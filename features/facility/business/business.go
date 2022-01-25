@@ -78,3 +78,13 @@ func (cb *facilityBusiness) DeleteFacility(c context.Context, id uint) (facility
 
 	return del, nil
 }
+
+func (cb *facilityBusiness) GetAllFacility(c context.Context) ([]facility2.Facility, error) {
+	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
+	defer error1()
+	facility1, err := cb.facilityData.GetAllFacility(ctx)
+	if err != nil {
+		return []facility2.Facility{}, err
+	}
+	return facility1, nil
+}
