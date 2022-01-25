@@ -3,27 +3,28 @@ package response
 import (
 	"ofspace-be/features/building"
 	"ofspace-be/features/facility"
+	review "ofspace-be/features/review/presentation/response"
 	"ofspace-be/features/unit/presentation/response"
 	"time"
 )
 
 type Building struct {
-	Id               uint            `gorm:"primaryKey" json:"id"`
-	UserId           uint            `gorm:"not null" json:"user_id"`
-	ComplexId        uint            `gorm:"not null" json:"complex_id"`
-	Name             string          `json:"name"`
-	Description      string          `json:"description"`
-	ImageURL         string          `json:"image_url"`
-	OfficeHours      string          `json:"office_hours"`
-	BuildingSize     string          `json:"building_size"`
-	AverageFloorSize string          `json:"average_floor_size"`
-	YearConstructed  string          `json:"year_constructed"`
-	Lifts            string          `json:"lifts"`
-	Parking          string          `json:"parking"`
-	Toilets          string          `json:"toilets"`
-	BuildingStatus   string          `gorm:"default:unverified" json:"building_status"`
-	Units            []response.Unit `json:"units" gorm:"foreignKey:BuildingId"`
-
+	Id                 uint            `gorm:"primaryKey" json:"id"`
+	UserId             uint            `gorm:"not null" json:"user_id"`
+	ComplexId          uint            `gorm:"not null" json:"complex_id"`
+	Name               string          `json:"name"`
+	Description        string          `json:"description"`
+	ImageURL           string          `json:"image_url"`
+	OfficeHours        string          `json:"office_hours"`
+	BuildingSize       string          `json:"building_size"`
+	AverageFloorSize   string          `json:"average_floor_size"`
+	YearConstructed    string          `json:"year_constructed"`
+	Lifts              string          `json:"lifts"`
+	Parking            string          `json:"parking"`
+	Toilets            string          `json:"toilets"`
+	BuildingStatus     string          `gorm:"default:unverified" json:"building_status"`
+	Units              []response.Unit `json:"units" gorm:"foreignKey:BuildingId"`
+	Reviews            []review.Review `json:"reviews" gorm:"foreignKey:BuildingId"`
 	BuildingFacilities []Facility      `gorm:"foreignKey:BuildingID;references:ID" json:"building_facilities"`
 	ExteriorPhotos     []ExteriorPhoto `gorm:"foreignKey:BuildingID;references:ID" json:"exterior_photos"`
 	FloorPhotos        []FloorPhoto    `gorm:"foreignKey:BuildingID;references:ID" json:"floor_photos"`
@@ -78,10 +79,10 @@ func ToBuildingResponse(b building.Core) Building {
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,
 		Units:            response.FromListUnitCore(b.Units),
-
-		BuildingStatus: b.BuildingStatus,
-		CreatedAt:      time.Time{},
-		UpdatedAt:      time.Time{},
+		Reviews:          review.ToListReview(b.Reviews),
+		BuildingStatus:   b.BuildingStatus,
+		CreatedAt:        time.Time{},
+		UpdatedAt:        time.Time{},
 	}
 }
 
@@ -102,6 +103,7 @@ func FromBuildingCore(b building.Core) Building {
 		Toilets:            b.Toilets,
 		BuildingStatus:     b.BuildingStatus,
 		Units:              response.FromListUnitCore(b.Units),
+		Reviews:            review.ToListReview(b.Reviews),
 		BuildingFacilities: fromSliceFacilityCore(b.BuildingFacilities),
 		ExteriorPhotos:     fromSliceExteriorCore(b.ExteriorPhotos),
 		FloorPhotos:        fromSliceFloorCore(b.FloorPhotos),

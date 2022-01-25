@@ -9,6 +9,7 @@ type Review struct {
 	Id                    uint
 	CustomerId            uint      `json:"customer_id"`
 	Customer              User      `json:"customer,omitempty"`
+	BuildingId            uint      `json:"building_id,omitempty"`
 	UnitId                uint      `json:"unit_id"`
 	Unit                  Unit      `json:"unit,omitempty"`
 	RatingAccess          float32   `json:"rating_acces"`
@@ -70,6 +71,7 @@ func FromReviewCore(req review.Core) Review {
 		Id:                    req.Id,
 		CustomerId:            req.CustomerId,
 		Customer:              FromUserCore(req.Customer),
+		BuildingId:            req.BuildingId,
 		UnitId:                req.UnitId,
 		Unit:                  FromUnitCore(req.Unit),
 		RatingAccess:          req.RatingAccess,
@@ -87,6 +89,7 @@ func ToReviewCore(req Review) review.Core {
 		Id:                    req.Id,
 		CustomerId:            req.CustomerId,
 		Customer:              ToUserCore(req.Customer),
+		BuildingId:            req.BuildingId,
 		UnitId:                req.UnitId,
 		Unit:                  ToUnitCore(req.Unit),
 		RatingAccess:          req.RatingAccess,

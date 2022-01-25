@@ -53,6 +53,15 @@ func (cb *complexBusiness) SearchComplex(c context.Context, name string) ([]comp
 	}
 	return complex1, nil
 }
+func (cb *complexBusiness) SearchComplexByAddress(c context.Context, address string) ([]complex2.Core, error) {
+	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
+	defer error1()
+	complex1, err := cb.complexData.SearchComplex(ctx, address)
+	if err != nil {
+		return []complex2.Core{}, err
+	}
+	return complex1, nil
+}
 
 func (cb *complexBusiness) UpdateComplex(c context.Context, data complex2.Core) (complex2.Core, error) {
 	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
