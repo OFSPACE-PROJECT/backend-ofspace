@@ -9,6 +9,7 @@ import (
 type Complex struct {
 	Id        uint `gorm:"primaryKey"`
 	Name      string
+	Address   string
 	Longitude string
 	Latitude  string
 	Buildings []building.Building `gorm:"foreignKey:ComplexId"`
@@ -36,6 +37,7 @@ func toComplexCore(c Complex) complex2.Core {
 	return complex2.Core{
 		Id:        c.Id,
 		Name:      c.Name,
+		Address:   c.Address,
 		Longitude: c.Longitude,
 		Latitude:  c.Latitude,
 		Buildings: building.ToListBuildingCore(c.Buildings),
@@ -48,6 +50,7 @@ func fromComplexCore(c complex2.Core) Complex {
 	return Complex{
 		Id:        c.Id,
 		Name:      c.Name,
+		Address:   c.Address,
 		Longitude: c.Longitude,
 		Latitude:  c.Latitude,
 		Buildings: building.FromListBuildingCore(c.Buildings),

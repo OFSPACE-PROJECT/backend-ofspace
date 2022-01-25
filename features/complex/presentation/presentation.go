@@ -115,6 +115,21 @@ func (cp *ComplexPresentation) SearchComplex(c echo.Context) error {
 		"data":    response.ToListCompCore(comp),
 	})
 }
+func (cp *ComplexPresentation) SearchComplexByAddress(c echo.Context) error {
+	name := c.QueryParam("address")
+	ctx := c.Request().Context()
+	comp, err := cp.complexBusiness.SearchComplex(ctx, name)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListCompCore(comp),
+	})
+}
 
 func (cp *ComplexPresentation) RequestComplex(c echo.Context) error {
 	Id, err := strconv.Atoi(c.Param("id"))

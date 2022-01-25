@@ -2,8 +2,9 @@ package data
 
 import (
 	"context"
-	"gorm.io/gorm"
 	complex2 "ofspace-be/features/complex"
+
+	"gorm.io/gorm"
 )
 
 type complexData struct {
@@ -33,7 +34,7 @@ func (cd *complexData) GetComplex(ctx context.Context, id uint) (complex2.Core, 
 }
 func (cd *complexData) GetAllComplex(ctx context.Context) ([]complex2.Core, error) {
 	var complex1 []Complex
-	result := cd.Connect.Find(&complex1)
+	result := cd.Connect.Preload("Buildings").Find(&complex1)
 	if result.Error != nil {
 		return []complex2.Core{}, result.Error
 	}
@@ -41,7 +42,15 @@ func (cd *complexData) GetAllComplex(ctx context.Context) ([]complex2.Core, erro
 }
 func (cd *complexData) SearchComplex(ctx context.Context, name string) ([]complex2.Core, error) {
 	var complex1 []Complex
-	result := cd.Connect.Where("name LIKE ?", "%"+name+"%").Find(&complex1)
+	result := cd.Connect.Preload("Buildings").Where("name LIKE ?", "%"+name+"%").Find(&complex1)
+	if result.Error != nil {
+		return []complex2.Core{}, result.Error
+	}
+	return ListToCore(complex1), nil
+}
+func (cd *complexData) SearchComplexByAddress(ctx context.Context, address string) ([]complex2.Core, error) {
+	var complex1 []Complex
+	result := cd.Connect.Preload("Buildings").Where("address LIKE ?", "%"+address+"%").Find(&complex1)
 	if result.Error != nil {
 		return []complex2.Core{}, result.Error
 	}
