@@ -100,6 +100,22 @@ func (cp *AccessibilityPresentation) SearchAccessibility(c echo.Context) error {
 	})
 }
 
+func (cp *AccessibilityPresentation) SearchAccessibilityByAddress(c echo.Context) error {
+	name := c.QueryParam("address")
+	ctx := c.Request().Context()
+	acc, err := cp.accessibilityBusiness.SearchAccessibility(ctx, name)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.ToListAccCore(acc),
+	})
+}
+
 func (cp *AccessibilityPresentation) RequestAccessibility(c echo.Context) error {
 	Id, err := strconv.Atoi(c.Param("id"))
 
