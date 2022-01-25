@@ -297,12 +297,12 @@ func (bb *buildingBusiness) DeleteFacility(c context.Context, buildingId uint, f
 	ctx, error1 := context.WithTimeout(c, bb.contextTimeout)
 	defer error1()
 	//core := building.Facility{}
-	thisFacility, err := bb.buildingData.GetBuildingFacility(ctx, buildingId, facilityId)
-	if err != nil {
-		return building.Core{}, err
-	}
+	//thisFacility, err := bb.buildingData.GetBuildingFacility(ctx, buildingId, facilityId)
+	//if err != nil {
+	//	return building.Core{}, err
+	//}
 
-	del, err2 := bb.buildingData.DeleteFacility(ctx, buildingId, thisFacility.Id)
+	del, err2 := bb.buildingData.DeleteFacility(ctx, buildingId, facilityId)
 	if err2 != nil {
 		return building.Core{}, err2
 	}
