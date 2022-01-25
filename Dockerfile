@@ -12,7 +12,7 @@ FROM alpine:3.14
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY .env /app
-
+COPY --from=builder /app/helper/email/message/ ./helper/email/message/
 
 EXPOSE 8080
 
