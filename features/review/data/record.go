@@ -11,6 +11,7 @@ type Review struct {
 	Id               uint `gorm:"primaryKey"`
 	CustomerId       uint
 	Customer         User `gorm:"foreignKey:CustomerId"`
+	BuildingId       uint
 	UnitId           uint
 	Unit             Unit `gorm:"foreignKey:UnitId"`
 	BookingId        uint
@@ -67,6 +68,7 @@ func toReviewCore(u Review) review.Core {
 		Id:               u.Id,
 		CustomerId:       u.CustomerId,
 		Customer:         toUserCore(u.Customer),
+		BuildingId:       u.BuildingId,
 		UnitId:           u.UnitId,
 		Unit:             toUnitCore(u.Unit),
 		BookingId:        u.BookingId,
@@ -98,6 +100,7 @@ func FromCore(core review.Core) Review {
 	return Review{
 		Id:               core.Id,
 		CustomerId:       core.CustomerId,
+		BuildingId:       core.BuildingId,
 		UnitId:           core.UnitId,
 		BookingId:        core.BookingId,
 		RatingAccess:     core.RatingAccess,
