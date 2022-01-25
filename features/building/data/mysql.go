@@ -39,7 +39,7 @@ func (bd *BuildingData) GetAllBuilding(ctx context.Context, complexId uint) ([]b
 
 func (bd *BuildingData) GetAllVerifiedBuilding(ctx context.Context, complexId uint, buildingStatus string) ([]building.Core, error) {
 	var buildings []Building
-	result := bd.Connect.Preload("Units").Where("building_status= 'verified'").Find(&buildings, "complex_id= ?", complexId)
+	result := bd.Connect.Preload("Units").Preload("Reviews").Where("building_status= 'verified'").Find(&buildings, "complex_id= ?", complexId)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []building.Core{}, result.Error
@@ -50,7 +50,7 @@ func (bd *BuildingData) GetAllVerifiedBuilding(ctx context.Context, complexId ui
 func (bd *BuildingData) SearchBuildingByName(ctx context.Context, name string, status string) ([]building.Core, error) {
 	var buildings []Building
 	status = "verified"
-	result := bd.Connect.Preload("Units").Where("name LIKE ? && building_status= ?", "%"+name+"%", status).Find(&buildings)
+	result := bd.Connect.Preload("Units").Preload("Reviews").Where("name LIKE ? && building_status= ?", "%"+name+"%", status).Find(&buildings)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return []building.Core{}, result.Error
@@ -60,7 +60,7 @@ func (bd *BuildingData) SearchBuildingByName(ctx context.Context, name string, s
 
 func (bd *BuildingData) GetBuildingById(ctx context.Context, id uint) (building.Core, error) {
 	var build Building
-	result := bd.Connect.Preload("BuildingFacilities").Preload("ExteriorPhotos").Preload("FloorPhotos").Preload("Units").First(&build, "id= ?", id)
+	result := bd.Connect.Preload("BuildingFacilities").Preload("ExteriorPhotos").Preload("FloorPhotos").Preload("Units").Preload("Reviews").First(&build, "id= ?", id)
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Core{}, result.Error

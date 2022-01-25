@@ -3,6 +3,7 @@ package data
 import (
 	"ofspace-be/features/building"
 	facility2 "ofspace-be/features/facility"
+	review "ofspace-be/features/review/data"
 	unit "ofspace-be/features/unit/data"
 
 	//"ofspace-be/features/facility"
@@ -11,11 +12,11 @@ import (
 )
 
 type Building struct {
-	Id        uint        `gorm:"primaryKey"`
-	UserId    uint        `gorm:"not null"`
-	ComplexId uint        `gorm:"not null" json:"complex_id"`
-	Units     []unit.Unit `gorm:"foreignKey:BuildingId"`
-
+	Id                 uint            `gorm:"primaryKey"`
+	UserId             uint            `gorm:"not null"`
+	ComplexId          uint            `gorm:"not null" json:"complex_id"`
+	Units              []unit.Unit     `gorm:"foreignKey:BuildingId"`
+	Reviews            []review.Review `gorm:"foreignKey:BuildingId"`
 	Name               string
 	Description        string
 	ImageURL           string
@@ -157,6 +158,8 @@ func (c *Building) ToBuildingCore() building.Core {
 	return building.Core{
 		Id:                 c.Id,
 		UserId:             c.UserId,
+		Reviews:            review.ToListCore(c.Reviews),
+		Units:              unit.ListUnitToCore(c.Units),
 		ComplexId:          c.ComplexId,
 		Name:               c.Name,
 		Description:        c.Description,
