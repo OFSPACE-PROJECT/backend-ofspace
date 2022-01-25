@@ -21,12 +21,12 @@ func NewBookingData(connect *gorm.DB) booking.Data {
 
 func (b *BookingData) CreateBooking(ctx context.Context, core booking.Core) (booking.Core, error) {
 	booking1 := fromBookingCore(core)
-	result := b.Connect.Preload("User").Create(&booking1)
+	result := b.Connect.Debug().Preload("User").Create(&booking1)
 	if result.Error != nil {
 		return booking.Core{}, result.Error
 	}
-	result = b.Connect.Preload("User").First(&booking1, "id= ?", booking1.ID)
-	// fmt.Println(booking1.User)
+	result = b.Connect.Debug().First(&booking1, "id= ?", booking1.ID)
+	fmt.Println(booking1.User)
 	if result.Error != nil {
 		return booking.Core{}, result.Error
 	}
@@ -65,6 +65,17 @@ func (b *BookingData) GetAllBooking(ctx context.Context) ([]booking.Core, error)
 func (b *BookingData) GetAllBookingByUnit(ctx context.Context, unitId uint) ([]booking.Core, error) {
 	var bookings []Booking
 	result := b.Connect.Debug().Preload("Building").Find(&bookings, "unit_id", unitId)
+
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return []booking.Core{}, result.Error
+	}
+	return toSliceBookingCore(bookings), nil
+}
+
+func (b *BookingData) GetAllBookingByBuilding(ctx context.Context, buildingId uint) ([]booking.Core, error) {
+	var bookings []Booking
+	result := b.Connect.Debug().Preload("Building").Preload("User").Preload("Unit").Find(&bookings, "building_id", buildingId)
 
 	if result.Error != nil {
 		fmt.Println(result.Error)

@@ -93,6 +93,28 @@ func (bp *BookingPresentation) GetAllBookingByUnit(c echo.Context) error {
 	})
 }
 
+func (bp *BookingPresentation) GetAllBookingByBuilding(c echo.Context) error {
+	id := c.QueryParam("building_id")
+	ids, err0 := strconv.Atoi(id)
+	if err0 != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err0.Error(),
+		})
+	}
+	ctx := c.Request().Context()
+	fac, err := bp.bookingBusiness.GetAllBookingByBuilding(ctx, uint(ids))
+	if err != nil {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Success",
+		"data":    response.FromListBookingCore(fac),
+	})
+}
+
 func (bp *BookingPresentation) GetAllBookingByUser(c echo.Context) error {
 	id := c.QueryParam("user_id")
 	ids, err0 := strconv.Atoi(id)

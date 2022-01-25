@@ -9,10 +9,11 @@ type Booking struct {
 	ID            uint `gorm:"primaryKey"`
 	CostumerId    uint
 	ConsultantId  uint
-	User          User `gorm:"foreignKey:CostumerId"`
+	User          User `gorm:"foreignKey:CostumerId;omitempty"`
 	BuildingId    uint
-	Building      Building `gorm:"foreignKey:BuildingId"`
+	Building      Building `gorm:"foreignKey:BuildingId;omitempty"`
 	UnitId        uint
+	Unit          Unit `gorm:"foreignKey:UnitId;omitempty"`
 	ConfirmedName string
 	TotalBought   uint
 	Price         float32
@@ -29,6 +30,12 @@ type User struct {
 	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Email string
+	Phone string
+}
+
+type Unit struct {
+	ID       uint `gorm:"primaryKey"`
+	UnitType string
 }
 
 type Building struct {
@@ -41,6 +48,7 @@ func toUserCore(u User) booking.User {
 		ID:    u.ID,
 		Name:  u.Name,
 		Email: u.Email,
+		Phone: u.Phone,
 	}
 }
 func toBuildingCore(u Building) booking.Building {
@@ -49,11 +57,22 @@ func toBuildingCore(u Building) booking.Building {
 		Name: u.Name,
 	}
 }
-
+func toUnitCore(u Unit) booking.Unit {
+	return booking.Unit{
+		ID:       u.ID,
+		UnitType: u.UnitType,
+	}
+}
 func fromBuildingCore(u booking.Building) Building {
 	return Building{
 		ID:   u.ID,
 		Name: u.Name,
+	}
+}
+func fromUnitCore(u booking.Unit) Unit {
+	return Unit{
+		ID:       u.ID,
+		UnitType: u.UnitType,
 	}
 }
 func fromBookingCore(c booking.Core) Booking {
@@ -64,6 +83,7 @@ func fromBookingCore(c booking.Core) Booking {
 		BuildingId:    c.BuildingId,
 		Building:      fromBuildingCore(c.Building),
 		UnitId:        c.UnitId,
+		Unit:          fromUnitCore(c.Unit),
 		ConfirmedName: c.ConfirmedName,
 		TotalBought:   c.TotalBought,
 		Price:         c.Price,
@@ -85,6 +105,7 @@ func toBookingCore(c Booking) booking.Core {
 		ConsultantId:  c.ConsultantId,
 		BuildingId:    c.BuildingId,
 		UnitId:        c.UnitId,
+		Unit:          toUnitCore(c.Unit),
 		ConfirmedName: c.ConfirmedName,
 		Building:      toBuildingCore(c.Building),
 		TotalBought:   c.TotalBought,
