@@ -52,8 +52,8 @@ func (c *CreateBooking) ToCore() booking.Core {
 
 func (c *UpdateBooking) ToUpdateCore() booking.Core {
 	return booking.Core{
-		ID:            c.BuildingId,
-		CostumerId:    c.BuildingId,
+		ID:            c.ID,
+		CostumerId:    c.CostumerId,
 		ConsultantId:  c.ConsultantId,
 		BuildingId:    c.BuildingId,
 		UnitId:        c.UnitId,

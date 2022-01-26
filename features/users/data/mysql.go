@@ -49,6 +49,15 @@ func (rep *UserData) GetUserByID(ctx context.Context, id uint) (users.Core, erro
 	return toUserCore(user), nil
 }
 
+func (rep *UserData) GetAllUser(c context.Context) ([]users.Core, error) {
+	var user []User
+	result := rep.Connect.Find(&user)
+	if result.Error != nil {
+		return []users.Core{}, result.Error
+	}
+	return ListToCore(user), nil
+}
+
 func (rep *UserData) SearchUserByName(ctx context.Context, name string) ([]users.Core, error) {
 	var user []User
 	result := rep.Connect.Where("name LIKE ?", "%"+name+"%").Find(&user)

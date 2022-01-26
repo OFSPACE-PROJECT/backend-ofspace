@@ -32,6 +32,7 @@ func New() *echo.Echo {
 	iJWT.DELETE("/user/:id", presenter.UserPresentation.DeleteUser)
 	iJWT.GET("/user/search", presenter.UserPresentation.SearchUserByName)
 	iJWT.GET("/user/status", presenter.UserPresentation.SearchUserByAdminStatus)
+	iJWT.GET("/user", presenter.UserPresentation.GetAllUser)
 
 	// complex
 	iJWT.POST("/complex", presenter.ComplexPresentation.CreateComplex)

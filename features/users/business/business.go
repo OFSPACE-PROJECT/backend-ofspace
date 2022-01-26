@@ -132,10 +132,22 @@ func (ub *usersBusiness) GetUserByAdminStatus(c context.Context, status string) 
 	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
 	defer error1()
 
-	user, err := ub.userData.SearchUserByName(ctx, status)
+	user, err := ub.userData.GetUserByAdminStatus(ctx, status)
 	if err != nil {
 		return []users.Core{}, err
 	}
 
 	return user, nil
+}
+
+func (ub *usersBusiness) GetAllUser(c context.Context) ([]users.Core, error) {
+	ctx, error1 := context.WithTimeout(c, ub.contextTimeout)
+	defer error1()
+	user, err := ub.userData.GetAllUser(ctx)
+	if err != nil {
+		return []users.Core{}, err
+	}
+
+	return user, nil
+
 }
