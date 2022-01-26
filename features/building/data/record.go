@@ -172,7 +172,6 @@ func (c *Building) ToBuildingCore() building.Core {
 		AverageFloorSize:   c.AverageFloorSize,
 		YearConstructed:    c.YearConstructed,
 		FloorCount:         c.FloorCount,
-		ImageURL:           c.ImageURL,
 		Lifts:              c.Lifts,
 		Parking:            c.Parking,
 		Toilets:            c.Toilets,
