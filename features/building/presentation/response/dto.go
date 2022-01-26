@@ -21,6 +21,7 @@ type Building struct {
 	YearConstructed    string          `json:"year_constructed"`
 	Lifts              string          `json:"lifts"`
 	Parking            string          `json:"parking"`
+	FloorCount         string          `json:"floor_count"`
 	Toilets            string          `json:"toilets"`
 	BuildingStatus     string          `gorm:"default:unverified" json:"building_status"`
 	Units              []response.Unit `json:"units" gorm:"foreignKey:BuildingId"`
@@ -78,6 +79,7 @@ func ToBuildingResponse(b building.Core) Building {
 		Lifts:            b.Lifts,
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,
+		FloorCount:       b.FloorCount,
 		Units:            response.FromListUnitCore(b.Units),
 		Reviews:          review.ToListReview(b.Reviews),
 		BuildingStatus:   b.BuildingStatus,
@@ -100,6 +102,7 @@ func FromBuildingCore(b building.Core) Building {
 		YearConstructed:    b.YearConstructed,
 		Lifts:              b.Lifts,
 		Parking:            b.Parking,
+		FloorCount:         b.FloorCount,
 		Toilets:            b.Toilets,
 		BuildingStatus:     b.BuildingStatus,
 		Units:              response.FromListUnitCore(b.Units),

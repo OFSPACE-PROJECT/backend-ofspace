@@ -11,6 +11,7 @@ type CreateBuilding struct {
 	Description      string `json:"description"`
 	ImageURL         string `json:"image_url"`
 	OfficeHours      string `json:"office_hours"`
+	FloorCount       string `json:"floor_count"`
 	BuildingSize     string `json:"building_size"`
 	AverageFloorSize string `json:"average_floor_size"`
 	YearConstructed  string `json:"year_constructed"`
@@ -26,6 +27,7 @@ type UpdateBuilding struct {
 	ImageURL         string `json:"image_url"`
 	OfficeHours      string `json:"office_hours"`
 	BuildingSize     string `json:"building_size"`
+	FloorCount       string `json:"floor_count"`
 	AverageFloorSize string `json:"average_floor_size"`
 	YearConstructed  string `json:"year_constructed"`
 	Lifts            string `json:"lifts"`
@@ -78,6 +80,7 @@ func (c *UpdateBuilding) ToUpdateCore() building.Core {
 		ImageURL:         c.ImageURL,
 		BuildingSize:     c.BuildingSize,
 		AverageFloorSize: c.AverageFloorSize,
+		FloorCount:       c.FloorCount,
 		YearConstructed:  c.YearConstructed,
 		Lifts:            c.Lifts,
 		Parking:          c.Parking,
@@ -118,6 +121,7 @@ func (c *CreateBuilding) ToCore() building.Core {
 		ImageURL:         c.ImageURL,
 		OfficeHours:      c.OfficeHours,
 		BuildingSize:     c.BuildingSize,
+		FloorCount:       c.FloorCount,
 		AverageFloorSize: c.AverageFloorSize,
 		YearConstructed:  c.YearConstructed,
 		Lifts:            c.Lifts,

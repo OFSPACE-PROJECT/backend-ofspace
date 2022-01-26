@@ -22,6 +22,7 @@ type Building struct {
 	ImageURL           string
 	OfficeHours        string
 	BuildingSize       string
+	FloorCount         string `gorm:"default:0"`
 	AverageFloorSize   string
 	YearConstructed    string
 	Lifts              string
@@ -81,6 +82,7 @@ func toBuildingCore(b *Building) building.Core {
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,
 		BuildingStatus:   b.BuildingStatus,
+		FloorCount:       b.FloorCount,
 		Units:            unit.ListUnitToCore(b.Units),
 
 		BuildingFacilities: ToSliceFacilityCore(b.BuildingFacilities),
@@ -115,6 +117,7 @@ func FromBuildingCore(b building.Core) Building {
 		Parking:          b.Parking,
 		Toilets:          b.Toilets,
 		BuildingStatus:   b.BuildingStatus,
+		FloorCount:       b.FloorCount,
 		Units:            unit.FromSliceUnitCore(b.Units),
 
 		//BuildingFacilities: FromBuildingFacilityCore(c.BuildingFacilities,
@@ -168,6 +171,8 @@ func (c *Building) ToBuildingCore() building.Core {
 		BuildingSize:       c.BuildingSize,
 		AverageFloorSize:   c.AverageFloorSize,
 		YearConstructed:    c.YearConstructed,
+		FloorCount:         c.FloorCount,
+		ImageURL:           c.ImageURL,
 		Lifts:              c.Lifts,
 		Parking:            c.Parking,
 		Toilets:            c.Toilets,
