@@ -15,6 +15,7 @@ type Core struct {
 	Reviews            []review.Core
 	Name               string
 	Description        string
+	FloorCount         string
 	ImageURL           string
 	OfficeHours        string
 	BuildingSize       string

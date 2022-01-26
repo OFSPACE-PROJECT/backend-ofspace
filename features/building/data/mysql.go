@@ -71,7 +71,7 @@ func (bd *BuildingData) GetBuildingById(ctx context.Context, id uint) (building.
 func (bd *BuildingData) UpdateBuilding(ctx context.Context, core building.Core) (building.Core, error) {
 	build := FromBuildingCore(core)
 	result := bd.Connect.Where("id= ?", build.Id).Updates(&Building{BuildingStatus: build.BuildingStatus, Name: build.Name, BuildingSize: build.BuildingSize,
-		AverageFloorSize: build.AverageFloorSize, Toilets: build.Toilets, Lifts: build.Lifts, Description: build.Description, YearConstructed: build.YearConstructed, Parking: build.Parking, OfficeHours: build.OfficeHours})
+		AverageFloorSize: build.AverageFloorSize, Toilets: build.Toilets, Lifts: build.Lifts, Description: build.Description, YearConstructed: build.YearConstructed, FloorCount: build.FloorCount, Parking: build.Parking, OfficeHours: build.OfficeHours})
 	if result.Error != nil {
 		fmt.Println(result.Error)
 		return building.Core{}, result.Error

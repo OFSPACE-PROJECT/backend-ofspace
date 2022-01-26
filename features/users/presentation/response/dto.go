@@ -20,6 +20,7 @@ type UserResponse struct {
 	Name        string `json:"name" form:"name"`
 	Role        string `json:"role" form:"username"`
 	Phone       string `json:"phone" form:"phone"`
+	Email       string `json:"email"`
 	AdminStatus string `json:"admin_status"`
 	Token       string `json:"token"`
 }
@@ -30,6 +31,7 @@ func ToUserLoginResponse(user users.Core) UserResponse {
 		Name:        user.Name,
 		Role:        user.Role,
 		Phone:       user.Phone,
+		Email:       user.Email,
 		AdminStatus: user.AdminStatus,
 		Token:       user.Token,
 	}
@@ -51,6 +53,7 @@ type GetUserResponse struct {
 	Name        string    `json:"name"`
 	Role        string    `json:"role"`
 	Phone       string    `json:"phone"`
+	Email       string    `json:"email"`
 	AdminStatus string    `json:"admin_status"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
@@ -62,6 +65,7 @@ func ToGetUserResponse(user users.Core) GetUserResponse {
 		Name:        user.Name,
 		Role:        user.Role,
 		Phone:       user.Phone,
+		Email:       user.Email,
 		AdminStatus: user.AdminStatus,
 	}
 }
