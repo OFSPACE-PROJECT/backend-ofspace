@@ -75,7 +75,7 @@ func fromUnitCore(u booking.Unit) Unit {
 		UnitType: u.UnitType,
 	}
 }
-func fromBookingCore(c booking.Core) Booking {
+func fromBookingCore(c *booking.Core) Booking {
 	return Booking{
 		ID:            c.ID,
 		CostumerId:    c.CostumerId,

@@ -20,7 +20,7 @@ func NewBookingData(connect *gorm.DB) booking.Data {
 }
 
 func (b *BookingData) CreateBooking(ctx context.Context, core booking.Core) (booking.Core, error) {
-	booking1 := fromBookingCore(core)
+	booking1 := fromBookingCore(&core)
 	result := b.Connect.Debug().Preload("User").Create(&booking1)
 	if result.Error != nil {
 		return booking.Core{}, result.Error
@@ -34,7 +34,7 @@ func (b *BookingData) CreateBooking(ctx context.Context, core booking.Core) (boo
 }
 
 func (b *BookingData) UpdateBooking(ctx context.Context, core booking.Core) (booking.Core, error) {
-	booking1 := fromBookingCore(core)
+	booking1 := fromBookingCore(&core)
 	result := b.Connect.Where("id= ?", booking1.ID).Updates(&Booking{
 		ConfirmedName: booking1.ConfirmedName,
 		TotalBought:   booking1.TotalBought,
@@ -43,6 +43,7 @@ func (b *BookingData) UpdateBooking(ctx context.Context, core booking.Core) (boo
 		StartDate:     booking1.StartDate,
 		EndDate:       booking1.EndDate,
 		PaymentStatus: booking1.PaymentStatus,
+		BookingStatus: booking1.BookingStatus,
 		UpdatedAt:     booking1.UpdatedAt,
 	})
 	if result.Error != nil {

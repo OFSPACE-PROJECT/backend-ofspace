@@ -164,6 +164,7 @@ func (c *Building) ToBuildingCore() building.Core {
 		Name:               c.Name,
 		Description:        c.Description,
 		OfficeHours:        c.OfficeHours,
+		ImageURL:           c.ImageURL,
 		BuildingSize:       c.BuildingSize,
 		AverageFloorSize:   c.AverageFloorSize,
 		YearConstructed:    c.YearConstructed,
