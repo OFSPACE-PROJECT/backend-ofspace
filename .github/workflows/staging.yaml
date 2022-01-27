@@ -59,4 +59,4 @@ jobs:
             StrictHostKeyChecking=no
           END
       - name: connect to ec2 AWS, remove container before pull, pull from registry, start
-        run: ssh development 'sudo docker rm -f $(docker ps -a -q) || true && docker pull rizamahard/ofspace:latest && docker run -d -p 8080:8080 --name ofspace rizamahard/ofspace:latest'
+        run: ssh development 'sudo docker rm ofspace $(docker ps -a -q) || true && docker pull rizamahard/ofspace:latest && docker run -d -p 8080:8080 --name ofspace rizamahard/ofspace:latest'
