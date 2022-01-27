@@ -7,7 +7,6 @@ import (
 	"ofspace-be/features/booking/presentation/request"
 	"ofspace-be/features/booking/presentation/response"
 	"strconv"
-	"time"
 )
 
 type BookingPresentation struct {
@@ -208,83 +207,83 @@ func (bp *BookingPresentation) SearchBookingByPayment(c echo.Context) error {
 	})
 }
 
-func (bp *BookingPresentation) GetSumOfTotalBoughtInUnit(c echo.Context) error {
-	unitId, _ := strconv.Atoi(c.Param("id"))
-	ctx := c.Request().Context()
-	fac, err := bp.bookingBusiness.GetSumOfTotalBoughtInUnit(ctx, uint(unitId))
-	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"data":    fac,
-	})
-}
-
-func (bp *BookingPresentation) GetEarningsInUnitWithDateFilter(c echo.Context) error {
-	unitId, _ := strconv.Atoi(c.Param("id"))
-	layoutFormat := "2006-01-02"
-	value1 := c.QueryParam("start_date")
-	value2 := c.QueryParam("end_date")
-	date1, _ := time.Parse(layoutFormat, value1)
-	date2, _ := time.Parse(layoutFormat, value2)
-	ctx := c.Request().Context()
-	fac, err := bp.bookingBusiness.GetEarningsInUnitWithDateFilter(ctx, uint(unitId), date1, date2)
-	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"data":    fac,
-	})
-}
-
-func (bp *BookingPresentation) GetSumOfPaymentConfirmed(c echo.Context) error {
-	unitId, _ := strconv.Atoi(c.Param("id"))
-	layoutFormat := "2006-01-02"
-	value1 := c.QueryParam("start_date")
-	value2 := c.QueryParam("end_date")
-	date1, _ := time.Parse(layoutFormat, value1)
-	date2, _ := time.Parse(layoutFormat, value2)
-	ctx := c.Request().Context()
-	fac, err := bp.bookingBusiness.GetSumOfPaymentConfirmed(ctx, uint(unitId), date1, date2)
-	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"data":    fac,
-	})
-}
-
-func (bp *BookingPresentation) FindBookingByDate(c echo.Context) error {
-	layoutFormat := "2006-01-02"
-	value1 := c.QueryParam("start_date")
-	value2 := c.QueryParam("end_date")
-	var date1 time.Time
-	var date2 time.Time
-	date1, _ = time.Parse(layoutFormat, value1)
-	date2, _ = time.Parse(layoutFormat, value2)
-	buildingId, _ := strconv.Atoi(c.Param("id"))
-	ctx := c.Request().Context()
-	fac, err := bp.bookingBusiness.FindBookingByDate(ctx, uint(buildingId), date1, date2)
-	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"data":    response.FromListBookingCore(fac),
-	})
-}
+//func (bp *BookingPresentation) GetSumOfTotalBoughtInUnit(c echo.Context) error {
+//	unitId, _ := strconv.Atoi(c.Param("id"))
+//	ctx := c.Request().Context()
+//	fac, err := bp.bookingBusiness.GetSumOfTotalBoughtInUnit(ctx, uint(unitId))
+//	if err != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err.Error(),
+//		})
+//	}
+//
+//	return c.JSON(http.StatusOK, map[string]interface{}{
+//		"message": "Success",
+//		"data":    fac,
+//	})
+//}
+//
+//func (bp *BookingPresentation) GetEarningsInUnitWithDateFilter(c echo.Context) error {
+//	unitId, _ := strconv.Atoi(c.Param("id"))
+//	layoutFormat := "2006-01-02"
+//	value1 := c.QueryParam("start_date")
+//	value2 := c.QueryParam("end_date")
+//	date1, _ := time.Parse(layoutFormat, value1)
+//	date2, _ := time.Parse(layoutFormat, value2)
+//	ctx := c.Request().Context()
+//	fac, err := bp.bookingBusiness.GetEarningsInUnitWithDateFilter(ctx, uint(unitId), date1, date2)
+//	if err != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err.Error(),
+//		})
+//	}
+//
+//	return c.JSON(http.StatusOK, map[string]interface{}{
+//		"message": "Success",
+//		"data":    fac,
+//	})
+//}
+//
+//func (bp *BookingPresentation) GetSumOfPaymentConfirmed(c echo.Context) error {
+//	unitId, _ := strconv.Atoi(c.Param("id"))
+//	layoutFormat := "2006-01-02"
+//	value1 := c.QueryParam("start_date")
+//	value2 := c.QueryParam("end_date")
+//	date1, _ := time.Parse(layoutFormat, value1)
+//	date2, _ := time.Parse(layoutFormat, value2)
+//	ctx := c.Request().Context()
+//	fac, err := bp.bookingBusiness.GetSumOfPaymentConfirmed(ctx, uint(unitId), date1, date2)
+//	if err != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err.Error(),
+//		})
+//	}
+//
+//	return c.JSON(http.StatusOK, map[string]interface{}{
+//		"message": "Success",
+//		"data":    fac,
+//	})
+//}
+//
+//func (bp *BookingPresentation) FindBookingByDate(c echo.Context) error {
+//	layoutFormat := "2006-01-02"
+//	value1 := c.QueryParam("start_date")
+//	value2 := c.QueryParam("end_date")
+//	var date1 time.Time
+//	var date2 time.Time
+//	date1, _ = time.Parse(layoutFormat, value1)
+//	date2, _ = time.Parse(layoutFormat, value2)
+//	buildingId, _ := strconv.Atoi(c.Param("id"))
+//	ctx := c.Request().Context()
+//	fac, err := bp.bookingBusiness.FindBookingByDate(ctx, uint(buildingId), date1, date2)
+//	if err != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err.Error(),
+//		})
+//	}
+//
+//	return c.JSON(http.StatusOK, map[string]interface{}{
+//		"message": "Success",
+//		"data":    response.FromListBookingCore(fac),
+//	})
+//}

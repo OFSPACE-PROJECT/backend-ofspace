@@ -134,61 +134,61 @@ func (b *bookingBusiness) GetBookingByStatus(c context.Context, buildingId uint,
 	return data, nil
 }
 
-func (b *bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
-	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
-	defer error1()
-	data, err := b.bookingData.FindBookingByDate(ctx, buildingId, startDate, endDate)
-	if err != nil {
-		return []booking.Core{}, err
-	}
-	return data, nil
-}
+//func (b *bookingBusiness) FindBookingByDate(c context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
+//	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+//	defer error1()
+//	data, err := b.bookingData.FindBookingByDate(ctx, buildingId, startDate, endDate)
+//	if err != nil {
+//		return []booking.Core{}, err
+//	}
+//	return data, nil
+//}
 
-func (b *bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uint) (int, error) {
-	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
-	defer error1()
-	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
-	if err2 != nil {
-		return 0, err2
-	}
-	totalSold := 0
-	for _, j := range fromBooking {
-		if j.BookingStatus == "rented" {
-			totalSold += int(j.TotalBought)
-		}
-	}
-	return totalSold, nil
-}
-
-func (b *bookingBusiness) GetEarningsInUnitWithDateFilter(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
-	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
-	defer error1()
-	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
-	if err2 != nil {
-		return 0, err2
-	}
-	var totalEarning float32 = 0
-	var canceled string = "canceled"
-	for _, j := range fromBooking {
-		if j.DealDate.After(startDate.Local()) && j.DealDate.Before(endDate.Local()) && j.BookingStatus != canceled {
-			totalEarning += j.Price
-		}
-	}
-	return int(totalEarning), nil
-}
-
-func (b *bookingBusiness) GetSumOfPaymentConfirmed(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
-	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
-	defer error1()
-	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
-	if err2 != nil {
-		return 0, err2
-	}
-	var totalConfirm int = 0
-	for _, j := range fromBooking {
-		if j.DealDate.After(startDate) && j.DealDate.Before(endDate) && j.PaymentStatus == "confirmed" {
-			totalConfirm += 1
-		}
-	}
-	return int(totalConfirm), nil
-}
+//func (b *bookingBusiness) GetSumOfTotalBoughtInUnit(c context.Context, unitId uint) (int, error) {
+//	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+//	defer error1()
+//	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+//	if err2 != nil {
+//		return 0, err2
+//	}
+//	totalSold := 0
+//	for _, j := range fromBooking {
+//		if j.BookingStatus == "rented" {
+//			totalSold += int(j.TotalBought)
+//		}
+//	}
+//	return totalSold, nil
+//}
+//
+//func (b *bookingBusiness) GetEarningsInUnitWithDateFilter(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
+//	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+//	defer error1()
+//	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+//	if err2 != nil {
+//		return 0, err2
+//	}
+//	var totalEarning float32 = 0
+//	var canceled string = "canceled"
+//	for _, j := range fromBooking {
+//		if j.DealDate.After(startDate.Local()) && j.DealDate.Before(endDate.Local()) && j.BookingStatus != canceled {
+//			totalEarning += j.Price
+//		}
+//	}
+//	return int(totalEarning), nil
+//}
+//
+//func (b *bookingBusiness) GetSumOfPaymentConfirmed(c context.Context, unitId uint, startDate time.Time, endDate time.Time) (int, error) {
+//	ctx, error1 := context.WithTimeout(c, b.contextTimeout)
+//	defer error1()
+//	fromBooking, err2 := b.bookingData.GetAllBookingByUnit(ctx, unitId)
+//	if err2 != nil {
+//		return 0, err2
+//	}
+//	var totalConfirm int = 0
+//	for _, j := range fromBooking {
+//		if j.DealDate.After(startDate) && j.DealDate.Before(endDate) && j.PaymentStatus == "confirmed" {
+//			totalConfirm += 1
+//		}
+//	}
+//	return int(totalConfirm), nil
+//}

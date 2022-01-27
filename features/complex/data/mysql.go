@@ -71,11 +71,11 @@ func (cd *complexData) UpdateComplex(ctx context.Context, core complex2.Core) (c
 	return toComplexCore(complex1), nil
 }
 
-func (cd *complexData) RequestComplex(ctx context.Context, id uint, name string) (complex2.Core, error) {
-	var complex1 Complex
-	result := cd.Connect.Where("id= ? && name= ?", id, name).Create(&complex1)
-	if result.Error != nil {
-		return complex2.Core{}, result.Error
-	}
-	return toComplexCore(complex1), nil
-}
+//func (cd *complexData) RequestComplex(ctx context.Context, id uint, name string) (complex2.Core, error) {
+//	var complex1 Complex
+//	result := cd.Connect.Where("id= ? && name= ?", id, name).Create(&complex1)
+//	if result.Error != nil {
+//		return complex2.Core{}, result.Error
+//	}
+//	return toComplexCore(complex1), nil
+//}

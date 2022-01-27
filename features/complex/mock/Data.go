@@ -79,26 +79,26 @@ func (_m *Data) GetComplex(ctx context.Context, id uint) (complex.Core, error) {
 	return r0, r1
 }
 
-// RequestComplex provides a mock function with given fields: ctx, id, name
-func (_m *Data) RequestComplex(ctx context.Context, id uint, name string) (complex.Core, error) {
-	ret := _m.Called(ctx, id, name)
-
-	var r0 complex.Core
-	if rf, ok := ret.Get(0).(func(context.Context, uint, string) complex.Core); ok {
-		r0 = rf(ctx, id, name)
-	} else {
-		r0 = ret.Get(0).(complex.Core)
-	}
-
-	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, uint, string) error); ok {
-		r1 = rf(ctx, id, name)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
+//// RequestComplex provides a mock function with given fields: ctx, id, name
+//func (_m *Data) RequestComplex(ctx context.Context, id uint, name string) (complex.Core, error) {
+//	ret := _m.Called(ctx, id, name)
+//
+//	var r0 complex.Core
+//	if rf, ok := ret.Get(0).(func(context.Context, uint, string) complex.Core); ok {
+//		r0 = rf(ctx, id, name)
+//	} else {
+//		r0 = ret.Get(0).(complex.Core)
+//	}
+//
+//	var r1 error
+//	if rf, ok := ret.Get(1).(func(context.Context, uint, string) error); ok {
+//		r1 = rf(ctx, id, name)
+//	} else {
+//		r1 = ret.Error(1)
+//	}
+//
+//	return r0, r1
+//}
 
 // SearchComplex provides a mock function with given fields: ctx, name
 func (_m *Data) SearchComplex(ctx context.Context, name string) ([]complex.Core, error) {

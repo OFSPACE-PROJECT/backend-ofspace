@@ -78,13 +78,13 @@ func (cb *complexBusiness) UpdateComplex(c context.Context, data complex2.Core) 
 	return up, nil
 }
 
-func (cb complexBusiness) RequestComplex(c context.Context, id uint, name string) (complex2.Core, error) {
-	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
-	defer error1()
-	up, err := cb.complexData.RequestComplex(ctx, id, name)
-	if err != nil {
-		return complex2.Core{}, err
-	}
-	return up, nil
-
-}
+//func (cb complexBusiness) RequestComplex(c context.Context, id uint, name string) (complex2.Core, error) {
+//	ctx, error1 := context.WithTimeout(c, cb.contextTimeout)
+//	defer error1()
+//	up, err := cb.complexData.RequestComplex(ctx, id, name)
+//	if err != nil {
+//		return complex2.Core{}, err
+//	}
+//	return up, nil
+//
+//}

@@ -24,7 +24,7 @@ type Business interface {
 	SearchComplex(ctx context.Context, name string) ([]Core, error)
 	SearchComplexByAddress(ctx context.Context, address string) ([]Core, error)
 	UpdateComplex(ctx context.Context, complex Core) (Core, error)
-	RequestComplex(ctx context.Context, id uint, name string) (Core, error)
+	//RequestComplex(ctx context.Context, id uint, name string) (Core, error)
 }
 
 type Data interface {
@@ -34,5 +34,5 @@ type Data interface {
 	SearchComplex(ctx context.Context, name string) ([]Core, error)
 	SearchComplexByAddress(ctx context.Context, address string) ([]Core, error)
 	UpdateComplex(ctx context.Context, complex Core) (Core, error)
-	RequestComplex(ctx context.Context, id uint, name string) (Core, error)
+	//RequestComplex(ctx context.Context, id uint, name string) (Core, error)
 }
