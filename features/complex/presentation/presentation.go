@@ -131,25 +131,26 @@ func (cp *ComplexPresentation) SearchComplexByAddress(c echo.Context) error {
 	})
 }
 
-func (cp *ComplexPresentation) RequestComplex(c echo.Context) error {
-	Id, err := strconv.Atoi(c.Param("id"))
-
-	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err.Error(),
-		})
-	}
-	name := c.QueryParam("name")
-	ctx := c.Request().Context()
-	data, err2 := cp.complexBusiness.RequestComplex(ctx, uint(Id), name)
-	if err2 != nil {
-		return c.JSON(http.StatusForbidden, map[string]interface{}{
-			"message": err2.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"data":    response.ToComplexResponse(data),
-	})
-}
+//
+//func (cp *ComplexPresentation) RequestComplex(c echo.Context) error {
+//	Id, err := strconv.Atoi(c.Param("id"))
+//
+//	if err != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err.Error(),
+//		})
+//	}
+//	name := c.QueryParam("name")
+//	ctx := c.Request().Context()
+//	data, err2 := cp.complexBusiness.RequestComplex(ctx, uint(Id), name)
+//	if err2 != nil {
+//		return c.JSON(http.StatusForbidden, map[string]interface{}{
+//			"message": err2.Error(),
+//		})
+//	}
+//
+//	return c.JSON(http.StatusOK, map[string]interface{}{
+//		"message": "Success",
+//		"data":    response.ToComplexResponse(data),
+//	})
+//}

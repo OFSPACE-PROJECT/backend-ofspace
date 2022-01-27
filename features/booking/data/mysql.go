@@ -3,10 +3,8 @@ package data
 import (
 	"context"
 	"fmt"
-	"ofspace-be/features/booking"
-	"time"
-
 	"gorm.io/gorm"
+	"ofspace-be/features/booking"
 )
 
 type BookingData struct {
@@ -132,14 +130,14 @@ func (b *BookingData) GetBookingByStatus(ctx context.Context, buildingId uint, b
 	return toSliceBookingCore(booking1), nil
 }
 
-func (b *BookingData) FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
-	var booking1 []Booking
-	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && start_date= ? && end_date= ?", buildingId, startDate, endDate)
-	if result.Error != nil {
-		return []booking.Core{}, result.Error
-	}
-	return toSliceBookingCore(booking1), nil
-}
+//func (b *BookingData) FindBookingByDate(ctx context.Context, buildingId uint, startDate time.Time, endDate time.Time) ([]booking.Core, error) {
+//	var booking1 []Booking
+//	result := b.Connect.Preload("Building").Find(&booking1, "building_id= ? && start_date= ? && end_date= ?", buildingId, startDate, endDate)
+//	if result.Error != nil {
+//		return []booking.Core{}, result.Error
+//	}
+//	return toSliceBookingCore(booking1), nil
+//}
 
 //func (b *BookingData) GetSumOfTotalBoughtInUnit(ctx context.Context, unitId uint) (int, error) {
 //	var booking1 []Booking
